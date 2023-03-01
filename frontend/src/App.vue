@@ -1,6 +1,9 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+
+  <router-link to="/page1">Page1へ遷移</router-link>
+  <router-view></router-view>
 </template>
 
 <script lang="ts">

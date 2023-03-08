@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  web:
+    build: ./docker/web
+    ports:
+      - '80:80'
+
+  # Django REST framwork
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    command: uwsgi --socket :8001 --module config.wsgi
+    volumes:
+      - ./backend:/code
+    expose:
+      - '8001'

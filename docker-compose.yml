@@ -4,6 +4,16 @@ services:
     build: ./docker/web
     ports:
       - '80:80'
+    volumes:
+      - ./backend:/code
+
+  db:
+    build: ./docker/db
+    env_file: ./docker/db/mariadb.env
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+    expose:
+      - '3306'
 
   # Django REST framwork
   backend:

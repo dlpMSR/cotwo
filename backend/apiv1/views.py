@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import TestData
-from .serializers import TestDataSerializer
+from .models import EnvValue
+from .serializers import EnvValueSerializer
 
 # Create your views here.
-class TestDataViewSet(viewsets.ModelViewSet):
-    queryset = TestData.objects.all()
-    serializer_class = TestDataSerializer
+class EnvValueViewSet(viewsets.ModelViewSet):
+    queryset = EnvValue.objects.all()
+    serializer_class = EnvValueSerializer

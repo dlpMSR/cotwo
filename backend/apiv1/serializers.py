@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from .models import TestData 
+from .models import EnvValue
 
-class TestDataSerializer(serializers.ModelSerializer):
+
+class EnvValueSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TestData
+        model = EnvValue
         fields = '__all__'

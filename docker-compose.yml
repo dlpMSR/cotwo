@@ -25,3 +25,11 @@ services:
       - ./backend:/code
     expose:
       - '8001'
+
+  daemon:
+    build:
+      context: .
+      dockerfile: ./docker/daemon/Dockerfile
+    volumes:
+      - ./daemon:/code
+    tty: true

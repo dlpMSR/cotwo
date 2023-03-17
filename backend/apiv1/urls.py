@@ -1,10 +1,6 @@
-from django.urls import path, include
-from rest_framework import routers
+from django.urls import path
 from . import views
 
-router = routers.DefaultRouter()
-router.register('testdata',views.EnvValueViewSet)
-
 urlpatterns = [
-    path('', include(router.urls))
+    path('env_value', views.EnvValueList.as_view())
 ]

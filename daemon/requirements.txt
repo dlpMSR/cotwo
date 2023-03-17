@@ -1,3 +1,4 @@
 adafruit-circuitpython-scd4x
 mysqlclient
 python-dotenv
+pytz

@@ -7,6 +7,7 @@ import adafruit_scd4x
 import MySQLdb
 from dotenv import load_dotenv
 from datetime import datetime
+from pytz import timezone
 
 
 def _mysql_connection():
@@ -41,7 +42,7 @@ if __name__ == '__main__':
             temp = "%0.1f" % scd4x.temperature
             humidity = "%0.1f" % scd4x.relative_humidity
             co2 = "%d" % scd4x.CO2
-            created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            created_at = datetime.now(timezone('UTC')).strftime("%Y-%m-%d %H:%M:%S")
 
             print(temp, humidity, co2, created_at)
 

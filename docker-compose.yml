@@ -4,8 +4,6 @@ services:
     build: ./docker/web
     ports:
       - '80:80'
-    volumes:
-      - ./backend:/code
 
   db:
     build: ./docker/db

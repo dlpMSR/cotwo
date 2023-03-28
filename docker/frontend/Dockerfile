@@ -1,9 +1,7 @@
-FROM node:lts-alpine
+FROM node:lts-bullseye
 
 WORKDIR /code
 
-RUN apk update && \
-    npm install -g npm && \
-    npm install -g vue-cli
+RUN apt update
 
-CMD npm run serve
+CMD npm run dev

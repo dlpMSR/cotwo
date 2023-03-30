@@ -2,8 +2,11 @@ version: "3.9"
 services:
   web:
     build: ./docker/web
+    volumes:
+      - ./backend:/code
     ports:
       - '80:80'
+    
 
   db:
     build: ./docker/db

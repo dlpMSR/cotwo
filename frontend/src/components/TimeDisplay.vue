@@ -147,6 +147,7 @@ export default defineComponent({
   }
 
   .date {
+    line-height: 1;
     font-size: v-bind("fontSize.date + 'px'");
     margin-left: v-bind("margin.dateLeft + 'px'");
   }

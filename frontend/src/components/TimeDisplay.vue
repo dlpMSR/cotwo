@@ -102,9 +102,9 @@ export default defineComponent({
   methods: {
     synchronizeClock() {
       axios.head('/api/v1/env_value')
-        .then(res => {
-          this.currentTime = new Date(res.headers.date)
-        })
+      .then(res => {
+        this.currentTime = new Date(res.headers.date)
+      })
     },
 
     tick() {
@@ -113,7 +113,7 @@ export default defineComponent({
     },
 
     updateClockWidth() {
-      this.ew = this.$refs.clockContainer.clientWidth
+      this.ew = (this.$refs.clockContainer as any).clientWidth
     },
 
     zeroPad(num: number) {

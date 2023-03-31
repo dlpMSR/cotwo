@@ -47,7 +47,7 @@ export default defineComponent({
 
   methods: {
     updateEnviroDisplayWidth() {
-      this.ew = this.$refs.enviroContainer.clientWidth
+      this.ew = (this.$refs.enviroContainer as any).clientWidth
     },
 
     getEnvValues() {

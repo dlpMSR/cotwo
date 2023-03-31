@@ -5,16 +5,23 @@
         <TimeDisplay />
       </v-row>
     </v-container>
+
+    <v-container fluid>
+      <v-row justify="center" class="padding-horizontal-clock">
+        <EnviroDisplay />
+      </v-row>
+    </v-container>
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent  } from 'vue'
 import TimeDisplay from '@/components/TimeDisplay.vue'
+import EnviroDisplay from '@/components/EnviroDisplay.vue'
 
 export default defineComponent({
   components: {
-    TimeDisplay
+    TimeDisplay, EnviroDisplay
   },
 
   data() {

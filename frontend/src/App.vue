@@ -4,7 +4,6 @@
       <v-tab to="/" style="text-transform: none;">Home</v-tab>
       <v-tab to="/about" style="text-transform: none;">About</v-tab>
     </v-tabs>
-  
   </header>
 
   <div class="main">

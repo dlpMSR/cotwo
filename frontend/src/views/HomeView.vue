@@ -1,10 +1,10 @@
 <template>
   <main>
-    <div :style="{ 'margin-top': margin.clockTop + 'px' }">
-      <v-row justify="center">
+    <v-container fluid :style="{ 'margin-top': margin.topClock + 'px' }">
+      <v-row justify="center" class="padding-horizontal-clock">
         <TimeDisplay />
       </v-row>
-    </div>
+    </v-container>
   </main>
 </template>
 
@@ -19,16 +19,27 @@ export default defineComponent({
 
   data() {
     return {
-        margin: {
-          clockTop: 0,
+      iw: 0,
+    }
+  },
+
+  computed: {
+    margin() {
+      return {
+        topClock: this.iw * 0.025
+      }
+    },
+
+    padding() {
+      return {
+        horizontalClock: this.iw * 0.15,
       }
     }
   },
 
   methods: {
     updateMargin() {
-      const iw:number = window.innerWidth
-      this.margin.clockTop = iw * 0.1
+      this.iw = window.innerWidth
     }
   },
 
@@ -41,3 +52,14 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+.margin-top-clock {
+  margin-top: v-bind("margin.topClock + 'px'");
+}
+
+.padding-horizontal-clock {
+  padding-right: v-bind("padding.horizontalClock + 'px'");
+  padding-left: v-bind("padding.horizontalClock + 'px'");
+}
+</style>

@@ -1,3 +1,5 @@
+channels
+daphne
 Django
 djangorestframework
 django-environ

@@ -6,7 +6,6 @@ services:
       - ./backend:/code
     ports:
       - '80:80'
-    
 
   db:
     build: ./docker/db
@@ -21,11 +20,12 @@ services:
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
-    command: uwsgi --socket :8001 --module config.wsgi
+    command: supervisord
     volumes:
       - ./backend:/code
     expose:
       - '8001'
+      - '8002'
 
   daemon:
     build:

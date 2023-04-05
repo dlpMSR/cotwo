@@ -54,7 +54,7 @@ if __name__ == '__main__':
     print("Serial number:", [hex(i) for i in scd4x.serial_number])
 
     _set_channel_layers()
-    get_channel_layer = get_channel_layer()
+    channel_layer = get_channel_layer()
 
     scd4x.start_periodic_measurement()
     print("Waiting for first measurement....")

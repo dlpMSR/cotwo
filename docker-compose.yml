@@ -14,8 +14,12 @@ services:
       - ./docker/db/data:/var/lib/mysql
     expose:
       - '3306'
-
-  # Django REST framwork
+  
+  redis:
+    build: ./docker/redis
+    ports:
+      - '6379:6379'
+      
   backend:
     build:
       context: .

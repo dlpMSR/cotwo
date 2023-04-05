@@ -27,6 +27,7 @@ import axios from 'axios'
 export default defineComponent({
   data () {
     return {
+      socket: {},
       ew: 0,
 
       co2: 0,
@@ -63,12 +64,17 @@ export default defineComponent({
 
   beforeMount() {
     this.getEnvValues()
+    this.socket = new WebSocket("ws://" + window.location.host + "/ws/env_values")
   },
 
   mounted() {
+    this.socket.addEventListener("message", function(event) {
+      console.log(event.data);
+    })
+
     this.updateEnviroDisplayWidth()
     window.addEventListener('resize', this.updateEnviroDisplayWidth)
-    setInterval(this.getEnvValues, 60* 1000)
+    // setInterval(this.getEnvValues, 60* 1000)
   }
 })
 </script>

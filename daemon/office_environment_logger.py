@@ -8,6 +8,9 @@ import MySQLdb
 from dotenv import load_dotenv
 from datetime import datetime
 from pytz import timezone
+from django.conf import settings
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 def _mysql_connection():
@@ -28,11 +31,30 @@ def _mysql_connection():
 
     return connection
 
+def _set_channel_layers():
+    load_dotenv()
+    CHANNEL_LAYERS_HOST = os.getenv('CHANNEL_LAYERS_HOST')
+    CHANNEL_LAYERS_PORT = int(os.getenv('CHANNEL_LAYERS_PORT'))
+
+    settings.configure(
+    CHANNEL_LAYERS={
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [(CHANNEL_LAYERS_HOST, CHANNEL_LAYERS_PORT)],
+            },
+        }
+    }
+)
+
 
 if __name__ == '__main__':
     i2c = board.I2C()
     scd4x = adafruit_scd4x.SCD4X(i2c)
     print("Serial number:", [hex(i) for i in scd4x.serial_number])
+
+    _set_channel_layers()
+    get_channel_layer = get_channel_layer()
 
     scd4x.start_periodic_measurement()
     print("Waiting for first measurement....")
@@ -46,11 +68,16 @@ if __name__ == '__main__':
 
             print(temp, humidity, co2, created_at)
 
+            # Websocketで環境値を配信
+            async_to_sync(channel_layer.group_send)(
+                "realtime_env_ws", {"type": "env_data", "message": "hoge"}
+            )
+
+            # MySQLに環境値を記録
             sql = """
                 INSERT INTO `env_value` (`temperature`, `humidity`, `co2`, `created_at`)
                 VALUES (%s, %s, %s, %s)
             """
-
             conn = _mysql_connection()
             with conn:
                 with conn.cursor() as cur:

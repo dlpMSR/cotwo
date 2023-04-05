@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import time
+import json
 import os
 import board
 import adafruit_scd4x
@@ -69,8 +70,9 @@ if __name__ == '__main__':
             print(temp, humidity, co2, created_at)
 
             # Websocketで環境値を配信
+            message = {"temperature": temp, "humidity": humidity, "co2": co2}
             async_to_sync(channel_layer.group_send)(
-                "realtime_env_ws", {"type": "env_data", "message": "hoge"}
+                "realtime_env_ws", {"type": "env_data", "message": json.dumps(message)}
             )
 
             # MySQLに環境値を記録

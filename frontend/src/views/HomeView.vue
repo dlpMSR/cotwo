@@ -39,7 +39,7 @@ export default defineComponent({
 
     padding() {
       return {
-        horizontalClock: this.iw * 0.15,
+        horizontalClock: this.iw * 0.25,
       }
     }
   },

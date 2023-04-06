@@ -70,9 +70,13 @@ if __name__ == '__main__':
             print(temp, humidity, co2, created_at)
 
             # Websocketで環境値を配信
-            message = {"temperature": float(temp), "humidity": float(humidity), "co2": int(co2)}
             async_to_sync(channel_layer.group_send)(
-                "realtime_env_ws", {"type": "env_data", "message": json.dumps(message)}
+                "realtime_env_ws", {
+                    "type": "env_data",
+                    "temperature": float(temp),
+                    "humidity": float(humidity),
+                    "co2": int(co2)
+                }
             )
 
             # MySQLに環境値を記録

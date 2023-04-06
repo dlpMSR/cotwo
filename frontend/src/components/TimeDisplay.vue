@@ -147,24 +147,24 @@ export default defineComponent({
 
   .date {
     line-height: 1;
-    text-shadow: 1px 1px 2px pink;
+    text-shadow: 1px 1px 2px white;
     font-size: v-bind("fontSize.date + 'px'");
     margin-left: v-bind("margin.dateLeft + 'px'");
   }
 
   .number {
     @include LatoBold;
-    text-shadow: 1px 1px 2px pink;
+    text-shadow: 1px 1px 2px white;
   }
   .weekday {
     @include LatoBold;
-    text-shadow: 1px 1px 2px pink;
+    text-shadow: 1px 1px 2px white;
     font-size: v-bind("fontSize.weekday + 'px'");
     margin-left: v-bind("margin.weekDayLeft + 'px'");
   }
 
   .time {
-    text-shadow: 1px 1px 2px pink;
+    text-shadow: 1px 1px 2px white;
     font-size: v-bind("fontSize.time + 'px'");
 
   }
@@ -186,7 +186,7 @@ export default defineComponent({
 
   .second {
     line-height: 1;
-    text-shadow: 1px 1px 2px pink;
+    text-shadow: 1px 1px 2px white;
     font-size: v-bind("fontSize.second + 'px'");
     margin-left: v-bind("margin.secondLeft + 'px'");
     margin-bottom: v-bind("margin.secondBottom + 'px'");

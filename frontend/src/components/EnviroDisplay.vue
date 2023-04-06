@@ -2,6 +2,9 @@
   <div class="d-flex justify-end" ref="enviroContainer" style="width: 100%;">
     <div class="d-flex flex-row ">
       <div class="d-flex">
+        <span class="unit align-self-start" :style="{ 'margin-right': margin.betweenTempHumid + 'px' }">
+          CO<sub>2</sub>
+        </span>
         <span class="number co2">{{ co2 }}</span>
         <span class="unit align-self-end">ppm</span>
       </div>
@@ -40,10 +43,10 @@ export default defineComponent({
   computed: {
     fontSize() {
       return {
-        co2: this.elementWidth * 0.15,
-        temperature: this.elementWidth * 0.075,
-        humidity: this.elementWidth * 0.075,
-        unit: this.elementWidth * 0.045
+        co2: this.elementWidth * 0.12,
+        temperature: this.elementWidth * 0.07,
+        humidity: this.elementWidth * 0.07,
+        unit: this.elementWidth * 0.03
       }
     },
 
@@ -99,7 +102,7 @@ export default defineComponent({
 .number {
   @include LatoBold;
   line-height: 1;
-  text-shadow: 1px 1px 2px pink;
+  text-shadow: 1px 1px 2px white;
   &.co2 {
     font-size:  v-bind("fontSize.co2 + 'px'")
   }
@@ -116,7 +119,7 @@ export default defineComponent({
 .unit {
     @include LatoBold;
     line-height: 1;
-    text-shadow: 1px 1px 2px pink;
+    text-shadow: 1px 1px 2px white;
     font-size: v-bind("fontSize.unit + 'px'");
 }
 </style>

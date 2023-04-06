@@ -6,12 +6,12 @@
         <span>ppm</span>
       </div>
 
-      <div class="ml-5">
+      <div class="temp-humidity">
         <div>
           <span class="number temperature">{{ temperature }}</span>
           <span>℃</span>   
         </div>
-        <div class="mt-3">
+        <div :style="{ 'margin-top': margin.betweenTempHumid + 'px' }">
           <span class="number humidity">{{ humidity }}</span>
           <span>%</span>  
         </div>
@@ -42,6 +42,13 @@ export default defineComponent({
         co2: this.elementWidth * 0.1,
         temperature: this.elementWidth * 0.045,
         humidity: this.elementWidth * 0.045
+      }
+    },
+
+    margin() {
+      return {
+        leftTempHumid: this.elementWidth * 0.02,
+        betweenTempHumid: this.elementWidth * 0.01
       }
     }
   },
@@ -76,13 +83,16 @@ export default defineComponent({
 
     this.updateEnviroDisplayWidth()
     window.addEventListener('resize', this.updateEnviroDisplayWidth)
-    // setInterval(this.getEnvValues, 60* 1000)
   }
 })
 </script>
 
 <style scoped lang="scss">
 @import '@/assets/sass/mixin.scss';
+
+.temp-humidity {
+  margin-left: v-bind("margin.leftTempHumid + 'px'");
+}
 .number {
   @include LatoBold;
   line-height: 1;

@@ -27,8 +27,8 @@ import axios from 'axios'
 export default defineComponent({
   data () {
     return {
-      socket: {},
-      ew: 0,
+      socket: {} as WebSocket,
+      elementWidth: 0,
 
       co2: 0,
       temperature: 0,
@@ -39,22 +39,21 @@ export default defineComponent({
   computed: {
     fontSize() {
       return {
-        co2: this.ew * 0.1,
-        temperature: this.ew * 0.045,
-        humidity: this.ew * 0.045
+        co2: this.elementWidth * 0.1,
+        temperature: this.elementWidth * 0.045,
+        humidity: this.elementWidth * 0.045
       }
     }
   },
 
   methods: {
     updateEnviroDisplayWidth() {
-      this.ew = (this.$refs.enviroContainer as any).clientWidth
+      this.elementWidth = (this.$refs.enviroContainer as any).clientWidth
     },
 
     getEnvValues() {
       axios.get('/api/v1/env_value')
       .then(res => {
-        // console.log(res.data)
         this.co2 = res.data.co2
         this.temperature = res.data.temperature
         this.humidity = res.data.humidity
@@ -64,12 +63,12 @@ export default defineComponent({
 
   beforeMount() {
     this.getEnvValues()
-    this.socket = new WebSocket("ws://" + window.location.host + "/ws/env_values")
   },
 
   mounted() {
+    this.socket = new WebSocket("ws://" + window.location.host + "/ws/env_values")
     this.socket.addEventListener("message", function(event) {
-      console.log(event.data);
+      console.log(JSON.parse(event.data));
     })
 
     this.updateEnviroDisplayWidth()

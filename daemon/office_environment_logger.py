@@ -72,10 +72,11 @@ if __name__ == '__main__':
             # Websocketで環境値を配信
             async_to_sync(channel_layer.group_send)(
                 "realtime_env_ws", {
-                    "type": "env_data",
-                    "temperature": float(temp),
-                    "humidity": float(humidity),
-                    "co2": int(co2)
+                    "type": "env_data", "message": {
+                        "temperature": float(temp),
+                        "humidity": float(humidity),
+                        "co2": int(co2)
+                    }
                 }
             )
 

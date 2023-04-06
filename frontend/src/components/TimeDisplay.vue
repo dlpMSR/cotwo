@@ -123,14 +123,12 @@ export default defineComponent({
 
   beforeMount() {
     this.synchronizeClock()
-    // this.updateFontSize()
   },
 
   mounted() {
     this.updateClockWidth()
     setInterval(this.tick, 1000)
-    setInterval(this.synchronizeClock, 60 * 1000)
-    // window.addEventListener('resize', this.updateFontSize)
+    setInterval(this.synchronizeClock, 3600 * 1000)
     window.addEventListener('resize', this.updateClockWidth)
   }
 })

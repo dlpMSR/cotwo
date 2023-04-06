@@ -2,7 +2,7 @@
   <header>
     <v-tabs align-tabs="end" color="deep-purple-accent-4">
       <v-tab to="/" style="text-transform: none;">Home</v-tab>
-      <v-tab to="/about" style="text-transform: none;">Chart</v-tab>
+      <v-tab to="/chart" style="text-transform: none;">Chart</v-tab>
     </v-tabs>
   </header>
 

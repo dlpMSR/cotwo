@@ -1,19 +1,20 @@
 <template>
   <div class="d-flex justify-end" ref="enviroContainer" style="width: 100%;">
-    <div class="d-flex flex-row">
-      <div class="d-flex align-end">
+    <div class="d-flex flex-row ">
+      <div class="d-flex">
         <span class="number co2">{{ co2 }}</span>
-        <span>ppm</span>
+        <span class="unit align-self-end">ppm</span>
       </div>
 
       <div class="temp-humidity">
-        <div>
-          <span class="number temperature">{{ temperature }}</span>
-          <span>℃</span>   
+        <div class="d-flex">
+          <span class="number temperature me-auto">{{ temperature }}</span>
+          <span class="unit align-self-end">°C</span>   
         </div>
-        <div :style="{ 'margin-top': margin.betweenTempHumid + 'px' }">
-          <span class="number humidity">{{ humidity }}</span>
-          <span>%</span>  
+
+        <div class="d-flex" :style="{ 'margin-top': margin.betweenTempHumid + 'px' }">
+          <span class="number humidity me-auto">{{ humidity }}</span>
+          <span class="unit align-self-end">%</span>  
         </div>
       </div>
     </div>
@@ -39,16 +40,18 @@ export default defineComponent({
   computed: {
     fontSize() {
       return {
-        co2: this.elementWidth * 0.1,
-        temperature: this.elementWidth * 0.045,
-        humidity: this.elementWidth * 0.045
+        co2: this.elementWidth * 0.15,
+        temperature: this.elementWidth * 0.075,
+        humidity: this.elementWidth * 0.075,
+        unit: this.elementWidth * 0.045
       }
     },
 
     margin() {
       return {
-        leftTempHumid: this.elementWidth * 0.02,
-        betweenTempHumid: this.elementWidth * 0.01
+        leftTempHumid: this.elementWidth * 0.03,
+        betweenTempHumid: this.elementWidth * 0.02,
+        betweenValUnit: this.elementWidth * 0.02
       }
     }
   },
@@ -96,6 +99,7 @@ export default defineComponent({
 .number {
   @include LatoBold;
   line-height: 1;
+  text-shadow: 1px 1px 2px pink;
   &.co2 {
     font-size:  v-bind("fontSize.co2 + 'px'")
   }
@@ -107,5 +111,12 @@ export default defineComponent({
   &.humidity {
     font-size: v-bind("fontSize.humidity + 'px'")
   }
+}
+
+.unit {
+    @include LatoBold;
+    line-height: 1;
+    text-shadow: 1px 1px 2px pink;
+    font-size: v-bind("fontSize.unit + 'px'");
 }
 </style>

@@ -2,7 +2,7 @@
   <header>
     <v-tabs align-tabs="end" color="deep-purple-accent-4">
       <v-tab to="/" style="text-transform: none;">Home</v-tab>
-      <v-tab to="/about" style="text-transform: none;">About</v-tab>
+      <v-tab to="/about" style="text-transform: none;">Chart</v-tab>
     </v-tabs>
   </header>
 
@@ -15,8 +15,14 @@
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/sass/mixin.scss';
+
 header {
+  @include LatoBold;
+
+  font-weight: bolder;
+
   position: fixed;
   top: 0;
   right: 0;

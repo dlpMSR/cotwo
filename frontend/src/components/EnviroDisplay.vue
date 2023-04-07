@@ -11,12 +11,16 @@
 
       <div class="temp-humidity">
         <div class="d-flex">
-          <span class="number temperature me-auto">{{ temperature.toFixed(1) }}</span>
+          <div class="ms-auto">
+            <span class="number temperature">{{ temperature.toFixed(1) }}</span>
+          </div>
           <span class="unit align-self-end">°C</span>   
         </div>
 
         <div class="d-flex" :style="{ 'margin-top': margin.betweenTempHumid + 'px' }">
-          <span class="number humidity me-auto">{{ humidity.toFixed(1) }}</span>
+          <div class="ms-auto">
+            <span class="number humidity">{{ humidity.toFixed(1) }}</span>
+          </div>
           <span class="unit align-self-end">%</span>  
         </div>
       </div>

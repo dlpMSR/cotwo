@@ -9,11 +9,20 @@ services:
 
   db:
     build: ./docker/db
-    env_file: ./docker/db/mariadb.env
     volumes:
       - ./docker/db/data:/var/lib/mysql
     expose:
       - '3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=cotwo
+      - MYSQL_USER=django
+      - MYSQL_PASSWORD=password
+      - TZ=Asia/Tokyo
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
   
   redis:
     build: ./docker/redis
@@ -39,7 +48,8 @@ services:
       - ./daemon:/code
     command: python dummy.py
     depends_on:
-      - "db"
+      db:
+        condition: service_healthy
 
   frontend:
     build: ./docker/frontend

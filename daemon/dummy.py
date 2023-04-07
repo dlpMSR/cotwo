@@ -1,43 +1,18 @@
 #!/usr/bin/env python3
-import os
-import time
-from datetime import datetime
 
+import time
+import os
+import random
+# import board
+# import adafruit_scd4x
 import MySQLdb
 from dotenv import load_dotenv
+from datetime import datetime
+from pytz import timezone
+from django.conf import settings
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
-
-def main():
-    co2 = 984
-    temperature = 26.2
-    humidity = 21.4
-    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    sql = """
-        INSERT INTO `env_value` (`temperature`, `humidity`, `co2`, `created_at`)
-        VALUES (%s, %s, %s, %s)
-    """
-
-    conn = _mysql_connection()
-    with conn:
-        with conn.cursor() as cur:
-            cur.execute(sql, (temperature, humidity, co2, created_at))
-        conn.commit()
-
-    return 0
-
-
-def _read_sensor_values():
-    # dummy
-    co2 = 984
-    temperature = 26.2
-    humidity = 21.4
-
-    return {
-        'temperature': temperature,
-        'humidity': humidity,
-        'co2': co2
-    }
 
 def _mysql_connection():
     load_dotenv()
@@ -57,6 +32,63 @@ def _mysql_connection():
 
     return connection
 
+def _set_channel_layers():
+    load_dotenv()
+    CHANNEL_LAYERS_HOST = os.getenv('CHANNEL_LAYERS_HOST')
+    CHANNEL_LAYERS_PORT = int(os.getenv('CHANNEL_LAYERS_PORT'))
+
+    settings.configure(
+    CHANNEL_LAYERS={
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [(CHANNEL_LAYERS_HOST, CHANNEL_LAYERS_PORT)],
+            },
+        }
+    }
+)
+
 
 if __name__ == '__main__':
-    main()
+    # i2c = board.I2C()
+    # scd4x = adafruit_scd4x.SCD4X(i2c)
+    # print("Serial number:", [hex(i) for i in scd4x.serial_number])
+
+    _set_channel_layers()
+    channel_layer = get_channel_layer()
+
+    #scd4x.start_periodic_measurement()
+    #print("Waiting for first measurement....")
+
+    while True:
+        if True:
+            temp = "%0.1f" % random.uniform(0, 50)
+            humidity = "%0.1f" % random.uniform(0, 100)
+            co2 = "%d" % int(random.uniform(400, 1500))
+            created_at = datetime.now(timezone('UTC')).strftime("%Y-%m-%d %H:%M:%S")
+
+            print(temp, humidity, co2, created_at)
+
+            # Websocketで環境値を配信
+            async_to_sync(channel_layer.group_send)(
+                "realtime_env_ws", {
+                    "type": "env_data", "message": {
+                        "temperature": float(temp),
+                        "humidity": float(humidity),
+                        "co2": int(co2)
+                    }
+                }
+            )
+
+            # MySQLに環境値を記録
+            sql = """
+                INSERT INTO `env_value` (`temperature`, `humidity`, `co2`, `created_at`)
+                VALUES (%s, %s, %s, %s)
+            """
+            conn = _mysql_connection()
+            with conn:
+                with conn.cursor() as cur:
+                    cur.execute(sql, (temp, humidity, co2, created_at))
+                conn.commit()
+
+        time.sleep(30)

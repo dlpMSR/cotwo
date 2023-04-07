@@ -37,7 +37,7 @@ services:
       dockerfile: ./docker/daemon/Dockerfile
     volumes:
       - ./daemon:/code
-    tty: true
+    dommand: 
 
   frontend:
     build: ./docker/frontend

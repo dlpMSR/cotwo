@@ -139,6 +139,7 @@ export default defineComponent({
 
 .clock {
   span {
+    color: #404040;
     display: inline-block;
     line-height: 1;
   }

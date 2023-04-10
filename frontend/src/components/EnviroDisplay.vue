@@ -100,6 +100,10 @@ export default defineComponent({
 <style scoped lang="scss">
 @import '@/assets/sass/mixin.scss';
 
+span {
+  color: #404040;
+}
+
 .temp-humidity {
   margin-left: v-bind("margin.leftTempHumid + 'px'");
 }

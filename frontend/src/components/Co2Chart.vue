@@ -40,7 +40,8 @@ export default defineComponent({
             label: '二酸化炭素濃度 [ppm]',
             data: this.datasets,
             tension: 0.1,
-            borderColor: 'lightseagreen'
+            borderColor: 'lightseagreen',
+            backgroundColor: 'turquoise'
           }]
         },
         options: {

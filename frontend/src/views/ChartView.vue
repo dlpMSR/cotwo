@@ -36,6 +36,7 @@
 <script lang="ts">
 import { defineComponent  } from 'vue'
 import Co2Chart from '@/components/Co2Chart.vue'
+import axios from 'axios'
 
 export default defineComponent({
   components: {
@@ -49,9 +50,24 @@ export default defineComponent({
       co2: 0,
       temperature: 0,
       humidity: 0,
-
-
     }
+  },
+
+  methods: {
+    async getEnvValues() {
+      try {
+        const res = await axios.get('/api/v1/env_value')
+        this.co2 = res.data.co2
+        this.temperature = res.data.temperature
+        this.humidity = res.data.humidity
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  },
+
+  beforeMount() {
+    this.getEnvValues()
   },
 
   mounted() {

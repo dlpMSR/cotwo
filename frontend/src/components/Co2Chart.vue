@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent  } from 'vue'
+import { defineComponent, markRaw } from 'vue'
 import axios from 'axios'
 import { Chart, registerables } from 'chart.js'
 import 'chartjs-adapter-date-fns'
@@ -32,7 +32,7 @@ export default defineComponent({
 
     renderChart() {
       let ctx = document.getElementById("co2-chart") as HTMLCanvasElement
-      new Chart(ctx, {
+      const chart = new Chart(ctx, {
         type: 'line',
         data: {
           datasets: [{
@@ -76,6 +76,18 @@ export default defineComponent({
           maintainAspectRatio: false,
         }
       })
+
+      this.chart = markRaw(chart)
+    },
+
+    async redrawChartWithData() {
+      try {
+        const res = await this.getCo2List()
+        this.datasets = res.data
+        this.chart.update() 
+      } catch (error) {
+        console.log(error)
+      }
     }
   },
 
@@ -90,6 +102,7 @@ export default defineComponent({
     }
 
     this.renderChart()
+    setInterval(this.redrawChartWithData, 10 * 60 * 1000)
     window.addEventListener('resize', this.updateCanvasWidth)
   },
 

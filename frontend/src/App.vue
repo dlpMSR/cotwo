@@ -19,10 +19,6 @@ import { RouterLink, RouterView } from 'vue-router'
 @import '@/assets/sass/mixin.scss';
 
 header {
-  @include LatoBold;
-
-  font-weight: bolder;
-
   position: fixed;
   top: 0;
   right: 0;
@@ -31,5 +27,13 @@ header {
 
 main {
   padding-top: 50px;
+}
+
+.v-tab {
+  @include LatoBold;
+
+  font-size: 1.3rem;
+  font-weight: bolder;
+  color: #404040;
 }
 </style>

@@ -130,6 +130,10 @@ export default defineComponent({
     setInterval(this.tick, 1000)
     setInterval(this.synchronizeClock, 3600 * 1000)
     window.addEventListener('resize', this.updateClockWidth)
+  },
+
+  unmounted() {
+    window.removeEventListener('resize', this.updateClockWidth);
   }
 })
 </script>

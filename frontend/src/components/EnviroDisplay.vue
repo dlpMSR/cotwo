@@ -93,6 +93,10 @@ export default defineComponent({
 
     this.updateEnviroDisplayWidth()
     window.addEventListener('resize', this.updateEnviroDisplayWidth)
+  },
+
+  unmounted() {
+    window.removeEventListener('resize', this.updateEnviroDisplayWidth);
   }
 })
 </script>

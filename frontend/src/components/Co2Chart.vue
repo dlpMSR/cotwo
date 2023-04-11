@@ -31,11 +31,10 @@ export default defineComponent({
     },
 
     renderChart() {
-      let ctx = document.getElementById("co2-chart")
+      let ctx = document.getElementById("co2-chart") as HTMLCanvasElement
       new Chart(ctx, {
         type: 'line',
         data: {
-          loaded: false,
           datasets: [{
             label: '二酸化炭素濃度 [ppm]',
             data: this.datasets,
@@ -51,17 +50,15 @@ export default defineComponent({
           },
           scales: {
             x: {
-              type: 'time',
+              type: 'timeseries',
               time: {
                 displayFormats: {
                   minute: 'H:mm',
                   unit: 'minutes',
-                  stepSize: 20
                 },
               },
               ticks: {
                 autoSkip: true,
-                beginAtZero: true
               },
               grid: {
                 display: false

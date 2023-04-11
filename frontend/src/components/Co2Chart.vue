@@ -77,7 +77,7 @@ export default defineComponent({
         }
       })
 
-      this.chart = markRaw(chart)
+      this.chart = markRaw(chart) as any
     },
 
     async redrawChartWithData() {

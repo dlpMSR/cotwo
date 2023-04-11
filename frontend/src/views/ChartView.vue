@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12" sm="12" md="12" lg="6">
           <div style="max-width: 600px; margin: 0 auto;">
-            <v-row ref="displayCurrentCo2Value" class="mb-1">
+            <v-row ref="displayCurrentCo2Value">
               <div class="v-col-7">
                 <span style="font-size: 2rem;">二酸化炭素濃度</span>
               </div>
@@ -18,12 +18,15 @@
             </v-row>
             
             <div>
-              <span style="font-size: 1.8rem;">過去6時間の推移</span>
+              <span style="font-size: 1.7rem;">過去6時間の推移</span>
               <Co2Chart />
             </div>
           </div>
         </v-col>
         <v-col cols="12" sm="12" md="12" lg="6">
+          <div style="max-width: 600px; margin: 0 auto;">
+            <span>まだないよ┗(^o^ )┓</span>
+          </div>
         </v-col>
       </v-row>
     </v-container>

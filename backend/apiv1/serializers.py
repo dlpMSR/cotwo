@@ -16,14 +16,14 @@ class Co2Serializer(serializers.ModelSerializer):
 
 class TempSerializer(serializers.ModelSerializer):
     timestamp = serializers.DateTimeField(source='created_at')
-    value = serializers.IntegerField(source='temperature')
+    value = serializers.FloatField(source='temperature')
     class Meta:
         model = EnvValue
         fields = ['timestamp', 'value']
 
 class HumiditySerializer(serializers.ModelSerializer):
     timestamp = serializers.DateTimeField(source='created_at')
-    value = serializers.IntegerField(source='humidity')
+    value = serializers.FloatField(source='humidity')
     class Meta:
         model = EnvValue
         fields = ['timestamp', 'value']

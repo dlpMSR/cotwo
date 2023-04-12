@@ -133,9 +133,12 @@ export default defineComponent({
     }
 
     this.renderChart()
+    window.addEventListener('resize', this.updateCanvasWidth)
+  },
+
+  unmounted() {
+    window.removeEventListener('resize', this.updateCanvasWidth);
   }
-
-
 })
 
 </script>

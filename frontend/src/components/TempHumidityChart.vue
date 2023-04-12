@@ -40,14 +40,14 @@ export default defineComponent({
         type: 'line',
         data: {
           datasets: [{
-            label: '気温 (°C)',
+            label: '気温 [°C]',
             data: this.datasetsTemperature,
             tension: 0.1,
             borderColor: 'darkorange',
             backgroundColor: 'turquoise',
             yAxisID: 'temperature'
           }, {
-            label: '湿度 (％)',
+            label: '湿度 [％]',
             data: this.datasetsHumidity,
             tension: 0.1,
             borderColor: 'royalblue',

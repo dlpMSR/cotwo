@@ -73,6 +73,14 @@ export default defineComponent({
               radius: 0
             }
           },
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                boxHeight: 0,
+              }
+            }
+          },
           maintainAspectRatio: false,
         }
       })

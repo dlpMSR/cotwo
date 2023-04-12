@@ -79,7 +79,6 @@ export default defineComponent({
             'temperature': {
               type: 'linear',
               position: 'left',
-              min: -10,
               ticks: {
                 callback: function(t) {
                   return t.toString() + '°C'
@@ -89,7 +88,6 @@ export default defineComponent({
             'humidity': {
               type: 'linear',
               position: 'right',
-              min: 0, 
               ticks: {
                 callback: function(t) {
                   return t.toString() + '%'

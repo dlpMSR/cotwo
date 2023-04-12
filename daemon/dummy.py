@@ -91,4 +91,4 @@ if __name__ == '__main__':
                     cur.execute(sql, (temp, humidity, co2, created_at))
                 conn.commit()
 
-        time.sleep(30)
+        time.sleep(60)

@@ -18,7 +18,7 @@
             </v-row>
             
             <div>
-              <span style="font-size: 1.7rem;">過去6時間の推移</span>
+              <span style="font-size: 1.7rem;">過去12時間の推移</span>
               <Co2Chart />
             </div>
           </div>
@@ -46,7 +46,7 @@
             </v-row>
             
             <div>
-              <span style="font-size: 1.7rem;">過去6時間の推移</span>
+              <span style="font-size: 1.7rem;">過去12時間の推移</span>
               <TempHumidityChart />
             </div>
           </div>

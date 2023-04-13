@@ -79,7 +79,7 @@ export default defineComponent({
             'temperature': {
               type: 'linear',
               position: 'left',
-              min: -10,
+              suggestedMin: -5,
               ticks: {
                 stepSize: 5,
                 callback: function(t) {

@@ -17,7 +17,7 @@ class EnvValueList(APIView):
 class Co2TrendList(APIView):
     def get(self, request, format=None):
         now_utc = datetime.datetime.now(datetime.timezone.utc)
-        six_hours_ago = now_utc - datetime.timedelta(hours=6)
+        six_hours_ago = now_utc - datetime.timedelta(hours=12)
         co2_values = EnvValue.objects.order_by('-created_at') \
             .filter(created_at__range=[six_hours_ago, now_utc])
         
@@ -28,7 +28,7 @@ class Co2TrendList(APIView):
 class TempTrendList(APIView):
     def get(self, request, format=None):
         now_utc = datetime.datetime.now(datetime.timezone.utc)
-        six_hours_ago = now_utc - datetime.timedelta(hours=6)
+        six_hours_ago = now_utc - datetime.timedelta(hours=12)
         values = EnvValue.objects.order_by('-created_at') \
             .filter(created_at__range=[six_hours_ago, now_utc])
         
@@ -39,7 +39,7 @@ class TempTrendList(APIView):
 class HumidityTrendList(APIView):
     def get(self, request, format=None):
         now_utc = datetime.datetime.now(datetime.timezone.utc)
-        six_hours_ago = now_utc - datetime.timedelta(hours=6)
+        six_hours_ago = now_utc - datetime.timedelta(hours=12)
         values = EnvValue.objects.order_by('-created_at') \
             .filter(created_at__range=[six_hours_ago, now_utc])
         

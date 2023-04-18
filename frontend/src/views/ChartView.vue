@@ -7,7 +7,7 @@
 
       <v-row>
         <v-col cols="12" sm="12" md="12" lg="6">
-          <div style="max-width: 600px; margin: 0 auto;">
+          <div style="max-width: 600px; margin: 0 auto;" class="pr-3">
             <v-row>
               <div class="v-col-7">
                 <span style="font-size: 2rem;">二酸化炭素濃度</span>
@@ -29,7 +29,7 @@
         </v-col>
 
         <v-col cols="12" sm="12" md="12" lg="6">
-          <div style="max-width: 600px; margin: 0 auto;">
+          <div style="max-width: 600px; margin: 0 auto;" class="pl-3">
             <v-row>
               <div class="v-col-7">
                 <span style="font-size: 2rem;">気温と湿度</span>

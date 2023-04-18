@@ -9,14 +9,18 @@
         <v-col cols="12" sm="12" md="6" lg="6">
           <div style="max-width: 600px; margin: 0 auto;" class="pa-2">
             <v-row>
-              <div class="v-col-7">
+              <div class="v-col-6">
                 <span style="font-size: 2rem;">二酸化炭素濃度</span>
               </div>
-              <div class="v-col-5">
+              <div class="v-col-6">
                 <div class="d-flex justify-end">
                   <span class="me-3" style="font-size: 1.3rem;">現在</span>
-                  <span style="font-size: 3rem;">{{ co2 }}</span>
+                  <span class="sev-seg" style="font-size: 3rem;">{{ co2 }}</span>
                   <span class="align-self-end ms-1" style="font-size: 1.3rem;">ppm</span>
+                </div>
+
+                <div class="d-flex justify-end mt-1">
+                  <span v-if="lastUpdatedAt != ''" class="annotation-text">更新: {{ lastUpdatedAt }}</span>
                 </div>
               </div>
             </v-row>

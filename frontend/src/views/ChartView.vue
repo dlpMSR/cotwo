@@ -1,6 +1,10 @@
 <template>
   <main>
     <v-container>
+      <v-row class="col-12 mb-5">
+        <span style="font-size: 2.2rem">セキュアサイクル 若松ひびきのオフィス</span>
+      </v-row>
+
       <v-row>
         <v-col cols="12" sm="12" md="12" lg="6">
           <div style="max-width: 600px; margin: 0 auto;">

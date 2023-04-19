@@ -16,6 +16,7 @@ export default defineComponent({
     return {
       chart: {} as Chart,
       datasets: [],
+      datasetsMa: [],
 
       ctxWidth: 400
     }
@@ -24,6 +25,10 @@ export default defineComponent({
   methods: {
     getCo2List () {
       return axios.get('/api/v1/co2_trend')
+    },
+
+    getCo2MaList() {
+      return axios.get('/api/v1/co2_ma')
     },
 
     updateCanvasWidth () {
@@ -35,13 +40,22 @@ export default defineComponent({
       const chart = new Chart(ctx, {
         type: 'line',
         data: {
-          datasets: [{
+          datasets: [
+          {
+            label: '10分間移動平均 [ppm]',
+            data: this.datasetsMa,
+            tension: 0.1,
+            borderColor: 'lightseagreen',
+            backgroundColor: 'lightseagreen'
+          },
+            {
             label: '二酸化炭素濃度 [ppm]',
             data: this.datasets,
             tension: 0.1,
-            borderColor: 'lightseagreen',
-            backgroundColor: 'turquoise'
-          }]
+            borderColor: 'paleturquoise',
+            backgroundColor: 'paleturquoise'
+          },
+        ]
         },
         options: {
           parsing: {
@@ -109,8 +123,14 @@ export default defineComponent({
       console.log(error)
     }
 
+    try {
+      const res = await this.getCo2MaList()
+      this.datasetsMa = res.data
+    } catch (error) {
+      console.log(error)
+    }
+
     this.renderChart()
-    setInterval(this.redrawChartWithData, 10 * 60 * 1000)
     window.addEventListener('resize', this.updateCanvasWidth)
   },
 

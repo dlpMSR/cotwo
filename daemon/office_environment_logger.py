@@ -48,16 +48,16 @@ def _set_channel_layers():
     }
 )
 
-
 if __name__ == '__main__':
     i2c = board.I2C()
     scd4x = adafruit_scd4x.SCD4X(i2c)
+    time.sleep(120)
     print("Serial number:", [hex(i) for i in scd4x.serial_number])
 
     _set_channel_layers()
     channel_layer = get_channel_layer()
 
-    scd4x.start_periodic_measurement()
+    scd4x.start_low_periodic_measurement()
     print("Waiting for first measurement....")
 
     while True:
@@ -90,5 +90,10 @@ if __name__ == '__main__':
                 with conn.cursor() as cur:
                     cur.execute(sql, (temp, humidity, co2, created_at))
                 conn.commit()
+
+        else:
+            scd4x.start_low_periodic_measurement()
+            time.sleep(120)
+            print("Measurement failed. Restart the sensor....")
 
         time.sleep(60)

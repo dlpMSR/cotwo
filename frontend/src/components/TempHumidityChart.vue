@@ -44,14 +44,14 @@ export default defineComponent({
             data: this.datasetsTemperature,
             tension: 0.1,
             borderColor: 'darkorange',
-            backgroundColor: 'turquoise',
+            backgroundColor: 'darkorange',
             yAxisID: 'temperature'
           }, {
             label: '湿度 [％]',
             data: this.datasetsHumidity,
             tension: 0.1,
             borderColor: 'royalblue',
-            backgroundColor: 'turquoise',
+            backgroundColor: 'royalblue',
             yAxisID: 'humidity'
           }]
         },

@@ -41,11 +41,11 @@
               <div class="v-col-6">
                 <div class="d-flex justify-end">
                   <span class="me-3" style="font-size: 1.3rem;">現在</span>
-                  <div class="me-2">
+                  <div class="d-flex me-2">
                     <span style="font-size: 3rem;">{{ temperature }}</span>
                     <span class="align-self-end" style="font-size: 1.3rem;">°C</span>
                   </div>
-                  <div>
+                  <div class="d-flex">
                     <span class="sev-seg" style="font-size: 3rem;">{{ humidity }}</span>
                     <span class="align-self-end" style="font-size: 1.3rem;">%</span>
                   </div>

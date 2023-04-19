@@ -1,8 +1,8 @@
 <template>
   <main>
     <v-container style="max-width: 1200px;">
-      <v-row class="col-12 mb-5">
-        <span style="font-size: 2.2rem">セキュアサイクル 若松ひびきのオフィス</span>
+      <v-row class="col-12 mb-5 ">
+        <span class="mr-3" style="font-size: 2.2rem">{{ location }}</span>
       </v-row>
 
       <v-row>
@@ -73,6 +73,7 @@ import { defineComponent  } from 'vue'
 import Co2Chart from '@/components/Co2Chart.vue'
 import TempHumidityChart from '@/components/TempHumidityChart.vue'
 import axios from 'axios'
+import { format } from 'date-fns'
 
 export default defineComponent({
   components: {
@@ -86,6 +87,9 @@ export default defineComponent({
       co2: 0,
       temperature: 0,
       humidity: 0,
+      lastUpdatedAt: '',
+
+      location: import.meta.env.VITE_LOCATION
     }
   },
 
@@ -110,6 +114,7 @@ export default defineComponent({
     this.socket = new WebSocket("ws://" + window.location.host + "/ws/env_values")
     this.socket.addEventListener('message', (event) => {
       const message = JSON.parse(event.data).message
+      this.lastUpdatedAt = format(new Date(), 'MM/dd HH:mm:ss')
       this.co2 = message.co2
       this.temperature = message.temperature
       this.humidity = message.humidity
@@ -119,7 +124,18 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/sass/mixin.scss';
+
 span {
   color: #404040;
+}
+
+.annotation-text {
+  color: #707070;
+  font-size: 1.2rem;
+}
+
+.sev-seg {
+  @include DSEG7Classic;
 }
 </style>

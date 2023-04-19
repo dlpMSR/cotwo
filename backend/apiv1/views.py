@@ -35,7 +35,7 @@ class Co2MovingAverageList(APIView):
             .values_list('created_at', 'co2')
         
         df = pd.DataFrame(co2_values, columns=['created_at', 'co2'])
-        df["co2"] = df["co2"].rolling(10).mean()
+        df["co2"] = df["co2"].rolling(30).mean()
         co2_mvaves = df.dropna(how='any').to_dict('records')
 
         serializer = Co2Serializer(co2_mvaves, many=True)

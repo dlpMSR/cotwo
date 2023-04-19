@@ -42,7 +42,7 @@ export default defineComponent({
         data: {
           datasets: [
           {
-            label: '10分間移動平均 [ppm]',
+            label: '30分間移動平均 [ppm]',
             data: this.datasetsMa,
             tension: 0.1,
             borderColor: 'lightseagreen',

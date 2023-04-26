@@ -69,7 +69,7 @@ export default defineComponent({
     },
 
     getEnvValues() {
-      axios.get('/api/v1/env_value')
+      axios.get('/api/v1/environment/measurement')
       .then(res => {
         this.co2 = res.data.co2
         this.temperature = res.data.temperature

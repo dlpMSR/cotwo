@@ -101,7 +101,7 @@ export default defineComponent({
 
   methods: {
     synchronizeClock() {
-      axios.head('/api/v1/env_value')
+      axios.head('/api/v1/environment/measurement')
       .then(res => {
         this.currentTime = new Date(res.headers.date)
       })

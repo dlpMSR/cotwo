@@ -24,10 +24,10 @@ export default defineComponent({
 
   methods: {
     getTempList() {
-      return axios.get('/api/v1/temperature_trend')
+      return axios.get('/api/v1/environment/trend/temperature')
     },
     getHumidList() {
-      return axios.get('/api/v1/humidity_trend')
+      return axios.get('/api/v1/environment/trend/humidity')
     },
 
     updateCanvasWidth () {

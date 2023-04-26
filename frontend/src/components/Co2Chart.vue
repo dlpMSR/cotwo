@@ -24,11 +24,11 @@ export default defineComponent({
 
   methods: {
     getCo2List () {
-      return axios.get('/api/v1/co2_trend')
+      return axios.get('/api/v1/environment/trend/co2')
     },
 
     getCo2MaList() {
-      return axios.get('/api/v1/co2_ma')
+      return axios.get('/api/v1/environment/trend/co2_ma')
     },
 
     updateCanvasWidth () {

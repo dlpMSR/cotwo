@@ -96,7 +96,7 @@ export default defineComponent({
   methods: {
     async getEnvValues() {
       try {
-        const res = await axios.get('/api/v1/env_value')
+        const res = await axios.get('/api/v1/environment/measurement')
         this.co2 = res.data.co2
         this.temperature = res.data.temperature
         this.humidity = res.data.humidity

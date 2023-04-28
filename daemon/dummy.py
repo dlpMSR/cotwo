@@ -17,6 +17,9 @@ from django.conf import settings
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
+load_dotenv()
+REDIS_HOST = os.getenv('REDIS_HOST')
+REDIS_PORT = int(os.getenv('REDIS_PORT'))
 
 def _mysql_connection():
     load_dotenv()
@@ -37,20 +40,12 @@ def _mysql_connection():
     return connection
 
 def _set_redis_client():
-    load_dotenv()
-    CHANNEL_LAYERS_HOST = os.getenv('CHANNEL_LAYERS_HOST')
-    CHANNEL_LAYERS_PORT = int(os.getenv('CHANNEL_LAYERS_PORT'))
-
-    redis_pool = redis.ConnectionPool(host=CHANNEL_LAYERS_HOST, port=CHANNEL_LAYERS_PORT, db=0, max_connections=4)
+    redis_pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=0, max_connections=4)
     conn = redis.StrictRedis(connection_pool=redis_pool)
 
     return conn
 
 def _set_channel_layers():
-    load_dotenv()
-    CHANNEL_LAYERS_HOST = os.getenv('CHANNEL_LAYERS_HOST')
-    CHANNEL_LAYERS_PORT = int(os.getenv('CHANNEL_LAYERS_PORT'))
-
     settings.configure(
     CHANNEL_LAYERS={
         "default": {
@@ -90,6 +85,7 @@ if __name__ == '__main__':
                 "%d" % int(random.uniform(400, 1500)),  # co2
                 datetime.datetime.now(timezone('UTC')).strftime("%Y-%m-%d %H:%M:%S")    # timestamp
             )
+            print(measurement)
             # MySQLに環境値を記録
             sql = """
                 INSERT INTO `env_value` (`temperature`, `humidity`, `co2`, `created_at`)
@@ -111,7 +107,7 @@ if __name__ == '__main__':
                     cur.execute(sql, (thirty_mins_ago.strftime("%Y-%m-%d %H:%M:%S"),))
                     co2_thirty_mins = [item[0] for item in cur.fetchall()]
 
-
+            print(len(co2_thirty_mins))
             if len(co2_thirty_mins) > 25:
                 # 補正値をキャッシュに保存
                 correction_value = {

@@ -11,15 +11,11 @@ import datetime
 # import adafruit_scd4x
 import MySQLdb
 from dotenv import load_dotenv
-from pymemcache.client import PooledClient
 from pytz import timezone
 from django.conf import settings
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
-load_dotenv()
-REDIS_HOST = os.getenv('REDIS_HOST')
-REDIS_PORT = int(os.getenv('REDIS_PORT'))
 
 def _mysql_connection():
     load_dotenv()
@@ -40,27 +36,30 @@ def _mysql_connection():
     return connection
 
 def _set_redis_client():
+    load_dotenv()
+    REDIS_HOST = os.getenv('REDIS_HOST')
+    REDIS_PORT = int(os.getenv('REDIS_PORT'))
+
     redis_pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=0, max_connections=4)
     conn = redis.StrictRedis(connection_pool=redis_pool)
 
     return conn
 
 def _set_channel_layers():
+    load_dotenv()
+    REDIS_HOST = os.getenv('REDIS_HOST')
+    REDIS_PORT = int(os.getenv('REDIS_PORT'))
+
     settings.configure(
     CHANNEL_LAYERS={
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
             "CONFIG": {
-                "hosts": [(CHANNEL_LAYERS_HOST, CHANNEL_LAYERS_PORT)],
+                "hosts": [(REDIS_HOST, REDIS_PORT)],
             },
         }
     }
 )
-
-def _set_memcached_client():
-    MEMCACHED_HOST = os.getenv('MEMCACHED_HOST')
-
-    return PooledClient(MEMCACHED_HOST, max_pool_size=4, connect_timeout=5)
 
 
 if __name__ == '__main__':
@@ -70,9 +69,6 @@ if __name__ == '__main__':
 
     _set_channel_layers()
     channel_layer = get_channel_layer()
-
-    # キャッシュサーバ
-    client = _set_memcached_client()
 
     #scd4x.start_periodic_measurement()
     #print("Waiting for first measurement....")

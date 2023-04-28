@@ -3,6 +3,8 @@
 import time
 import json
 import os
+import redis
+import statistics
 import board
 import adafruit_scd4x
 import MySQLdb
@@ -31,6 +33,16 @@ def _mysql_connection():
     )
 
     return connection
+
+def _set_redis_client():
+    load_dotenv()
+    CHANNEL_LAYERS_HOST = os.getenv('CHANNEL_LAYERS_HOST')
+    CHANNEL_LAYERS_PORT = int(os.getenv('CHANNEL_LAYERS_PORT'))
+
+    redis_pool = redis.ConnectionPool(host=CHANNEL_LAYERS_HOST, port=CHANNEL_LAYERS_PORT, db=0, max_connections=4)
+    conn = redis.StrictRedis(connection_pool=redis_pool)
+
+    return conn
 
 def _set_channel_layers():
     load_dotenv()
@@ -62,22 +74,11 @@ if __name__ == '__main__':
 
     while True:
         if scd4x.data_ready:
-            temp = "%0.1f" % scd4x.temperature
-            humidity = "%0.1f" % scd4x.relative_humidity
-            co2 = "%d" % scd4x.CO2
-            created_at = datetime.now(timezone('UTC')).strftime("%Y-%m-%d %H:%M:%S")
-
-            print(temp, humidity, co2, created_at)
-
-            # Websocketで環境値を配信
-            async_to_sync(channel_layer.group_send)(
-                "realtime_env_ws", {
-                    "type": "env_data", "message": {
-                        "temperature": float(temp),
-                        "humidity": float(humidity),
-                        "co2": int(co2)
-                    }
-                }
+            measurement = (
+                "%0.1f" % scd4x.temperature,            # temperature
+                "%0.1f" % scd4x.relative_humidity,      # humidity
+                "%d" % scd4x.CO2,                       # co2
+                datetime.now(timezone('UTC')).strftime("%Y-%m-%d %H:%M:%S")    # timestamp
             )
 
             # MySQLに環境値を記録
@@ -88,8 +89,41 @@ if __name__ == '__main__':
             conn = _mysql_connection()
             with conn:
                 with conn.cursor() as cur:
-                    cur.execute(sql, (temp, humidity, co2, created_at))
+                    cur.execute(sql, measurement)
                 conn.commit()
+
+            # 過去30分の計測状況を確認
+            now_utc = datetime.datetime.now(datetime.timezone.utc)
+            thirty_mins_ago = now_utc - datetime.timedelta(minutes=30)
+            sql = """
+                SELECT `co2` FROM `env_value` WHERE `created_at` > %s ORDER BY `created_at` DESC LIMIT 100;
+            """
+            with _mysql_connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(sql, (thirty_mins_ago.strftime("%Y-%m-%d %H:%M:%S"),))
+                    co2_thirty_mins = [item[0] for item in cur.fetchall()]
+
+            if len(co2_thirty_mins) > 25:
+                # 補正値をキャッシュに保存
+                correction_value = {
+                    'temperature': measurement[0],
+                    'humidity': measurement[1],
+                    'co2': round(statistics.mean(co2_thirty_mins), 1),
+                    'timestamp': measurement[3] 
+                }
+
+                # Websocketで環境値を配信
+                async_to_sync(channel_layer.group_send)(
+                    "realtime_env_ws", {
+                        "type": "env_data", "message": {
+                            "temperature": correction_value['temperature'],
+                            "humidity": correction_value['humidity'],
+                            "co2": correction_value['co2']
+                        }
+                    }
+                )
+
+                # TODO: 通知
 
         else:
             # センサ再起動

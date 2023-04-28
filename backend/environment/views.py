@@ -1,19 +1,27 @@
 from rest_framework.views import APIView
+from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from .models import EnvValue
 from .serializers import EnvValueSerializer
 from .serializers import Co2Serializer
 from .serializers import TempSerializer
 from .serializers import HumiditySerializer
+from .utils import get_redis_handle
 import datetime
+import json
 import pandas as pd
 
 class EnvValueList(APIView):
     def get(self, request, format=None):
-        eval = EnvValue.objects.order_by('-created_at')[0:1].get()
-        serializer = EnvValueSerializer(eval)
-
-        return Response(serializer.data)
+        conn = get_redis_handle()
+        measurement = conn.get('measurement')
+        if measurement:
+            envval = json.loads(measurement)
+            serializer = EnvValueSerializer(envval)
+            return Response(serializer.data)
+        
+        else:
+            raise LatestMeasurementUnavailableError()
 
 class Co2TrendList(APIView):
     def get(self, request, format=None):
@@ -63,3 +71,8 @@ class HumidityTrendList(APIView):
         serializer = HumiditySerializer(values, many=True)
 
         return Response(serializer.data)
+
+class LatestMeasurementUnavailableError(APIException):
+    status_code = 503
+    default_detail = 'The sensor measurements are temporarily unavailable.'
+    default_code = ''

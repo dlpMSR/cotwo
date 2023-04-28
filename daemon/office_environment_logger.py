@@ -112,6 +112,9 @@ if __name__ == '__main__':
                     'timestamp': measurement[3] 
                 }
 
+                conn = _set_redis_client()
+                conn.set('measurement', json.dumps(correction_value), ex=90)
+
                 # Websocketで環境値を配信
                 async_to_sync(channel_layer.group_send)(
                     "realtime_env_ws", {

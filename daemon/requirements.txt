@@ -3,6 +3,5 @@ channels
 channels_redis
 django
 mysqlclient
-pymemcache
 python-dotenv
 pytz

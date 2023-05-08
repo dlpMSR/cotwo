@@ -14,7 +14,7 @@ import pandas as pd
 class EnvValueList(APIView):
     def get(self, request, format=None):
         conn = get_redis_handle()
-        measurement = conn.get('measurement')
+        measurement = conn.get('scd41:measurement')
         if measurement:
             envval = json.loads(measurement)
             serializer = EnvValueSerializer(envval)

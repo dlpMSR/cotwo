@@ -114,7 +114,7 @@ if __name__ == '__main__':
                 }
 
                 conn = _set_redis_client()
-                conn.set('measurement', json.dumps(correction_value), ex=90)
+                conn.set('scd41:measurement', json.dumps(correction_value), ex=90)
                 
                 # Websocketで補正値を配信
                 async_to_sync(channel_layer.group_send)(

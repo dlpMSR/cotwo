@@ -3,13 +3,13 @@
 import time
 import json
 import os
+import datetime
 import redis
 import statistics
 import board
 import adafruit_scd4x
 import MySQLdb
 from dotenv import load_dotenv
-from datetime import datetime
 from pytz import timezone
 from django.conf import settings
 from channels.layers import get_channel_layer

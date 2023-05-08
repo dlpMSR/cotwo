@@ -36,25 +36,25 @@ def _mysql_connection():
 
 def _set_redis_client():
     load_dotenv()
-    CHANNEL_LAYERS_HOST = os.getenv('CHANNEL_LAYERS_HOST')
-    CHANNEL_LAYERS_PORT = int(os.getenv('CHANNEL_LAYERS_PORT'))
+    REDIS_HOST = os.getenv('REDIS_HOST')
+    REDIS_PORT = int(os.getenv('REDIS_PORT'))
 
-    redis_pool = redis.ConnectionPool(host=CHANNEL_LAYERS_HOST, port=CHANNEL_LAYERS_PORT, db=0, max_connections=4)
+    redis_pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=0, max_connections=4)
     conn = redis.StrictRedis(connection_pool=redis_pool)
 
     return conn
 
 def _set_channel_layers():
     load_dotenv()
-    CHANNEL_LAYERS_HOST = os.getenv('CHANNEL_LAYERS_HOST')
-    CHANNEL_LAYERS_PORT = int(os.getenv('CHANNEL_LAYERS_PORT'))
+    REDIS_HOST = os.getenv('REDIS_HOST')
+    REDIS_PORT = int(os.getenv('REDIS_PORT'))
 
     settings.configure(
     CHANNEL_LAYERS={
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
             "CONFIG": {
-                "hosts": [(CHANNEL_LAYERS_HOST, CHANNEL_LAYERS_PORT)],
+                "hosts": [(REDIS_HOST, REDIS_PORT)],
             },
         }
     }

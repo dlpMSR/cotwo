@@ -78,7 +78,7 @@ if __name__ == '__main__':
                 "%0.1f" % scd4x.temperature,            # temperature
                 "%0.1f" % scd4x.relative_humidity,      # humidity
                 "%d" % scd4x.CO2,                       # co2
-                datetime.now(timezone('UTC')).strftime("%Y-%m-%d %H:%M:%S")    # timestamp
+                datetime.datetime.now(timezone('UTC')).strftime("%Y-%m-%d %H:%M:%S")    # timestamp
             )
 
             # MySQLに環境値を記録

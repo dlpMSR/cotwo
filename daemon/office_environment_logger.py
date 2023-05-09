@@ -65,8 +65,8 @@ def _set_incoming_webhook():
     load_dotenv()
     WEBHOOK_URL = os.getenv('WEBHOOK_URL')
     LOCATION = os.getenv('LOCATION')
-    teams_obj = pymsteams.async_connectorcard(WEBHOOK_URL)
-    teams_obj.title(f"Raspi@{LOCATION}")
+    teams_obj = pymsteams.connectorcard(WEBHOOK_URL)
+    teams_obj.location = LOCATION
 
     return teams_obj
 

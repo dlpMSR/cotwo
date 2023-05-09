@@ -150,7 +150,7 @@ if __name__ == '__main__':
                     body_text = \
                         f"*Raspi@{teams_obj.location}* </br>" +\
                         f"二酸化炭素濃度が高くなっています。現在{correction_value['co2']}ppm。換気されてはいかがですか ☕️ </br>" +\
-                        "http://192.168.100.127/chart"
+                        "[http://192.168.100.127/chart](http://192.168.100.127/chart)"
                     teams_obj.text(body_text)
                     teams_obj.send()
                     last_notified_at = datetime.datetime.now()

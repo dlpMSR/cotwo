@@ -86,9 +86,9 @@ export default defineComponent({
     this.socket = new WebSocket("ws://" + window.location.host + "/ws/env_values")
     this.socket.addEventListener('message', (event) => {
       const message = JSON.parse(event.data).message
-      this.co2 = message.co2
-      this.temperature = message.temperature
-      this.humidity = message.humidity
+      this.co2 = parseFloat(message.co2)
+      this.temperature = parseFloat(message.temperature)
+      this.humidity = parseFloat(message.humidity)
     })
 
     this.updateEnviroDisplayWidth()

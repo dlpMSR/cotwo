@@ -90,8 +90,8 @@ if __name__ == '__main__':
     while True:
         if scd4x.data_ready:
             measurement = (
-                "%0.1f" % scd4x.temperature,            # temperature
-                "%0.1f" % scd4x.relative_humidity,      # humidity
+                round(scd4x.temperature, 1),            # temperature
+                round(scd4x.relative_humidity, 1),      # humidity
                 "%d" % scd4x.CO2,                       # co2
                 datetime.datetime.now(timezone('UTC')).strftime("%Y-%m-%d %H:%M:%S")    # timestamp
             )

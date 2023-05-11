@@ -76,8 +76,8 @@ if __name__ == '__main__':
     while True:
         if True:
             measurement = (
-                "%0.1f" % random.uniform(0, 50),        # temp
-                "%0.1f" % random.uniform(0, 100),       # humidity
+                round(random.uniform(0, 50), 1),        # temp
+                round(random.uniform(0, 100), 1),       # humidity
                 "%d" % int(random.uniform(400, 1500)),  # co2
                 datetime.datetime.now(timezone('UTC')).strftime("%Y-%m-%d %H:%M:%S")    # timestamp
             )
@@ -112,6 +112,8 @@ if __name__ == '__main__':
                     'co2': round(statistics.mean(co2_thirty_mins), 1),
                     'timestamp': measurement[3] 
                 }
+
+                print(type(correction_value['temperature']), type(correction_value['co2']))
 
                 conn = _set_redis_client()
                 conn.set('scd41:measurement', json.dumps(correction_value), ex=90)

@@ -4,7 +4,7 @@ from . import views
 
 
 urlpatterns = [
-    path('measurement', views.EnvValueList.as_view()),
+    path('measurement', views.EnvValueList.as_view(), name='measurement'),
 
     path('trend/temperature', views.TempTrendList.as_view()),
     path('trend/humidity', views.HumidityTrendList.as_view()),

@@ -1,3 +1,4 @@
+from redis.exceptions import ConnectionError
 from rest_framework.views import APIView
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
@@ -14,12 +15,16 @@ import pandas as pd
 class EnvValueList(APIView):
     def get(self, request, format=None):
         conn = get_redis_handle()
-        measurement = conn.get('scd41:measurement')
+
+        try:
+            measurement = conn.get('scd41:measurement')
+        except ConnectionError:
+            raise RedisConnectionError()
+
         if measurement:
             envval = json.loads(measurement)
             serializer = EnvValueSerializer(envval)
             return Response(serializer.data)
-        
         else:
             raise LatestMeasurementUnavailableError()
 
@@ -75,4 +80,9 @@ class HumidityTrendList(APIView):
 class LatestMeasurementUnavailableError(APIException):
     status_code = 503
     default_detail = 'The sensor measurements are temporarily unavailable.'
+    default_code = ''
+
+class RedisConnectionError(APIException):
+    status_code = 500
+    default_detail = 'Failed to connect to Redis.'
     default_code = ''

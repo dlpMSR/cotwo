@@ -31,9 +31,9 @@ class EnvValueList(APIView):
 class Co2TrendList(APIView):
     def get(self, request, format=None):
         now_utc = datetime.datetime.now(datetime.timezone.utc)
-        six_hours_ago = now_utc - datetime.timedelta(hours=12)
+        twelve_hours_ago = now_utc - datetime.timedelta(hours=12)
         co2_values = EnvValue.objects.order_by('-created_at') \
-            .filter(created_at__range=[six_hours_ago, now_utc])
+            .filter(created_at__range=[twelve_hours_ago, now_utc])
         
         serializer = Co2Serializer(co2_values, many=True)
 

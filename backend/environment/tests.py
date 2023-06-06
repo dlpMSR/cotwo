@@ -2,7 +2,6 @@ from unittest.mock import patch
 from datetime import datetime, timezone, timedelta
 from django.test import TestCase
 from django.urls import reverse
-from django.utils.timezone import make_aware
 from .models import EnvValue
 from .utils import get_redis_handle
 import redis
@@ -89,7 +88,7 @@ class Co2TrendListTest(TestCase):
     def test_yesterdays_record(self):
         """12時間前より以前のデータしかない場合は、返されるJSONの配列の要素数は0になる。
         """
-        test_time = make_aware(datetime.now()) - timedelta(seconds=43200)
+        test_time = datetime.now(timezone.utc) - timedelta(seconds=43200)
         with patch('django.utils.timezone.now') as mock_now:
             mock_now.return_value = test_time
             EnvValue.objects.create(temperature=24.4, humidity=64.5, co2=921)
@@ -101,7 +100,7 @@ class Co2TrendListTest(TestCase):
         """返されるデータの形式は、timestampとvalueの組み合わせの配列になっている。
         """
         EnvValue.objects.create(temperature=24.4, humidity=64.5, co2=921)
-        test_time = make_aware(datetime.now()) - timedelta(seconds=7200)
+        test_time = datetime.now(timezone.utc) - timedelta(seconds=7200)
         with patch('django.utils.timezone.now') as mock_now:
             mock_now.return_value = test_time
             EnvValue.objects.create(temperature=25.1, humidity=52.5, co2=841)

@@ -48,6 +48,7 @@ class EnvValueViewTests(TestCase):
         response = self.client.get(reverse("environment:measurement"))
         self.assertEqual(response.status_code, 500)
 
+
 class Co2TrendListTest(TestCase):
     def test_one_record(self):
         """計測値として2時間前のデータが一件だけ保存されている場合、返されるJSONの配列の要素数は1になる。
@@ -71,10 +72,24 @@ class Co2TrendListTest(TestCase):
         response = self.client.get(reverse('environment:trend.co2'))
         self.assertEqual(len(response.data), 0)
 
-    def test_type_co2_value(self):
-        """返されるJSONのうち、CO2濃度の値は整数になっている。
+    def test_response_data_format(self):
+        """返されるデータの形式は、timestampとvalueの組み合わせの配列になっている。
         """
         EnvValue.objects.create(temperature=24.4, humidity=64.5, co2=921)
+        test_time = make_aware(datetime.now()) - timedelta(seconds=7200)
+        with patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = test_time
+            EnvValue.objects.create(temperature=25.1, humidity=52.5, co2=841)
         
         response = self.client.get(reverse('environment:trend.co2'))
-        self.assertIsInstance(response.data[0]['value'], int)
+        
+        self.assertEqual(len(response.data), 2)                # レスポンスのデータ数は2
+        self.assertTrue(hasattr(response.data, "__iter__"))    # レスポンスのデータはiterable
+
+        elem = response.data[0]
+        self.assertEqual(type(elem['value']), int)             # valueは整数
+        self.assertEqual(type(elem['timestamp']), str)         # timestampは文字列
+        self.assertEqual(                                      # timestampはfromisoformat()でdatetimeに変換できる
+            type(datetime.fromisoformat(elem['timestamp'])),
+            datetime
+        )

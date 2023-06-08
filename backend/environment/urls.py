@@ -9,5 +9,5 @@ urlpatterns = [
     path('trend/temperature', views.TempTrendList.as_view()),
     path('trend/humidity', views.HumidityTrendList.as_view()),
     path('trend/co2', views.Co2TrendList.as_view(), name='trend.co2'),
-    path('trend/co2_ma', views.Co2MovingAverageList.as_view())
+    path('trend/co2_ma', views.Co2MovingAverageList.as_view(), name='trend.co2_ma')
 ]

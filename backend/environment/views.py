@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from .models import EnvValue
 from .serializers import EnvValueSerializer
 from .serializers import Co2Serializer
+from .serializers import Co2MaSerializer
 from .serializers import TempSerializer
 from .serializers import HumiditySerializer
 from .utils import get_redis_handle
@@ -44,10 +45,10 @@ class Co2MovingAverageList(APIView):
             .values_list('created_at', 'co2')
         
         df = pd.DataFrame(co2_values, columns=['created_at', 'co2'])
-        df["co2"] = df["co2"].rolling(30, center=True).mean()
+        df["co2"] = df["co2"].rolling(30, center=True).mean().round(decimals=1)
         co2_mvaves = df.dropna(how='any').to_dict('records')
 
-        serializer = Co2Serializer(co2_mvaves, many=True)
+        serializer = Co2MaSerializer(co2_mvaves, many=True)
 
         return Response(serializer.data)
 

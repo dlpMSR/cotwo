@@ -19,6 +19,14 @@ class Co2Serializer(serializers.ModelSerializer):
         model = EnvValue
         fields = ['timestamp', 'value']
 
+class Co2MaSerializer(serializers.ModelSerializer):
+    timestamp = serializers.DateTimeField(source='created_at')
+    value = serializers.FloatField(source='co2')
+    
+    class Meta:
+        model = EnvValue
+        fields = ['timestamp', 'value']
+
 class TempSerializer(serializers.ModelSerializer):
     timestamp = serializers.DateTimeField(source='created_at')
     value = serializers.FloatField(source='temperature')

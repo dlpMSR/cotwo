@@ -21,7 +21,7 @@ class Co2MovingAverageListTests(TestCase):
                 )
     
     def test_number_of_values_response_of_get_last_12_hours(self):
-        """過去15時間分のデータが存在した時もget_last_12_hours_values()では過去12時間分のデータまでしか取得できない。
+        """過去16時間分のデータが存在した時もget_last_12_hours_values()では過去12時間分のデータまでしか取得できない。
         """
         values = EnvValue.objects.get_last_12_hours_values()
         self.assertEqual(values.count(), 720)

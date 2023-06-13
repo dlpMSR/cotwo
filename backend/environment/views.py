@@ -38,11 +38,7 @@ class Co2TrendList(APIView):
 
 class Co2MovingAverageList(APIView):
     def get(self, request, format=None):
-        now_utc = datetime.datetime.now(datetime.timezone.utc)
-        six_hours_ago = now_utc - datetime.timedelta(hours=12)
-        co2_values = EnvValue.objects.order_by('-created_at') \
-            .filter(created_at__range=[six_hours_ago, now_utc]) \
-            .values_list('created_at', 'co2')
+        co2_values = EnvValue.objects.get_last_12_hours_values().values_list('created_at', 'co2')
         
         df = pd.DataFrame(co2_values, columns=['created_at', 'co2'])
         df["co2"] = df["co2"].rolling(30, center=True).mean().round(decimals=1)

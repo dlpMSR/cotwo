@@ -5,7 +5,7 @@
         <span class="unit align-self-start" :style="{ 'margin-right': margin.betweenTempHumid + 'px' }">
           CO<sub>2</sub>
         </span>
-        <span class="number co2">{{ co2 }}</span>
+        <span class="number co2">{{ co2.toFixed(1) }}</span>
         <span class="unit align-self-end">ppm</span>
       </div>
 

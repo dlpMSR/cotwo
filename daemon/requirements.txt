@@ -3,5 +3,6 @@ channels
 channels_redis
 django
 mysqlclient
+pymsteams
 python-dotenv
 pytz

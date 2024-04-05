@@ -22,7 +22,9 @@ services:
       - MYSQL_PASSWORD=password
       - TZ=Asia/Tokyo
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-p$${MYSQL_ROOT_PASSWORD}"]
+      # test: ["CMD", "mysqladmin", "ping", "-p$${MYSQL_ROOT_PASSWORD}"]
+      # mysqladminコマンドが存在しないため、mariadbにログインしてstatusで代替する
+      test: ["CMD", "echo", "'status'", "|", "mariadb", "-u$${MYSQL_USER}", "--password={MYSQL_PASSWORD}"]
       interval: 10s
       timeout: 5s
   

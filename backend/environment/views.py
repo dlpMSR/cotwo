@@ -49,23 +49,15 @@ class Co2MovingAverageList(APIView):
         return Response(serializer.data)
 
 class TempTrendList(APIView):
-    def get(self, request, format=None):
-        now_utc = datetime.datetime.now(datetime.timezone.utc)
-        six_hours_ago = now_utc - datetime.timedelta(hours=12)
-        values = EnvValue.objects.order_by('-created_at') \
-            .filter(created_at__range=[six_hours_ago, now_utc])
-        
+    def get(self, request, format=None):        
+        values = EnvValue.objects.get_last_12_hours_values()
         serializer = TempSerializer(values, many=True)
 
         return Response(serializer.data)
 
 class HumidityTrendList(APIView):
     def get(self, request, format=None):
-        now_utc = datetime.datetime.now(datetime.timezone.utc)
-        six_hours_ago = now_utc - datetime.timedelta(hours=12)
-        values = EnvValue.objects.order_by('-created_at') \
-            .filter(created_at__range=[six_hours_ago, now_utc])
-        
+        values = EnvValue.objects.get_last_12_hours_values()
         serializer = HumiditySerializer(values, many=True)
 
         return Response(serializer.data)

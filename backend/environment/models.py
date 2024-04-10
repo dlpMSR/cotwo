@@ -11,6 +11,7 @@ class EnvValueManager(models.Manager):
         return self.order_by('-created_at').filter(created_at__range=[twelve_hours_ago, now_utc])
     
 class EnvValue(models.Model):
+    id = models.AutoField(primary_key=True)
     temperature = models.FloatField()
     humidity = models.FloatField()
     co2 = models.IntegerField()

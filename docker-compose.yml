@@ -13,6 +13,8 @@ services:
       - ./docker/db/data:/var/lib/mysql
     expose:
       - '3306'
+    ports:
+      - '3306:3306'
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=cotwo
@@ -20,7 +22,9 @@ services:
       - MYSQL_PASSWORD=password
       - TZ=Asia/Tokyo
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-p$${MYSQL_ROOT_PASSWORD}"]
+      # test: ["CMD", "mysqladmin", "ping", "-p$${MYSQL_ROOT_PASSWORD}"]
+      # mysqladminコマンドが存在しないため、mariadbにログインしてstatusで代替する
+      test: ["CMD", "echo", "'status'", "|", "mariadb", "-u$${MYSQL_USER}", "--password={MYSQL_PASSWORD}"]
       interval: 10s
       timeout: 5s
   

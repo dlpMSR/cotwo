@@ -138,7 +138,17 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(env('CHANNEL_LAYERS_HOST'), env('CHANNEL_LAYERS_PORT'))],
+            "hosts": [(env('REDIS_HOST'), env('REDIS_PORT'))],
         },
     }
 }
+
+import logging
+
+logging.basicConfig(
+    level = logging.DEBUG,
+    format = '%(asctime)s %(levelname)s %(message)s',
+    filename = '/var/log/django.log',
+    filemode = 'a'
+)
+

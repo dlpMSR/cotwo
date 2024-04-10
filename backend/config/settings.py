@@ -143,6 +143,8 @@ CHANNEL_LAYERS = {
     }
 }
 
+# ファイルの権限の問題でエラーとなるため、コメントアウト
+"""
 import logging
 
 logging.basicConfig(
@@ -151,4 +153,4 @@ logging.basicConfig(
     filename = '/var/log/django.log',
     filemode = 'a'
 )
-
+"""

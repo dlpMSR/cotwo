@@ -9,4 +9,21 @@ since Mar. 2023
 
 
 ### 開発者向け環境構築
-まだないよ
+dockerで仮想環境を作ることで、実機がなくても開発を進められます。
+
+#### 各コンテナの立ち上げ
+cotwoをクローンしたディレクトリで、次のコマンドを実行します。
+```bash
+docker compose up -d
+```
+
+#### バックエンドのテストの実行
+次のコマンドで、バックエンドのコンテナに入ります。
+```bash
+docker compose exec backend bash
+```
+
+次に、次のコマンドでテストを実行します。
+```bash
+python manage.py test environment
+```

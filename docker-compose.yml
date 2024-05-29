@@ -1,4 +1,8 @@
 version: "3.9"
+
+volumes:
+  nestjs-node-modules:
+
 services:
   web:
     build: ./docker/web
@@ -56,6 +60,9 @@ services:
         condition: service_healthy
 
   frontend:
-    build: ./docker/frontend
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile
     volumes:
       - ./frontend:/code
+      - nestjs-node-modules:/code/node_modules

@@ -1,7 +1,5 @@
-version: "3.9"
-
 volumes:
-  nestjs-node-modules:
+  viteapp-node-modules:
 
 services:
   web:
@@ -65,4 +63,4 @@ services:
       dockerfile: ./docker/frontend/Dockerfile
     volumes:
       - ./frontend:/code
-      - nestjs-node-modules:/code/node_modules
+      - viteapp-node-modules:/code/node_modules

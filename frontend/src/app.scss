@@ -4,12 +4,12 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
-body {
+.main {
   margin: 0;
   padding-top: 50px;
-  display: flex;
   min-width: 320px;
   min-height: 100vh;
+  display: flex;
 }
 
 .header {

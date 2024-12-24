@@ -29,10 +29,12 @@ const App = () => {
         </Tabs>
       </Box>
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/chart" element={<Chart />} />
-      </Routes>
+      <Box className="main">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/chart" element={<Chart />} />
+        </Routes>
+      </Box>
     </>
   );
 };

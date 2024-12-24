@@ -1,5 +1,11 @@
+import { DigitalClockDisplay } from "@/components/DigitalClockDisplay";
+
 function Home() {
-  return <div>Home</div>;
+  return (
+    <div>
+      <DigitalClockDisplay />
+    </div>
+  );
 }
 
 export default Home;

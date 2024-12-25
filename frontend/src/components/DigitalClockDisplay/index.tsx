@@ -18,15 +18,76 @@ export const DigitalClockDisplay = ({ width }: DigitalClockDisplayProps) => {
 
   return (
     <>
-      <Box>
-        <Box className="date-display-container">
+      <Box className="clock-display">
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: `${width * 0.0025}rem`,
+          }}
+        >
           <Box>
-            <Typography>
+            <Typography
+              className="clock-number"
+              sx={{ fontSize: `${width * 0.009}rem` }}
+            >
               {timeNow.year()}/{timeNow.month() + 1}/{timeNow.date()}
             </Typography>
           </Box>
           <Box>
-            <Typography>({timeNow.format("ddd")})</Typography>
+            <Typography
+              className="clock-number"
+              sx={{
+                fontSize: `${width * 0.0083}rem`,
+                marginLeft: `${width * 0.001}rem`,
+              }}
+            >
+              ({timeNow.format("ddd")})
+            </Typography>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{ display: "flex", flexDirection: "row", alignItems: "flex-end" }}
+        >
+          <Box>
+            <Typography
+              className="clock-number"
+              sx={{ fontSize: `${width * 0.03}rem` }}
+            >
+              {timeNow.hour()}
+            </Typography>
+          </Box>
+
+          <Box>
+            <Typography
+              className="colon"
+              sx={{ fontSize: `${width * 0.03}rem` }}
+            >
+              :
+            </Typography>
+          </Box>
+
+          <Box>
+            <Typography
+              className="clock-number"
+              sx={{ fontSize: `${width * 0.03}rem` }}
+            >
+              {timeNow.minute()}
+            </Typography>
+          </Box>
+
+          <Box>
+            <Typography
+              className="clock-number"
+              sx={{
+                fontSize: `${width * 0.018}rem`,
+                marginLeft: `${width * 0.002}rem`,
+                marginBottom: `${width * 0.001}rem`,
+              }}
+            >
+              {timeNow.second()}
+            </Typography>
           </Box>
         </Box>
 

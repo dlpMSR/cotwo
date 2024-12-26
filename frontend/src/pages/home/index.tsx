@@ -1,30 +1,38 @@
 import { DigitalClockDisplay } from "@/components/DigitalClockDisplay";
-import { Grid } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { EnviroDisplay } from "@/components/EnviroDisplay";
+import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export function Home() {
-  const elem = useRef<HTMLDivElement>(null);
   const [displayWidth, setDisplayWidth] = useState<number>(0);
-
   useEffect(() => {
+    // 先に中身のcomponentのサイズが決まるためGridは採用しない
     const resizeHandler = () => {
-      if (elem.current) setDisplayWidth(elem.current.clientWidth);
+      const iw: number = window.innerWidth;
+      let dw: number;
+      if (iw < 600) {
+        dw = Math.floor(iw * 0.83);
+      } else if (iw < 900) {
+        dw = Math.floor(iw * 0.67);
+      } else {
+        dw = Math.floor(iw * 0.5);
+      }
+      setDisplayWidth(dw);
     };
     resizeHandler(); // 初回Render後にdisplayWidthを初期化
-
     window.addEventListener("resize", resizeHandler);
+
     return () => {
       window.removeEventListener("resize", resizeHandler);
     };
   }, []);
 
   return (
-    <>
-      <Grid container spacing={0} justifyContent="center">
-        <Grid item xs={10} sm={8} md={6} ref={elem}>
-          <DigitalClockDisplay width={displayWidth} />
-        </Grid>
-      </Grid>
-    </>
+    <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+      <Box>
+        <DigitalClockDisplay width={displayWidth} />
+        <EnviroDisplay width={displayWidth} />
+      </Box>
+    </Box>
   );
 }

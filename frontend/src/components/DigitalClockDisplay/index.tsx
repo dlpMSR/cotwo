@@ -27,8 +27,15 @@ export const DigitalClockDisplay = ({ width }: DigitalClockDisplayProps) => {
   const minute: string = padZero(timeNow.minute());
   const second: string = padZero(timeNow.second());
 
+  const fontSize: Record<string, string> = {
+    date: `${width * 0.009}rem`,
+    weekday: `${width * 0.0083}rem`,
+    time: `${width * 0.03}rem`,
+    second: `${width * 0.018}rem`,
+  };
+
   return (
-    <Box className="clock-display">
+    <Box className="clock-display" sx={{ marginBottom: `${width * 0.003}rem` }}>
       <Box
         sx={{
           display: "flex",
@@ -37,10 +44,7 @@ export const DigitalClockDisplay = ({ width }: DigitalClockDisplayProps) => {
         }}
       >
         <Box>
-          <Typography
-            className="clock-number"
-            sx={{ fontSize: `${width * 0.009}rem` }}
-          >
+          <Typography className="clock-number" sx={{ fontSize: fontSize.date }}>
             {year}/{month}/{date}
           </Typography>
         </Box>
@@ -48,7 +52,7 @@ export const DigitalClockDisplay = ({ width }: DigitalClockDisplayProps) => {
           <Typography
             className="clock-number"
             sx={{
-              fontSize: `${width * 0.0083}rem`,
+              fontSize: fontSize.weekday,
               marginLeft: `${width * 0.001}rem`,
             }}
           >
@@ -65,25 +69,19 @@ export const DigitalClockDisplay = ({ width }: DigitalClockDisplayProps) => {
         }}
       >
         <Box>
-          <Typography
-            className="clock-number"
-            sx={{ fontSize: `${width * 0.03}rem` }}
-          >
+          <Typography className="clock-number" sx={{ fontSize: fontSize.time }}>
             {hour}
           </Typography>
         </Box>
 
         <Box>
-          <Typography className="colon" sx={{ fontSize: `${width * 0.03}rem` }}>
+          <Typography className="colon" sx={{ fontSize: fontSize.time }}>
             :
           </Typography>
         </Box>
 
         <Box>
-          <Typography
-            className="clock-number"
-            sx={{ fontSize: `${width * 0.03}rem` }}
-          >
+          <Typography className="clock-number" sx={{ fontSize: fontSize.time }}>
             {minute}
           </Typography>
         </Box>
@@ -92,7 +90,7 @@ export const DigitalClockDisplay = ({ width }: DigitalClockDisplayProps) => {
           <Typography
             className="clock-number"
             sx={{
-              fontSize: `${width * 0.018}rem`,
+              fontSize: fontSize.second,
               marginLeft: `${width * 0.002}rem`,
               marginBottom: `${width * 0.001}rem`,
             }}

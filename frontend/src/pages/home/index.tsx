@@ -29,9 +29,13 @@ export function Home() {
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
-      <Box>
-        <DigitalClockDisplay width={displayWidth} />
-        <EnviroDisplay width={displayWidth} />
+      <Box sx={{ paddingTop: `${displayWidth * 0.0025}rem` }}>
+        <Box sx={{ marginBottom: `${displayWidth * 0.003}rem` }}>
+          <DigitalClockDisplay width={displayWidth} />
+        </Box>
+        <Box>
+          <EnviroDisplay width={displayWidth} />
+        </Box>
       </Box>
     </Box>
   );

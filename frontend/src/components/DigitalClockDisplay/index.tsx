@@ -35,14 +35,8 @@ export const DigitalClockDisplay = ({ width }: DigitalClockDisplayProps) => {
   };
 
   return (
-    <Box className="clock-display" sx={{ marginBottom: `${width * 0.003}rem` }}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          marginTop: `${width * 0.0025}rem`,
-        }}
-      >
+    <Box className="clock-display">
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         <Box>
           <Typography className="clock-number" sx={{ fontSize: fontSize.date }}>
             {year}/{month}/{date}

@@ -77,7 +77,7 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
 
         <Box sx={{ marginLeft: `${width * 0.003}rem` }}>
           <Box sx={{ display: "flex" }}>
-            <Box>
+            <Box sx={{ marginInlineStart: "auto" }}>
               <Typography
                 className="enviro-letter"
                 sx={{ fontSize: fontSize.temperature }}
@@ -93,7 +93,7 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", marginTop: `${width * 0.002}rem` }}>
-            <Box>
+            <Box sx={{ marginInlineStart: "auto" }}>
               <Typography
                 className="enviro-letter"
                 sx={{ fontSize: fontSize.humidity }}

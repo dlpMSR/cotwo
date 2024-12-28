@@ -1,11 +1,46 @@
+import { useEffect, useState } from "react";
+
 import { Box, Typography } from "@mui/material";
 import "./EnviroDisplay.scss";
+
+type EnvValue = {
+  co2: number;
+  temperature: number;
+  humidity: number;
+};
 
 interface EnviroDisplayProps {
   width: number;
 }
 
 export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
+  const [envValue, setEnvValue] = useState<EnvValue>({
+    co2: 0,
+    temperature: 0,
+    humidity: 0,
+  });
+
+  useEffect(() => {
+    const fetchEnvValue = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost/api/v1/environment/measurement"
+        );
+        if (!response.ok) throw new Error();
+
+        const res = await response.json();
+        const { timestamp, ...data } = res;
+        setEnvValue(data);
+      } catch (e) {
+        if (e instanceof Error) {
+          console.log(e.message);
+        }
+      }
+    };
+
+    fetchEnvValue();
+  }, []);
+
   const fontSize: Record<string, string> = {
     co2: `${width * 0.012}rem`,
     temperature: `${width * 0.007}rem`,
@@ -30,7 +65,7 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
             </Typography>
           </Typography>
           <Typography className="enviro-letter" sx={{ fontSize: fontSize.co2 }}>
-            25.0
+            {envValue.co2.toFixed(1)}
           </Typography>
           <Typography
             className="enviro-letter unit"
@@ -47,7 +82,7 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
                 className="enviro-letter"
                 sx={{ fontSize: fontSize.temperature }}
               >
-                52.5
+                {envValue.temperature.toFixed(1)}
               </Typography>
             </Box>
             <Typography
@@ -63,7 +98,7 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
                 className="enviro-letter"
                 sx={{ fontSize: fontSize.humidity }}
               >
-                52.5
+                {envValue.humidity.toFixed(1)}
               </Typography>
             </Box>
             <Typography

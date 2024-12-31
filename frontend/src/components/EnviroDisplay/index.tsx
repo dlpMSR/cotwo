@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-
+import { useApiClient } from "@/utils/useApiClient";
+import { useWebSocket } from "@/utils/useWebSocket";
 import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import "./EnviroDisplay.scss";
 
 type EnvValue = {
@@ -19,24 +20,24 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
     temperature: 0,
     humidity: 0,
   });
+  const { get } = useApiClient();
+  const { connectWebSocket } = useWebSocket();
 
   useEffect(() => {
     const fetchEnvValue = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost/api/v1/environment/measurement"
-        );
-        if (!response.ok) throw new Error();
-
-        const res = await response.json();
-        const { timestamp, ...data } = res;
-        setEnvValue(data);
-      } catch (e) {
-        if (e instanceof Error) {
-          console.log(e.message);
-        }
-      }
+      const data = await get<EnvValue>("/environment/measurement");
+      setEnvValue(data);
     };
+    const socket = connectWebSocket("/env_values");
+    socket.addEventListener("message", (e) => {
+      const message = JSON.parse(e.data).message;
+      const data: EnvValue = {
+        co2: message.co2,
+        temperature: message.temperature,
+        humidity: message.humidity,
+      };
+      setEnvValue(data);
+    });
 
     fetchEnvValue();
   }, []);

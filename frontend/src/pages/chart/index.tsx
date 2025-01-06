@@ -1,3 +1,4 @@
+import { Co2Chart } from "@/components/Co2Chart";
 import { Box, Grid, Typography } from "@mui/material";
 
 export function Chart() {
@@ -17,8 +18,8 @@ export function Chart() {
             <Typography variant="h4">{locationName}</Typography>
           </Grid>
 
-          <Grid item xs={10} sm={10} md={6} sx={{ backgroundColor: "red" }}>
-            hoge
+          <Grid item xs={10} sm={10} md={6}>
+            <Co2Chart />
           </Grid>
           <Grid item xs={10} sm={10} md={6} sx={{ backgroundColor: "yellow" }}>
             hoge

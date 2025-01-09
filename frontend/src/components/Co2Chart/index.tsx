@@ -21,6 +21,10 @@ const timestampToUnixtime = (item: Co2Trend) => {
   return { timestamp: dayjs(item.timestamp).unix(), value: item.value };
 };
 
+const renderCustomLegendText = (value: string) => {
+  return <span style={{ color: "#666666", fontSize: "1.2rem" }}>{value}</span>;
+};
+
 export function Co2Chart() {
   const { get } = useApiClient();
   const [co2Trend, setCo2Trend] = useState<Co2Trend[]>([]);
@@ -40,13 +44,6 @@ export function Co2Chart() {
 
     fetchCo2Trend();
   }, []);
-
-  const legendColor = "#666666";
-  const renderCustomLegendText = (value: string) => {
-    return (
-      <span style={{ color: legendColor, fontSize: "1.2rem" }}>{value}</span>
-    );
-  };
 
   return (
     <Box sx={{ width: "100%" }}>

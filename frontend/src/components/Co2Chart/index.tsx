@@ -17,6 +17,10 @@ type Co2Trend = {
   value: number;
 };
 
+const timestampToUnixtime = (item: Co2Trend) => {
+  return { timestamp: dayjs(item.timestamp).unix(), value: item.value };
+};
+
 export function Co2Chart() {
   const { get } = useApiClient();
   const [co2Trend, setCo2Trend] = useState<Co2Trend[]>([]);
@@ -28,13 +32,8 @@ export function Co2Chart() {
         get<Co2Trend[]>("/environment/trend/co2"),
         get<Co2Trend[]>("/environment/trend/co2_ma"),
       ]);
-      const co2Data = co2Response.map((item) => {
-        return { timestamp: dayjs(item.timestamp).unix(), value: item.value };
-      });
-      const co2MaData = co2MaResponse.map((item) => {
-        return { timestamp: dayjs(item.timestamp).unix(), value: item.value };
-      });
-
+      const co2Data = co2Response.map(timestampToUnixtime);
+      const co2MaData = co2MaResponse.map(timestampToUnixtime);
       setCo2Trend(co2Data);
       setCo2MaTrend(co2MaData);
     };

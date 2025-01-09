@@ -42,30 +42,36 @@ export function Co2Chart() {
     fetchCo2Trend();
   }, []);
 
-  const color = {
-    tick: "#666666",
-    legend: "#666666",
-  };
+  const legendColor = "#666666";
   const renderCustomLegendText = (value: string) => {
-    return <span style={{ color: color.legend }}>{value}</span>;
+    return (
+      <span style={{ color: legendColor, fontSize: "1.2rem" }}>{value}</span>
+    );
   };
 
   return (
     <Box sx={{ width: "100%" }}>
-      <ResponsiveContainer width={"100%"} height={255}>
+      <ResponsiveContainer width={"100%"} height={270}>
         <LineChart margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
           <XAxis
             dataKey="timestamp"
             type="number"
             domain={["dataMin", "dataMax"]}
             tickCount={12}
+            tickLine={false}
+            tick={{ fontSize: "1.2rem", fontWeight: "lighter" }}
             tickFormatter={(unixTime) => dayjs.unix(unixTime).format("hA")}
           />
-          <YAxis tickCount={10} width={40} />
+          <YAxis
+            tickCount={10}
+            width={40}
+            tick={{ fontSize: "1.2rem", fontWeight: "lighter" }}
+          />
           <CartesianGrid strokeDasharray="" vertical={false} />
           <Legend
             verticalAlign="top"
-            height={24}
+            height={27}
+            iconType="plainline"
             formatter={renderCustomLegendText}
           />
           <Line

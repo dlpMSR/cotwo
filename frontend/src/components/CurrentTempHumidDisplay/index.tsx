@@ -1,6 +1,16 @@
 import { Box, Typography } from "@mui/material";
 
-export function CurrentTempHumidDisplay() {
+type CurrentTempHumidDisplayProps = {
+  temperature: number;
+  humidity: number;
+  updatedAt: string | null;
+};
+
+export function CurrentTempHumidDisplay({
+  temperature,
+  humidity,
+  updateAt,
+}: CurrentTempHumidDisplayProps) {
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
       <Box>
@@ -12,7 +22,7 @@ export function CurrentTempHumidDisplay() {
           <Typography sx={{ fontSize: "1.3rem", marginRight: "1.2rem" }}>
             現在
           </Typography>
-          <Typography sx={{ fontSize: "3rem" }}>803.8</Typography>
+          <Typography sx={{ fontSize: "3rem" }}>{temperature}</Typography>
           <Typography sx={{ fontSize: "1.3rem", alignSelf: "end" }}>
             ℃
           </Typography>
@@ -20,7 +30,7 @@ export function CurrentTempHumidDisplay() {
       </Box>
       <Box>
         <Box sx={{ display: "flex" }}>
-          <Typography sx={{ fontSize: "3rem" }}>803.8</Typography>
+          <Typography sx={{ fontSize: "3rem" }}>{humidity}</Typography>
           <Typography sx={{ fontSize: "1.3rem", alignSelf: "end" }}>
             %
           </Typography>

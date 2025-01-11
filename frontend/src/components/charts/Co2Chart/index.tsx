@@ -24,7 +24,7 @@ export function Co2Chart({ co2Trend, co2MaTrend }: Co2ChartProps) {
   return (
     <Box sx={{ width: "100%" }}>
       <ResponsiveContainer width={"100%"} height={270}>
-        <LineChart margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
+        <LineChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
           <XAxis
             dataKey="timestamp"
             type="number"

@@ -79,7 +79,7 @@ export function Chart() {
           marginRight: "auto",
         }}
       >
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" spacing={4}>
           <Grid item xs={10} sm={10} md={12}>
             <Typography variant="h4">{locationName}</Typography>
           </Grid>

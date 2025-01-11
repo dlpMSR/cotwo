@@ -1,7 +1,8 @@
 import { Co2Chart } from "@/components/charts/Co2Chart";
 import { TempHumidChart } from "@/components/charts/TempHumidChart";
-import { CurrentCo2Display } from "@/components/CurrentCo2Display";
-import { CurrentTempHumidDisplay } from "@/components/CurrentTempHumidDisplay";
+
+import { CurrentCo2Display } from "@/components/currentDisplay/CurrentCo2Display";
+import { CurrentTempHumidDisplay } from "@/components/currentDisplay/CurrentTempHumidDisplay";
 import { EnvValue, trendDatum, trendDatumUnixtime } from "@/types";
 import { timestampToUnixtime } from "@/utils/helpers";
 import { useApiClient } from "@/utils/useApiClient";

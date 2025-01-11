@@ -1,3 +1,5 @@
+import { trendDatum, trendDatumUnixtime } from "@/types";
+import { timestampToUnixtime } from "@/utils/helpers";
 import { useApiClient } from "@/utils/useApiClient";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
@@ -12,24 +14,22 @@ import {
   YAxis,
 } from "recharts";
 
-const timestampToUnixtime = (item) => {
-  return { timestamp: dayjs(item.timestamp).unix(), value: item.value };
-};
-
 const renderCustomLegendText = (value: string) => {
   return <span style={{ color: "#666666", fontSize: "1.2rem" }}>{value}</span>;
 };
 
 export function TempHumidChart() {
   const { get } = useApiClient();
-  const [tempertureTrend, setTempertureTrend] = useState([]);
-  const [humidityTrend, setHumidityTrend] = useState([]);
+  const [tempertureTrend, setTempertureTrend] = useState<trendDatumUnixtime[]>(
+    []
+  );
+  const [humidityTrend, setHumidityTrend] = useState<trendDatumUnixtime[]>([]);
 
   useEffect(() => {
     const fetchTempHumidTrend = async () => {
       const [tempResponse, humidResponse] = await Promise.all([
-        get("/environment/trend/temperature"),
-        get("/environment/trend/humidity"),
+        get<trendDatum[]>("/environment/trend/temperature"),
+        get<trendDatum[]>("/environment/trend/humidity"),
       ]);
       const tempertureData = tempResponse.map(timestampToUnixtime);
       const humidityData = humidResponse.map(timestampToUnixtime);

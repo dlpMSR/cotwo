@@ -1,5 +1,5 @@
-import { Co2Chart } from "@/components/Co2Chart";
-import { TempHumidChart } from "@/components/TempHumidChart";
+import { Co2Chart } from "@/components/charts/Co2Chart";
+import { TempHumidChart } from "@/components/charts/TempHumidChart";
 import { Box, Grid, Typography } from "@mui/material";
 
 export function Chart() {

@@ -1,5 +1,7 @@
 import { Co2Chart } from "@/components/charts/Co2Chart";
 import { TempHumidChart } from "@/components/charts/TempHumidChart";
+import { CurrentCo2Display } from "@/components/CurrentCo2Display";
+import { CurrentTempHumidDisplay } from "@/components/CurrentTempHumidDisplay";
 import { trendDatum, trendDatumUnixtime } from "@/types";
 import { timestampToUnixtime } from "@/utils/helpers";
 import { useApiClient } from "@/utils/useApiClient";
@@ -53,62 +55,12 @@ export function Chart() {
           </Grid>
 
           <Grid item xs={10} sm={10} md={6}>
-            <Box sx={{ display: "flex", width: "100%" }}>
-              <Box>
-                <Typography variant="h5">二酸化炭素濃度</Typography>
-              </Box>
-              <Box sx={{ flexGrow: 1 }} />
-              <Box>
-                <Box sx={{ display: "flex" }}>
-                  <Typography
-                    sx={{ fontSize: "1.3rem", marginRight: "1.2rem" }}
-                  >
-                    現在
-                  </Typography>
-                  <Typography sx={{ fontSize: "3rem" }}>803.8</Typography>
-                  <Typography sx={{ fontSize: "1.3rem", alignSelf: "end" }}>
-                    ppm
-                  </Typography>
-                </Box>
-                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                  <Typography>更新: 01/10 16:32:27</Typography>
-                </Box>
-              </Box>
-            </Box>
+            <CurrentCo2Display />
             <Co2Chart co2Trend={co2Trend} co2MaTrend={co2MaTrend} />
           </Grid>
 
           <Grid item xs={10} sm={10} md={6}>
-            <Box sx={{ display: "flex", width: "100%" }}>
-              <Box>
-                <Typography variant="h5">気温と湿度</Typography>
-              </Box>
-              <Box sx={{ flexGrow: 1 }} />
-              <Box sx={{ marginRight: "0.8rem" }}>
-                <Box sx={{ display: "flex" }}>
-                  <Typography
-                    sx={{ fontSize: "1.3rem", marginRight: "1.2rem" }}
-                  >
-                    現在
-                  </Typography>
-                  <Typography sx={{ fontSize: "3rem" }}>803.8</Typography>
-                  <Typography sx={{ fontSize: "1.3rem", alignSelf: "end" }}>
-                    ℃
-                  </Typography>
-                </Box>
-              </Box>
-              <Box>
-                <Box sx={{ display: "flex" }}>
-                  <Typography sx={{ fontSize: "3rem" }}>803.8</Typography>
-                  <Typography sx={{ fontSize: "1.3rem", alignSelf: "end" }}>
-                    %
-                  </Typography>
-                </Box>
-                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                  <Typography>更新: 01/10 16:32:27</Typography>
-                </Box>
-              </Box>
-            </Box>
+            <CurrentTempHumidDisplay />
             <TempHumidChart
               temperatureTrend={temperatureTrend}
               humidityTrend={humidityTrend}

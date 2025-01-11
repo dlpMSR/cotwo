@@ -1,14 +1,9 @@
+import { EnvValue } from "@/types";
 import { useApiClient } from "@/utils/useApiClient";
 import { useWebSocket } from "@/utils/useWebSocket";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./EnviroDisplay.scss";
-
-type EnvValue = {
-  co2: number;
-  temperature: number;
-  humidity: number;
-};
 
 interface EnviroDisplayProps {
   width: number;

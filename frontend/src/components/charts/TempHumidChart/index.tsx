@@ -1,9 +1,6 @@
-import { trendDatum, trendDatumUnixtime } from "@/types";
-import { timestampToUnixtime } from "@/utils/helpers";
-import { useApiClient } from "@/utils/useApiClient";
+import { trendDatumUnixtime } from "@/types";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -18,28 +15,15 @@ const renderCustomLegendText = (value: string) => {
   return <span style={{ color: "#666666", fontSize: "1.2rem" }}>{value}</span>;
 };
 
-export function TempHumidChart() {
-  const { get } = useApiClient();
-  const [tempertureTrend, setTempertureTrend] = useState<trendDatumUnixtime[]>(
-    []
-  );
-  const [humidityTrend, setHumidityTrend] = useState<trendDatumUnixtime[]>([]);
+type TempHumidChartProps = {
+  temperatureTrend: trendDatumUnixtime[];
+  humidityTrend: trendDatumUnixtime[];
+};
 
-  useEffect(() => {
-    const fetchTempHumidTrend = async () => {
-      const [tempResponse, humidResponse] = await Promise.all([
-        get<trendDatum[]>("/environment/trend/temperature"),
-        get<trendDatum[]>("/environment/trend/humidity"),
-      ]);
-      const tempertureData = tempResponse.map(timestampToUnixtime);
-      const humidityData = humidResponse.map(timestampToUnixtime);
-      setTempertureTrend(tempertureData);
-      setHumidityTrend(humidityData);
-    };
-
-    fetchTempHumidTrend();
-  }, []);
-
+export function TempHumidChart({
+  temperatureTrend,
+  humidityTrend,
+}: TempHumidChartProps) {
   return (
     <Box sx={{ width: "100%" }}>
       <ResponsiveContainer width={"100%"} height={270}>
@@ -80,7 +64,7 @@ export function TempHumidChart() {
             formatter={renderCustomLegendText}
           />
           <Line
-            data={tempertureTrend}
+            data={temperatureTrend}
             name="気温[℃]"
             type="monotone"
             dataKey="value"

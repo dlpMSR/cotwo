@@ -1,3 +1,5 @@
+import { trendDatum, trendDatumUnixtime } from "@/types";
+import { timestampToUnixtime } from "@/utils/helpers";
 import { useApiClient } from "@/utils/useApiClient";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
@@ -12,29 +14,20 @@ import {
   YAxis,
 } from "recharts";
 
-type Co2Trend = {
-  timestamp: number | string;
-  value: number;
-};
-
-const timestampToUnixtime = (item: Co2Trend) => {
-  return { timestamp: dayjs(item.timestamp).unix(), value: item.value };
-};
-
 const renderCustomLegendText = (value: string) => {
   return <span style={{ color: "#666666", fontSize: "1.2rem" }}>{value}</span>;
 };
 
 export function Co2Chart() {
   const { get } = useApiClient();
-  const [co2Trend, setCo2Trend] = useState<Co2Trend[]>([]);
-  const [co2MaTrend, setCo2MaTrend] = useState<Co2Trend[]>([]);
+  const [co2Trend, setCo2Trend] = useState<trendDatumUnixtime[]>([]);
+  const [co2MaTrend, setCo2MaTrend] = useState<trendDatumUnixtime[]>([]);
 
   useEffect(() => {
     const fetchCo2Trend = async () => {
       const [co2Response, co2MaResponse] = await Promise.all([
-        get<Co2Trend[]>("/environment/trend/co2"),
-        get<Co2Trend[]>("/environment/trend/co2_ma"),
+        get<trendDatum[]>("/environment/trend/co2"),
+        get<trendDatum[]>("/environment/trend/co2_ma"),
       ]);
       const co2Data = co2Response.map(timestampToUnixtime);
       const co2MaData = co2MaResponse.map(timestampToUnixtime);

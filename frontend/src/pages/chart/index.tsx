@@ -5,16 +5,24 @@ import { CurrentTempHumidDisplay } from "@/components/CurrentTempHumidDisplay";
 import { EnvValue, trendDatum, trendDatumUnixtime } from "@/types";
 import { timestampToUnixtime } from "@/utils/helpers";
 import { useApiClient } from "@/utils/useApiClient";
+import { useWebSocket } from "@/utils/useWebSocket";
 import { Box, Grid, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+
+type CurrentEnvValue = EnvValue & {
+  updatedAt: dayjs.Dayjs | null;
+};
 
 export function Chart() {
   const locationName = import.meta.env.VITE_LOCATION;
   const { get } = useApiClient();
-  const [envValue, setEnvValue] = useState<EnvValue>({
+  const { connectWebSocket } = useWebSocket();
+  const [envValue, setEnvValue] = useState<CurrentEnvValue>({
     co2: 0,
     temperature: 0,
     humidity: 0,
+    updatedAt: null,
   });
   const [co2Trend, setCo2Trend] = useState<trendDatumUnixtime[]>([]);
   const [co2MaTrend, setCo2MaTrend] = useState<trendDatumUnixtime[]>([]);
@@ -26,7 +34,7 @@ export function Chart() {
   useEffect(() => {
     const fetchEnvValue = async () => {
       const data = await get<EnvValue>("/environment/measurement");
-      setEnvValue(data);
+      setEnvValue({ ...data, updatedAt: null });
     };
     const fetchTrendData = async () => {
       const [co2Response, co2MaResponse, tempResponse, humidResponse] =
@@ -44,6 +52,17 @@ export function Chart() {
       setCo2MaTrend(co2MaData);
       setTemperatureTrend(temperatureData);
       setHumidityTrend(humidityData);
+
+      const socket = connectWebSocket("/env_values");
+      socket.addEventListener("message", (e) => {
+        const message = JSON.parse(e.data).message;
+        const data: EnvValue = {
+          co2: message.co2,
+          temperature: message.temperature,
+          humidity: message.humidity,
+        };
+        setEnvValue({ ...data, updatedAt: dayjs() });
+      });
     };
 
     fetchEnvValue();
@@ -65,7 +84,10 @@ export function Chart() {
           </Grid>
 
           <Grid item xs={10} sm={10} md={6}>
-            <CurrentCo2Display co2={envValue.co2} />
+            <CurrentCo2Display
+              co2={envValue.co2}
+              updatedAt={envValue.updatedAt}
+            />
             <Co2Chart co2Trend={co2Trend} co2MaTrend={co2MaTrend} />
           </Grid>
 
@@ -73,6 +95,7 @@ export function Chart() {
             <CurrentTempHumidDisplay
               temperature={envValue.temperature}
               humidity={envValue.humidity}
+              updatedAt={envValue.updatedAt}
             />
             <TempHumidChart
               temperatureTrend={temperatureTrend}

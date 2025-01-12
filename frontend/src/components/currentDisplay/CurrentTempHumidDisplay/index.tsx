@@ -24,7 +24,7 @@ export function CurrentTempHumidDisplay({
             <Typography sx={{ fontSize: "1.3rem", marginRight: "1.2rem" }}>
               現在
             </Typography>
-            <Typography sx={{ fontSize: "3rem" }}>
+            <Typography sx={{ fontSize: "3rem", fontWeight: 300 }}>
               {temperature.toFixed(1)}
             </Typography>
             <Typography sx={{ fontSize: "1.3rem", alignSelf: "end" }}>
@@ -34,7 +34,7 @@ export function CurrentTempHumidDisplay({
         </Box>
         <Box>
           <Box sx={{ display: "flex" }}>
-            <Typography sx={{ fontSize: "3rem" }}>
+            <Typography sx={{ fontSize: "3rem", fontWeight: 300 }}>
               {humidity.toFixed(1)}
             </Typography>
             <Typography sx={{ fontSize: "1.3rem", alignSelf: "end" }}>

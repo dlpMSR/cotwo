@@ -18,7 +18,9 @@ export function CurrentCo2Display({ co2, updatedAt }: CurrentCo2DisplayProps) {
           <Typography sx={{ fontSize: "1.3rem", marginRight: "1.2rem" }}>
             現在
           </Typography>
-          <Typography sx={{ fontSize: "3rem" }}>{co2.toFixed(1)}</Typography>
+          <Typography sx={{ fontSize: "3rem", fontWeight: 300 }}>
+            {co2.toFixed(1)}
+          </Typography>
           <Typography sx={{ fontSize: "1.3rem", alignSelf: "end" }}>
             ppm
           </Typography>

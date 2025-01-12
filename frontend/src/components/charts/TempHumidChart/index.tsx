@@ -1,5 +1,5 @@
 import { trendDatumUnixtime } from "@/types";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import {
   CartesianGrid,
@@ -26,6 +26,9 @@ export function TempHumidChart({
 }: TempHumidChartProps) {
   return (
     <Box sx={{ width: "100%" }}>
+      <Box sx={{ marginBottom: "1.3rem" }}>
+        <Typography variant="h5">過去12時間の推移</Typography>
+      </Box>
       <ResponsiveContainer width={"100%"} height={270}>
         <LineChart margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
           <XAxis

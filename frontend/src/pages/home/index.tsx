@@ -28,7 +28,10 @@ export function Home() {
   }, []);
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+    <Box
+      className="lato-bold"
+      sx={{ display: "flex", justifyContent: "center", width: "100%" }}
+    >
       <Box sx={{ paddingTop: `${displayWidth * 0.0025}rem` }}>
         <Box sx={{ marginBottom: `${displayWidth * 0.003}rem` }}>
           <DigitalClockDisplay width={displayWidth} />

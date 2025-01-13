@@ -1,6 +1,5 @@
 import { Co2Chart } from "@/components/charts/Co2Chart";
 import { TempHumidChart } from "@/components/charts/TempHumidChart";
-
 import { CurrentCo2Display } from "@/components/currentDisplay/CurrentCo2Display";
 import { CurrentTempHumidDisplay } from "@/components/currentDisplay/CurrentTempHumidDisplay";
 import { EnvValue, trendDatum, trendDatumUnixtime } from "@/types";
@@ -10,6 +9,7 @@ import { useWebSocket } from "@/utils/useWebSocket";
 import { Box, Grid, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import "./chart.scss";
 
 type CurrentEnvValue = EnvValue & {
   updatedAt: dayjs.Dayjs | null;
@@ -71,7 +71,7 @@ export function Chart() {
   }, []);
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box className="chart-page" sx={{ width: "100%" }}>
       <Box
         sx={{
           maxWidth: "1200px",
@@ -79,31 +79,35 @@ export function Chart() {
           marginRight: "auto",
         }}
       >
-        <Grid container justifyContent="center" spacing={3}>
-          <Grid item xs={10} sm={10} md={12}>
-            <Typography variant="h4">{locationName}</Typography>
-          </Grid>
+        <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
+          <Grid container justifyContent="center" spacing={2}>
+            <Grid item xs={10} sm={10} md={12}>
+              <Typography sx={{ fontSize: "2.2rem" }}>
+                {locationName}
+              </Typography>
+            </Grid>
 
-          <Grid item xs={10} sm={10} md={6}>
-            <CurrentCo2Display
-              co2={envValue.co2}
-              updatedAt={envValue.updatedAt}
-            />
-            <Co2Chart co2Trend={co2Trend} co2MaTrend={co2MaTrend} />
-          </Grid>
+            <Grid item xs={10} sm={10} md={6}>
+              <CurrentCo2Display
+                co2={envValue.co2}
+                updatedAt={envValue.updatedAt}
+              />
+              <Co2Chart co2Trend={co2Trend} co2MaTrend={co2MaTrend} />
+            </Grid>
 
-          <Grid item xs={10} sm={10} md={6}>
-            <CurrentTempHumidDisplay
-              temperature={envValue.temperature}
-              humidity={envValue.humidity}
-              updatedAt={envValue.updatedAt}
-            />
-            <TempHumidChart
-              temperatureTrend={temperatureTrend}
-              humidityTrend={humidityTrend}
-            />
+            <Grid item xs={10} sm={10} md={6}>
+              <CurrentTempHumidDisplay
+                temperature={envValue.temperature}
+                humidity={envValue.humidity}
+                updatedAt={envValue.updatedAt}
+              />
+              <TempHumidChart
+                temperatureTrend={temperatureTrend}
+                humidityTrend={humidityTrend}
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       </Box>
     </Box>
   );

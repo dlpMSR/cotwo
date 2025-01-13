@@ -89,21 +89,25 @@ export function Chart() {
 
             <Grid item xs={10} sm={10} md={6}>
               <Box sx={{ marginBottom: "2rem" }}>
-                <CurrentCo2Display
-                  co2={envValue.co2}
-                  updatedAt={envValue.updatedAt}
-                />
+                <Box sx={{ marginBottom: "0.7rem" }}>
+                  <CurrentCo2Display
+                    co2={envValue.co2}
+                    updatedAt={envValue.updatedAt}
+                  />
+                </Box>
                 <Co2Chart co2Trend={co2Trend} co2MaTrend={co2MaTrend} />
               </Box>
             </Grid>
 
             <Grid item xs={10} sm={10} md={6}>
               <Box sx={{ marginBottom: "2rem" }}>
-                <CurrentTempHumidDisplay
-                  temperature={envValue.temperature}
-                  humidity={envValue.humidity}
-                  updatedAt={envValue.updatedAt}
-                />
+                <Box sx={{ marginBottom: "0.7rem" }}>
+                  <CurrentTempHumidDisplay
+                    temperature={envValue.temperature}
+                    humidity={envValue.humidity}
+                    updatedAt={envValue.updatedAt}
+                  />
+                </Box>
                 <TempHumidChart
                   temperatureTrend={temperatureTrend}
                   humidityTrend={humidityTrend}

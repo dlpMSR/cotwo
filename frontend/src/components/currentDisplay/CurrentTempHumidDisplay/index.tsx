@@ -16,7 +16,7 @@ export function CurrentTempHumidDisplay({
     <Box>
       <Box sx={{ display: "flex", width: "100%" }}>
         <Box>
-          <Typography variant="h5">気温と湿度</Typography>
+          <Typography sx={{ fontSize: "2rem" }}>気温と湿度</Typography>
         </Box>
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ marginRight: "0.8rem" }}>
@@ -48,7 +48,9 @@ export function CurrentTempHumidDisplay({
         sx={{ display: "flex", justifyContent: "flex-end", height: "1.5rem" }}
       >
         {updatedAt && (
-          <Typography>更新: {updatedAt.format("MM/DD HH:mm:ss")}</Typography>
+          <Typography sx={{ fontSize: "1.2rem", color: "#707070" }}>
+            更新: {updatedAt.format("MM/DD HH:mm:ss")}
+          </Typography>
         )}
       </Box>
     </Box>

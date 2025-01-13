@@ -24,7 +24,7 @@ export function Co2Chart({ co2Trend, co2MaTrend }: Co2ChartProps) {
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ marginBottom: "1.3rem" }}>
-        <Typography variant="h5">過去12時間の推移</Typography>
+        <Typography sx={{ fontSize: "1.7rem" }}>過去12時間の推移</Typography>
       </Box>
       <ResponsiveContainer width={"100%"} height={270}>
         <LineChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>

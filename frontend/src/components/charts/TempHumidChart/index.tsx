@@ -54,7 +54,7 @@ export function TempHumidChart({
             yAxisId="right"
             orientation="right"
             tickCount={6}
-            width={40}
+            width={30}
             tick={{ fontSize: "1.2rem", fontWeight: "lighter" }}
             domain={[0, 100]}
             unit="%"

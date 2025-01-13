@@ -48,7 +48,14 @@ export function CurrentTempHumidDisplay({
         sx={{ display: "flex", justifyContent: "flex-end", height: "1.5rem" }}
       >
         {updatedAt && (
-          <Typography sx={{ fontSize: "1.2rem", color: "#707070" }}>
+          <Typography
+            component="span"
+            sx={{
+              fontSize: "1.2rem",
+              fontWeight: "lighter",
+              color: "#707070",
+            }}
+          >
             更新: {updatedAt.format("MM/DD HH:mm:ss")}
           </Typography>
         )}

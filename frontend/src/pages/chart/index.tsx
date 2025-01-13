@@ -53,18 +53,18 @@ export function Chart() {
       setCo2MaTrend(co2MaData);
       setTemperatureTrend(temperatureData);
       setHumidityTrend(humidityData);
-
-      const socket = connectWebSocket("/env_values");
-      socket.addEventListener("message", (e) => {
-        const message = JSON.parse(e.data).message;
-        const data: EnvValue = {
-          co2: message.co2,
-          temperature: message.temperature,
-          humidity: message.humidity,
-        };
-        setEnvValue({ ...data, updatedAt: dayjs() });
-      });
     };
+
+    const socket = connectWebSocket("/env_values");
+    socket.addEventListener("message", (e) => {
+      const message = JSON.parse(e.data).message;
+      const data: EnvValue = {
+        co2: message.co2,
+        temperature: message.temperature,
+        humidity: message.humidity,
+      };
+      setEnvValue({ ...data, updatedAt: dayjs() });
+    });
 
     fetchEnvValue();
     fetchTrendData();

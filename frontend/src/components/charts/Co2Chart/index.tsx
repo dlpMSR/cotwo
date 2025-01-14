@@ -57,6 +57,7 @@ export function Co2Chart({ co2Trend, co2MaTrend }: Co2ChartProps) {
             stroke="#afeeee"
             strokeWidth={3}
             dot={false}
+            isAnimationActive={false}
           />
           <Line
             data={co2MaTrend}
@@ -66,6 +67,7 @@ export function Co2Chart({ co2Trend, co2MaTrend }: Co2ChartProps) {
             stroke="#20b2aa"
             strokeWidth={3}
             dot={false}
+            isAnimationActive={false}
           />
         </LineChart>
       </ResponsiveContainer>

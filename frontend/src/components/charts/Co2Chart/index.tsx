@@ -1,4 +1,5 @@
 import { trendDatumUnixtime } from "@/types";
+import { calculateTrendMovingAverage } from "@/utils/helpers";
 import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import {
@@ -17,10 +18,18 @@ const renderCustomLegendText = (value: string) => {
 
 type Co2ChartProps = {
   co2Trend: trendDatumUnixtime[];
-  co2MaTrend: trendDatumUnixtime[];
 };
 
-export function Co2Chart({ co2Trend, co2MaTrend }: Co2ChartProps) {
+export function Co2Chart({ co2Trend }: Co2ChartProps) {
+  let co2MaTrend: trendDatumUnixtime[] = [];
+  try {
+    co2MaTrend = calculateTrendMovingAverage(co2Trend, 30);
+  } catch (e) {
+    if (e instanceof Error) {
+      console.log(e.message);
+    }
+  }
+
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ marginBottom: "1.3rem" }}>

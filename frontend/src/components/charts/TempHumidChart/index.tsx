@@ -74,6 +74,7 @@ export function TempHumidChart({
             stroke="#ff8c00"
             strokeWidth={3}
             dot={false}
+            isAnimationActive={false}
             yAxisId="left"
           />
           <Line
@@ -84,6 +85,7 @@ export function TempHumidChart({
             stroke="#4169e1"
             strokeWidth={3}
             dot={false}
+            isAnimationActive={false}
             yAxisId="right"
           />
         </LineChart>

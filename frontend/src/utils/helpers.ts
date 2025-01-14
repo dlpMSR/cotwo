@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { trendDatum, trendDatumUnixtime } from "@/types";
+import { TrendDataInsufficientError } from "./errors";
 
 export const timestampToUnixtime = (item: trendDatum): trendDatumUnixtime => {
   return {
@@ -30,7 +31,7 @@ export const calculateTrendMovingAverage = (
 
   // 対象のデータ数が不足している場合は例外を投げる
   if (target.length < n) {
-    throw new Error("The number of data elements is too small.");
+    throw new TrendDataInsufficientError("The number of the trend data elements is insufficient.");
   }
 
   let sum = target.slice(0, n - 1).reduce((acc, cur) => acc + cur.value, 0);

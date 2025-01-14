@@ -1,4 +1,5 @@
 import { trendDatumUnixtime } from "@/types";
+import { TrendDataInsufficientError } from "@/utils/errors";
 import { calculateTrendMovingAverage } from "@/utils/helpers";
 import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
@@ -25,8 +26,10 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
   try {
     co2MaTrend = calculateTrendMovingAverage(co2Trend, 30);
   } catch (e) {
-    if (e instanceof Error) {
+    if (e instanceof TrendDataInsufficientError) {
       console.log(e.message);
+    } else {
+      throw e;
     }
   }
 

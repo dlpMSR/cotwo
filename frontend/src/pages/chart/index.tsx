@@ -62,6 +62,13 @@ export function Chart() {
     // いずれは配信値に含まれるtimestamp(計測日時)を使う
     const now = dayjs();
 
+    setCo2Trend((prev: trendDatumUnixtime[]) => {
+      return rollTimeSeries(prev, {
+        timestamp: now.unix(),
+        value: value.co2,
+      });
+    });
+
     setTemperatureTrend((prev: trendDatumUnixtime[]) => {
       return rollTimeSeries(prev, {
         timestamp: now.unix(),

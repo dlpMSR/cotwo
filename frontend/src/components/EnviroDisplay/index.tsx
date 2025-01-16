@@ -1,8 +1,8 @@
+import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
 import { EnvValue } from "@/types";
 import { useApiClient } from "@/utils/useApiClient";
-import { useWebSocket } from "@/utils/useWebSocket";
 import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./EnviroDisplay.scss";
 
 interface EnviroDisplayProps {
@@ -10,31 +10,34 @@ interface EnviroDisplayProps {
 }
 
 export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
+  const { get } = useApiClient();
+  const socket = useContext(EnvValueStreamContext);
   const [envValue, setEnvValue] = useState<EnvValue>({
     co2: 0,
     temperature: 0,
     humidity: 0,
   });
-  const { get } = useApiClient();
-  const { connectWebSocket } = useWebSocket();
 
   useEffect(() => {
     const fetchEnvValue = async () => {
       const data = await get<EnvValue>("/environment/measurement");
       setEnvValue(data);
     };
-    const socket = connectWebSocket("/env_values");
-    socket.addEventListener("message", (e) => {
-      const message = JSON.parse(e.data).message;
-      const data: EnvValue = {
-        co2: message.co2,
-        temperature: message.temperature,
-        humidity: message.humidity,
-      };
+    const updateLiveData = (e: MessageEvent<string>) => {
+      const data: EnvValue = JSON.parse(e.data).message;
       setEnvValue(data);
-    });
+    };
 
+    if (socket !== undefined) {
+      socket.addEventListener("message", updateLiveData);
+    }
     fetchEnvValue();
+
+    return () => {
+      if (socket !== undefined) {
+        socket.removeEventListener("message", updateLiveData);
+      }
+    };
   }, []);
 
   const fontSize: Record<string, string> = {

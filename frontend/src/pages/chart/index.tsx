@@ -2,13 +2,13 @@ import { Co2Chart } from "@/components/charts/Co2Chart";
 import { TempHumidChart } from "@/components/charts/TempHumidChart";
 import { CurrentCo2Display } from "@/components/currentDisplay/CurrentCo2Display";
 import { CurrentTempHumidDisplay } from "@/components/currentDisplay/CurrentTempHumidDisplay";
+import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
 import { EnvValue, trendDatum, trendDatumUnixtime } from "@/types";
 import { rollTimeSeries, timestampToUnixtime } from "@/utils/helpers";
 import { useApiClient } from "@/utils/useApiClient";
-import { useWebSocket } from "@/utils/useWebSocket";
 import { Box, Grid, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./chart.scss";
 
 type CurrentEnvValue = EnvValue & {
@@ -18,7 +18,7 @@ type CurrentEnvValue = EnvValue & {
 export function Chart() {
   const locationName = import.meta.env.VITE_LOCATION;
   const { get } = useApiClient();
-  const { connectWebSocket } = useWebSocket();
+  const socket = useContext(EnvValueStreamContext);
   const [envValue, setEnvValue] = useState<CurrentEnvValue>({
     co2: 0,
     temperature: 0,
@@ -84,11 +84,15 @@ export function Chart() {
   useEffect(() => {
     fetchEnvValue();
     fetchTrendData();
-    const socket = connectWebSocket("/env_values");
-    socket.addEventListener("message", updateLiveData);
+
+    if (socket !== undefined) {
+      socket.addEventListener("message", updateLiveData);
+    }
+
     return () => {
-      socket.removeEventListener("message", updateLiveData);
-      socket.close();
+      if (socket !== undefined) {
+        socket.removeEventListener("message", updateLiveData);
+      }
     };
   }, []);
 

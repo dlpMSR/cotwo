@@ -1,6 +1,7 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import "./app.scss";
+import { EnvValueStreamProvider } from "./contexts/EnvValueStreamContext";
 import { Chart } from "./pages/chart";
 import { Home } from "./pages/home";
 
@@ -30,10 +31,12 @@ const App = () => {
       </Box>
 
       <Box className="main">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/chart" element={<Chart />} />
-        </Routes>
+        <EnvValueStreamProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/chart" element={<Chart />} />
+          </Routes>
+        </EnvValueStreamProvider>
       </Box>
     </>
   );

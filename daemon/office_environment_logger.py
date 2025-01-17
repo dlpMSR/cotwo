@@ -9,7 +9,7 @@ import statistics
 import board
 import adafruit_scd4x
 import MySQLdb
-import pymsteams
+# import pymsteams
 from dotenv import load_dotenv
 from pytz import timezone
 from django.conf import settings

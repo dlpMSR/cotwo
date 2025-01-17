@@ -38,7 +38,7 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
         socket.removeEventListener("message", updateLiveData);
       }
     };
-  }, []);
+  }, [socket]);
 
   const fontSize: Record<string, string> = {
     co2: `${width * 0.012}rem`,

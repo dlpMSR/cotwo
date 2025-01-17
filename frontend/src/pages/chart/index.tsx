@@ -94,7 +94,7 @@ export function Chart() {
         socket.removeEventListener("message", updateLiveData);
       }
     };
-  }, []);
+  }, [socket]);
 
   return (
     <Box className="chart-page" sx={{ width: "100%" }}>

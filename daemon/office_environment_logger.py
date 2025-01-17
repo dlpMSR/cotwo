@@ -136,7 +136,7 @@ if __name__ == '__main__':
                         "type": "env_data", "message": {
                             "temperature": measurement[0],
                             "humidity": measurement[1],
-                            "co2": measurement[2],
+                            "co2": int(measurement[2]),
                             "co2_corrected": round(statistics.mean(co2_thirty_mins), 1),
                             "timestamp": measurement[3]
                         }

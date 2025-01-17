@@ -82,6 +82,7 @@ if __name__ == '__main__':
                 datetime.datetime.now(timezone('UTC')).strftime("%Y-%m-%d %H:%M:%S")    # timestamp
             )
             print(measurement)
+            
             # MySQLに環境値を記録
             sql = """
                 INSERT INTO `env_value` (`temperature`, `humidity`, `co2`, `created_at`)
@@ -106,29 +107,27 @@ if __name__ == '__main__':
             print(len(co2_thirty_mins))
             if len(co2_thirty_mins) > 25:
                 # 補正値をキャッシュに保存
-                correction_value = {
+                api_value = {
                     'temperature': measurement[0],
                     'humidity': measurement[1],
                     'co2': round(statistics.mean(co2_thirty_mins), 1),
                     'timestamp': measurement[3] 
                 }
 
-                print(type(correction_value['temperature']), type(correction_value['co2']))
-
                 conn = _set_redis_client()
-                conn.set('scd41:measurement', json.dumps(correction_value), ex=90)
+                conn.set('scd41:measurement', json.dumps(api_value), ex=90)
                 
                 # Websocketで補正値を配信
                 async_to_sync(channel_layer.group_send)(
                     "realtime_env_ws", {
                         "type": "env_data", "message": {
-                            "temperature": correction_value['temperature'],
-                            "humidity": correction_value['humidity'],
-                            "co2": correction_value['co2']
+                            "temperature": measurement[0],
+                            "humidity": measurement[1],
+                            "co2": measurement[2],
+                            "co2_corrected": round(statistics.mean(co2_thirty_mins), 1),
+                            "timestamp": measurement[3]
                         }
                     }
                 )
-
-                # TODO: 通知
 
         time.sleep(60)

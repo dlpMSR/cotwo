@@ -9,7 +9,7 @@ import statistics
 import board
 import adafruit_scd4x
 import MySQLdb
-import pymsteams
+# import pymsteams
 from dotenv import load_dotenv
 from pytz import timezone
 from django.conf import settings
@@ -61,14 +61,14 @@ def _set_channel_layers():
     }
 )
 
-def _set_incoming_webhook():
-    load_dotenv()
-    WEBHOOK_URL = os.getenv('WEBHOOK_URL')
-    LOCATION = os.getenv('LOCATION')
-    teams_obj = pymsteams.connectorcard(WEBHOOK_URL)
-    teams_obj.location = LOCATION
+# def _set_incoming_webhook():
+#     load_dotenv()
+#     WEBHOOK_URL = os.getenv('WEBHOOK_URL')
+#     LOCATION = os.getenv('LOCATION')
+#     teams_obj = pymsteams.connectorcard(WEBHOOK_URL)
+#     teams_obj.location = LOCATION
 
-    return teams_obj
+#     return teams_obj
 
 
 if __name__ == '__main__':
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     _set_channel_layers()
     channel_layer = get_channel_layer()
 
-    teams_obj = _set_incoming_webhook()
+    # teams_obj = _set_incoming_webhook()
     co2_threshold_count = 0
     last_notified_at = datetime.datetime.now()
 
@@ -120,7 +120,7 @@ if __name__ == '__main__':
 
             if len(co2_thirty_mins) > 25:
                 # 補正値をキャッシュに保存
-                correction_value = {
+                api_value = {
                     'temperature': measurement[0],
                     'humidity': measurement[1],
                     'co2': round(statistics.mean(co2_thirty_mins), 1),
@@ -128,33 +128,37 @@ if __name__ == '__main__':
                 }
 
                 conn = _set_redis_client()
-                conn.set('scd41:measurement', json.dumps(correction_value), ex=90)
+                conn.set('scd41:measurement', json.dumps(api_value), ex=90)
 
                 # Websocketで環境値を配信
                 async_to_sync(channel_layer.group_send)(
                     "realtime_env_ws", {
                         "type": "env_data", "message": {
-                            "temperature": correction_value['temperature'],
-                            "humidity": correction_value['humidity'],
-                            "co2": correction_value['co2']
+                            "temperature": measurement[0],
+                            "humidity": measurement[1],
+                            "co2": measurement[2],
+                            "co2_corrected": round(statistics.mean(co2_thirty_mins), 1),
+                            "timestamp": measurement[3]
                         }
                     }
                 )
 
-                # 通知用にCO2の補正値が連続して閾値を上回った回数をカウントする
-                co2_threshold_count = co2_threshold_count+1 if correction_value['co2'] > 1200 else 0
+                # 通知先のチャンネルが消滅したため、Teamsへの通知機能は廃止されますた。
+                # αβοοη_φ(ﾟ∀ﾟ )
 
-                # 通知
-                td = datetime.datetime.now() - last_notified_at
-                if co2_threshold_count > 5 and td.total_seconds() > 10800:
-                    body_text = \
-                        f"**Raspi@{teams_obj.location}** </br>" +\
-                        f"二酸化炭素濃度が高くなっています。現在{correction_value['co2']}ppm。換気されてはいかがですか ☕️ </br>" +\
-                        "[http://192.168.100.127/chart](http://192.168.100.127/chart)"
-                    teams_obj.text(body_text)
-                    teams_obj.send()
-                    last_notified_at = datetime.datetime.now()
-                    print(f"発報:{body_text}")
+                # 通知用にCO2の補正値が連続して閾値を上回った回数をカウントする
+                # co2_threshold_count = co2_threshold_count+1 if correction_value['co2'] > 1200 else 0
+                # 
+                # td = datetime.datetime.now() - last_notified_at
+                # if co2_threshold_count > 5 and td.total_seconds() > 10800:
+                #     body_text = \
+                #         f"**Raspi@{teams_obj.location}** </br>" +\
+                #         f"二酸化炭素濃度が高くなっています。現在{correction_value['co2']}ppm。換気されてはいかがですか ☕️ </br>" +\
+                #         "[http://192.168.100.127/chart](http://192.168.100.127/chart)"
+                #     teams_obj.text(body_text)
+                #     teams_obj.send()
+                #     last_notified_at = datetime.datetime.now()
+                #     print(f"発報:{body_text}")
 
         else:
             # センサ再起動

@@ -66,7 +66,7 @@ export function Chart() {
 
     const updateLiveData = (e: MessageEvent<string>) => {
       const message: EnvValueStreamMessage = JSON.parse(e.data).message;
-      const updatedAt = dayjs(message.timestamp);
+      const updatedAt = dayjs(message.timestamp + "Z");
       setCo2Trend((prev: trendDatumUnixtime[]) => {
         return rollTimeSeries(prev, {
           timestamp: updatedAt.unix(),

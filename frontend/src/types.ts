@@ -28,5 +28,5 @@ export type EnvValueStreamMessage = {
   temperature: number,
   humidity: number,
   co2: number,
-  co2_current: number
+  co2_corrected: number
 }

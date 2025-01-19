@@ -40,7 +40,7 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
       const data: EnvValue = {
         temperature: message.temperature,
         humidity: message.humidity,
-        co2: message.co2_current, // co2ではなく補正値のco2_currentを使う
+        co2: message.co2_corrected, // co2ではなく補正値のco2_correctedを使う
       };
       setEnvValue(data);
     };

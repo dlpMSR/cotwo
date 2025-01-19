@@ -1,5 +1,9 @@
 import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
-import { EnvValue } from "@/types";
+import {
+  EnvValue,
+  EnvValueStreamMessage,
+  latestMeasurementApiResponse,
+} from "@/types";
 import { useApiClient } from "@/utils/useApiClient";
 import { Box, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
@@ -20,18 +24,31 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
 
   useEffect(() => {
     const fetchEnvValue = async () => {
-      const data = await get<EnvValue>("/environment/measurement");
-      setEnvValue(data);
-    };
-    const updateLiveData = (e: MessageEvent<string>) => {
-      const data: EnvValue = JSON.parse(e.data).message;
+      const response = await get<latestMeasurementApiResponse>(
+        "/environment/measurement"
+      );
+      const data: EnvValue = {
+        temperature: response.temperature,
+        humidity: response.humidity,
+        co2: response.co2,
+      };
       setEnvValue(data);
     };
 
+    const updateLiveData = (e: MessageEvent<string>) => {
+      const message: EnvValueStreamMessage = JSON.parse(e.data).message;
+      const data: EnvValue = {
+        temperature: message.temperature,
+        humidity: message.humidity,
+        co2: message.co2_current, // co2ではなく補正値のco2_currentを使う
+      };
+      setEnvValue(data);
+    };
+
+    fetchEnvValue();
     if (socket !== undefined) {
       socket.addEventListener("message", updateLiveData);
     }
-    fetchEnvValue();
 
     return () => {
       if (socket !== undefined) {

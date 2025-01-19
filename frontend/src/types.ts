@@ -21,8 +21,6 @@ export type latestMeasurementApiResponse = {
   co2: number
 }
 
-// export type trendDataApiResponse = Array<trendDatum>
-
 export type EnvValueStreamMessage = {
   timestamp: string,
   temperature: number,

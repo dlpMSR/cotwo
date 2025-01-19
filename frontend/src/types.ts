@@ -13,3 +13,20 @@ export type trendDatumUnixtime = {
   timestamp: number,
   value: number
 };
+
+export type latestMeasurementApiResponse = {
+  timestamp: string,
+  temperature: number,
+  humidity: number,
+  co2: number
+}
+
+// export type trendDataApiResponse = Array<trendDatum>
+
+export type EnvValueStreamMessage = {
+  timestamp: string,
+  temperature: number,
+  humidity: number,
+  co2: number,
+  co2_current: number
+}

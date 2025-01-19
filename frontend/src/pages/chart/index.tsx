@@ -3,7 +3,13 @@ import { TempHumidChart } from "@/components/charts/TempHumidChart";
 import { CurrentCo2Display } from "@/components/currentDisplay/CurrentCo2Display";
 import { CurrentTempHumidDisplay } from "@/components/currentDisplay/CurrentTempHumidDisplay";
 import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
-import { EnvValue, trendDatum, trendDatumUnixtime } from "@/types";
+import {
+  EnvValue,
+  EnvValueStreamMessage,
+  latestMeasurementApiResponse,
+  trendDatum,
+  trendDatumUnixtime,
+} from "@/types";
 import { rollTimeSeries, timestampToUnixtime } from "@/utils/helpers";
 import { useApiClient } from "@/utils/useApiClient";
 import { Box, Grid, Typography } from "@mui/material";
@@ -31,60 +37,64 @@ export function Chart() {
   >([]);
   const [humidityTrend, setHumidityTrend] = useState<trendDatumUnixtime[]>([]);
 
-  const fetchEnvValue = async () => {
-    const data = await get<EnvValue>("/environment/measurement");
-    setEnvValue({ ...data, updatedAt: null });
-  };
-
-  const fetchTrendData = async () => {
-    const [co2Response, tempResponse, humidResponse] = await Promise.all([
-      get<trendDatum[]>("/environment/trend/co2"),
-      get<trendDatum[]>("/environment/trend/temperature"),
-      get<trendDatum[]>("/environment/trend/humidity"),
-    ]);
-    const co2Data = co2Response.map(timestampToUnixtime);
-    const temperatureData = tempResponse.map(timestampToUnixtime);
-    const humidityData = humidResponse.map(timestampToUnixtime);
-    setCo2Trend(co2Data);
-    setTemperatureTrend(temperatureData);
-    setHumidityTrend(humidityData);
-  };
-
-  const updateLiveData = (e: MessageEvent<string>) => {
-    const value: EnvValue = JSON.parse(e.data).message;
-
-    // 暫定でこの処理時点の日時を使用しているが、
-    // いずれは配信値に含まれるtimestamp(計測日時)を使う
-    const now = dayjs();
-
-    setCo2Trend((prev: trendDatumUnixtime[]) => {
-      return rollTimeSeries(prev, {
-        timestamp: now.unix(),
-        value: value.co2,
-      });
-    });
-
-    setTemperatureTrend((prev: trendDatumUnixtime[]) => {
-      return rollTimeSeries(prev, {
-        timestamp: now.unix(),
-        value: value.temperature,
-      });
-    });
-
-    setHumidityTrend((prev: trendDatumUnixtime[]) => {
-      return rollTimeSeries(prev, {
-        timestamp: now.unix(),
-        value: value.humidity,
-      });
-    });
-
-    setEnvValue({ ...value, updatedAt: now });
-  };
-
   useEffect(() => {
+    const fetchEnvValue = async () => {
+      const response = await get<latestMeasurementApiResponse>(
+        "/environment/measurement"
+      );
+      const data: EnvValue = {
+        temperature: response.temperature,
+        humidity: response.humidity,
+        co2: response.co2,
+      };
+      setEnvValue({ ...data, updatedAt: null });
+    };
+
+    const fetchTrendData = async () => {
+      const [co2Response, tempResponse, humidResponse] = await Promise.all([
+        get<trendDatum[]>("/environment/trend/co2"),
+        get<trendDatum[]>("/environment/trend/temperature"),
+        get<trendDatum[]>("/environment/trend/humidity"),
+      ]);
+      const co2Data = co2Response.map(timestampToUnixtime);
+      const temperatureData = tempResponse.map(timestampToUnixtime);
+      const humidityData = humidResponse.map(timestampToUnixtime);
+      setCo2Trend(co2Data);
+      setTemperatureTrend(temperatureData);
+      setHumidityTrend(humidityData);
+    };
+
+    const updateLiveData = (e: MessageEvent<string>) => {
+      const message: EnvValueStreamMessage = JSON.parse(e.data).message;
+      const updatedAt = dayjs(message.timestamp);
+      setCo2Trend((prev: trendDatumUnixtime[]) => {
+        return rollTimeSeries(prev, {
+          timestamp: updatedAt.unix(),
+          value: message.co2, // 補正前の値
+        });
+      });
+      setTemperatureTrend((prev: trendDatumUnixtime[]) => {
+        return rollTimeSeries(prev, {
+          timestamp: updatedAt.unix(),
+          value: message.temperature,
+        });
+      });
+      setHumidityTrend((prev: trendDatumUnixtime[]) => {
+        return rollTimeSeries(prev, {
+          timestamp: updatedAt.unix(),
+          value: message.humidity,
+        });
+      });
+      setEnvValue({
+        temperature: message.temperature,
+        humidity: message.humidity,
+        co2: message.co2_corrected, // 数値での掲示には補正値を使う
+        updatedAt: updatedAt,
+      });
+    };
+
     fetchEnvValue();
     fetchTrendData();
-
     if (socket !== undefined) {
       socket.addEventListener("message", updateLiveData);
     }

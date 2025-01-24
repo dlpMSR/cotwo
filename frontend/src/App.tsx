@@ -11,23 +11,25 @@ const App = () => {
   return (
     <>
       <Box className="header">
-        <Tabs value={location.pathname}>
+        <Box sx={{ display: "flex" }}>
           <Box sx={{ flexGrow: 1 }} />
-          <Tab
-            label="Home"
-            value="/"
-            to="/"
-            component={Link}
-            className="tab-item"
-          />
-          <Tab
-            label="Chart"
-            value="/chart"
-            to="/chart"
-            component={Link}
-            className="tab-item"
-          />
-        </Tabs>
+          <Tabs value={location.pathname}>
+            <Tab
+              label="Home"
+              value="/"
+              to="/"
+              component={Link}
+              className="tab-item"
+            />
+            <Tab
+              label="Chart"
+              value="/chart"
+              to="/chart"
+              component={Link}
+              className="tab-item"
+            />
+          </Tabs>
+        </Box>
       </Box>
 
       <Box className="main">

@@ -1,5 +1,12 @@
 import { useWebSocket } from "@/utils/useWebSocket";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { RefreshContext } from "./RefreshContext";
 
 export const EnvValueStreamContext = createContext<WebSocket | undefined>(
   undefined
@@ -14,15 +21,19 @@ export const EnvValueStreamProvider = ({
 }: EnvValueStreamProviderProps) => {
   const [socket, setSocket] = useState<WebSocket | undefined>();
   const { connectWebSocket } = useWebSocket();
+  const initDate = useContext(RefreshContext);
 
   useEffect(() => {
-    setSocket(connectWebSocket("/env_values"));
+    if (socket === undefined || socket?.readyState !== WebSocket.OPEN) {
+      setSocket(connectWebSocket("/env_values"));
+    }
+
     return () => {
-      if (socket && socket.readyState === WebSocket.OPEN) {
+      if (socket?.readyState === WebSocket.OPEN) {
         socket.close();
       }
     };
-  }, []);
+  }, [initDate]);
 
   return (
     <EnvValueStreamContext.Provider value={socket}>

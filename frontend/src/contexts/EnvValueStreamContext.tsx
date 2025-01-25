@@ -1,3 +1,4 @@
+import { RefreshContext } from "@/contexts/RefreshContext";
 import { useWebSocket } from "@/utils/useWebSocket";
 import {
   createContext,
@@ -6,7 +7,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { RefreshContext } from "./RefreshContext";
 
 export const EnvValueStreamContext = createContext<WebSocket | undefined>(
   undefined

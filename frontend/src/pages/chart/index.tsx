@@ -3,6 +3,7 @@ import { TempHumidChart } from "@/components/charts/TempHumidChart";
 import { CurrentCo2Display } from "@/components/currentDisplay/CurrentCo2Display";
 import { CurrentTempHumidDisplay } from "@/components/currentDisplay/CurrentTempHumidDisplay";
 import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
+import { RefreshContext } from "@/contexts/RefreshContext";
 import {
   EnvValue,
   EnvValueStreamMessage,
@@ -24,6 +25,7 @@ type CurrentEnvValue = EnvValue & {
 export function Chart() {
   const locationName = import.meta.env.VITE_LOCATION;
   const { get } = useApiClient();
+  const initDate = useContext(RefreshContext);
   const socket = useContext(EnvValueStreamContext);
   const [envValue, setEnvValue] = useState<CurrentEnvValue>({
     co2: 0,
@@ -104,7 +106,7 @@ export function Chart() {
         socket.removeEventListener("message", updateLiveData);
       }
     };
-  }, [socket]);
+  }, [initDate]);
 
   return (
     <Box className="chart-page" sx={{ width: "100%" }}>

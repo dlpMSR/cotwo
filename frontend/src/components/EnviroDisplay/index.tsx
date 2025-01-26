@@ -1,4 +1,5 @@
 import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
+import { RefreshContext } from "@/contexts/RefreshContext";
 import {
   EnvValue,
   EnvValueStreamMessage,
@@ -15,6 +16,7 @@ interface EnviroDisplayProps {
 
 export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
   const { get } = useApiClient();
+  const initDate = useContext(RefreshContext);
   const socket = useContext(EnvValueStreamContext);
   const [envValue, setEnvValue] = useState<EnvValue>({
     co2: 0,
@@ -55,7 +57,7 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
         socket.removeEventListener("message", updateLiveData);
       }
     };
-  }, [socket]);
+  }, [initDate]);
 
   const fontSize: Record<string, string> = {
     co2: `${width * 0.012}rem`,

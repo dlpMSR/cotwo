@@ -4,4 +4,8 @@ WORKDIR /code
 
 RUN apt update
 
-CMD npm run dev
+COPY ./frontend/package.json /code/package.json
+
+RUN cd /code && npm install
+
+CMD cd /code && npm run dev

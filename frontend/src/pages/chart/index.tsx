@@ -120,7 +120,7 @@ export function Chart() {
         <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
           <Grid container justifyContent="center" spacing={2}>
             <Grid size={{ xs: 12, sm: 10, md: 12 }}>
-              <Typography sx={{ fontSize: "2.2rem" }}>
+              <Typography sx={{ fontSize: "2.2rem", paddingBottom: "1.8rem" }}>
                 {locationName}
               </Typography>
             </Grid>

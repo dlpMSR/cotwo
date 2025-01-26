@@ -1,10 +1,20 @@
 import { DigitalClockDisplay } from "@/components/DigitalClockDisplay";
 import { EnviroDisplay } from "@/components/EnviroDisplay";
-import { Box } from "@mui/material";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export function Home() {
   const [displayWidth, setDisplayWidth] = useState<number>(0);
+
+  const openInNewWindow = () => {
+    window.open(
+      window.location.href,
+      "_blank",
+      "height=400, width=640, menubar=no, toolbar=no, location=no, status=no, directories=no"
+    );
+  };
+
   useEffect(() => {
     // 先に中身のcomponentのサイズが決まるためGridは採用しない
     const resizeHandler = () => {
@@ -36,8 +46,28 @@ export function Home() {
         <Box sx={{ marginBottom: `${displayWidth * 0.003}rem` }}>
           <DigitalClockDisplay width={displayWidth} />
         </Box>
-        <Box>
+        <Box sx={{ marginBottom: `${displayWidth * 0.002}rem` }}>
           <EnviroDisplay width={displayWidth} />
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "end",
+            width: "100%",
+          }}
+        >
+          <Tooltip
+            title={
+              <span style={{ fontSize: "1.3rem" }}>小さいウィンドウで開く</span>
+            }
+            placement="bottom"
+            arrow={true}
+          >
+            <IconButton onClick={openInNewWindow}>
+              <OpenInNewIcon sx={{ fontSize: `${displayWidth * 0.004}rem` }} />
+            </IconButton>
+          </Tooltip>
         </Box>
       </Box>
     </Box>

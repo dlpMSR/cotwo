@@ -85,12 +85,14 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
           <Typography className="enviro-letter" sx={{ fontSize: fontSize.co2 }}>
             {envValue.co2.toFixed(1)}
           </Typography>
-          <Typography
-            className="enviro-letter unit"
-            sx={{ fontSize: fontSize.unit }}
-          >
-            ppm
-          </Typography>
+          <Box sx={{ alignSelf: "end" }}>
+            <Typography
+              className="enviro-letter"
+              sx={{ fontSize: fontSize.unit }}
+            >
+              ppm
+            </Typography>
+          </Box>
         </Box>
 
         <Box sx={{ marginLeft: `${width * 0.003}rem` }}>
@@ -103,12 +105,20 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
                 {envValue.temperature.toFixed(1)}
               </Typography>
             </Box>
-            <Typography
-              className="enviro-letter unit"
-              sx={{ fontSize: fontSize.unit }}
+            <Box
+              sx={{
+                width: `${width * 0.0035}rem`,
+                alignSelf: "flex-end",
+                textAlign: "right",
+              }}
             >
-              °C
-            </Typography>
+              <Typography
+                className="enviro-letter unit"
+                sx={{ fontSize: fontSize.unit }}
+              >
+                °C
+              </Typography>
+            </Box>
           </Box>
           <Box sx={{ display: "flex", marginTop: `${width * 0.002}rem` }}>
             <Box sx={{ marginInlineStart: "auto" }}>
@@ -119,12 +129,20 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
                 {envValue.humidity.toFixed(1)}
               </Typography>
             </Box>
-            <Typography
-              className="enviro-letter unit"
-              sx={{ fontSize: fontSize.unit }}
+            <Box
+              sx={{
+                width: `${width * 0.0035}rem`,
+                alignSelf: "flex-end",
+                textAlign: "right",
+              }}
             >
-              %
-            </Typography>
+              <Typography
+                className="enviro-letter"
+                sx={{ fontSize: fontSize.unit }}
+              >
+                %
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Box>

@@ -13,7 +13,7 @@ import {
 } from "@/types";
 import { rollTimeSeries, timestampToUnixtime } from "@/utils/helpers";
 import { useApiClient } from "@/utils/useApiClient";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid2 as Grid, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import "./chart.scss";
@@ -119,13 +119,13 @@ export function Chart() {
       >
         <Box sx={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
           <Grid container justifyContent="center" spacing={2}>
-            <Grid item xs={12} sm={10} md={12}>
+            <Grid size={{ xs: 12, sm: 10, md: 12 }}>
               <Typography sx={{ fontSize: "2.2rem" }}>
                 {locationName}
               </Typography>
             </Grid>
 
-            <Grid item xs={12} sm={10} md={6}>
+            <Grid size={{ xs: 12, sm: 10, md: 6 }}>
               <Box sx={{ marginBottom: "2rem" }}>
                 <Box sx={{ marginBottom: "0.7rem" }}>
                   <CurrentCo2Display
@@ -137,7 +137,7 @@ export function Chart() {
               </Box>
             </Grid>
 
-            <Grid item xs={12} sm={10} md={6}>
+            <Grid size={{ xs: 12, sm: 10, md: 6 }}>
               <Box sx={{ marginBottom: "2rem" }}>
                 <Box sx={{ marginBottom: "0.7rem" }}>
                   <CurrentTempHumidDisplay

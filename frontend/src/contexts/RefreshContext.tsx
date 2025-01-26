@@ -21,7 +21,8 @@ export const RefreshContextProvider = ({
         const now = dayjs();
         setInitDate(now);
         estimateTime.current = now;
-        console.log("reload.");
+
+        console.log("reloaded.");
       }
     }, 1000);
 

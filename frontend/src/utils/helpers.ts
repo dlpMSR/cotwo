@@ -33,7 +33,7 @@ export const calculateTrendMovingAverage = (
     return [];
   }
 
-  let sum = target.slice(0, n - 1).reduce((acc, cur) => acc + cur.value, 0);
+  let sum = target.slice(0, n).reduce((acc, cur) => acc + cur.value, 0);
   let ret: trendDatumUnixtime[] = [
     {
       timestamp: target[Math.floor(n / 2)].timestamp,

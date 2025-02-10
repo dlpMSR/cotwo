@@ -1,4 +1,5 @@
 import { trendDatumUnixtime } from "@/types";
+import { calculateTimeTicks } from "@/utils/helpers";
 import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import {
@@ -24,6 +25,12 @@ export function TempHumidChart({
   temperatureTrend,
   humidityTrend,
 }: TempHumidChartProps) {
+  let [tsMin, tsMax] = [0, 0];
+  if (temperatureTrend.length > 0) {
+    tsMin = temperatureTrend[temperatureTrend.length - 1].timestamp;
+    tsMax = temperatureTrend[0].timestamp;
+  }
+
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ marginBottom: "1.3rem" }}>
@@ -35,7 +42,7 @@ export function TempHumidChart({
             dataKey="timestamp"
             type="number"
             domain={["dataMin", "dataMax"]}
-            tickCount={12}
+            ticks={calculateTimeTicks(tsMin, tsMax)}
             tickLine={false}
             tick={{ fontSize: "1.2rem", fontWeight: "lighter" }}
             tickFormatter={(unixTime) => dayjs.unix(unixTime).format("hA")}

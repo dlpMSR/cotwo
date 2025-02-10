@@ -8,6 +8,17 @@ export const timestampToUnixtime = (item: trendDatum): trendDatumUnixtime => {
   };
 };
 
+export const calculateTimeTicks = (min: number, max: number):number[] => {
+  const step = 3600;
+  const start = min - (min%step) + step;
+  let ret = [];
+  for (let t = start; t < max; t += step) {
+    ret.push(t);
+  }
+
+  return ret;
+}
+
 export const rollTimeSeries = (
   target: trendDatumUnixtime[],
   newValue: trendDatumUnixtime

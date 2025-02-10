@@ -1,5 +1,8 @@
 import { trendDatumUnixtime } from "@/types";
-import { calculateTrendMovingAverage } from "@/utils/helpers";
+import {
+  calculateTimeTicks,
+  calculateTrendMovingAverage,
+} from "@/utils/helpers";
 import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import {
@@ -24,6 +27,12 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
   let co2MaTrend: trendDatumUnixtime[] = [];
   co2MaTrend = calculateTrendMovingAverage(co2Trend, 30);
 
+  let [tsMin, tsMax] = [0, 0];
+  if (co2Trend.length > 0) {
+    tsMin = co2Trend[co2Trend.length - 1].timestamp;
+    tsMax = co2Trend[0].timestamp;
+  }
+
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ marginBottom: "1.3rem" }}>
@@ -35,7 +44,7 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
             dataKey="timestamp"
             type="number"
             domain={["dataMin", "dataMax"]}
-            tickCount={12}
+            ticks={calculateTimeTicks(tsMin, tsMax)}
             tickLine={false}
             tick={{ fontSize: "1.2rem", fontWeight: "lighter" }}
             tickFormatter={(unixTime) => dayjs.unix(unixTime).format("hA")}

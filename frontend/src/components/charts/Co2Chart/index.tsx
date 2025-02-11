@@ -50,9 +50,12 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
             tickFormatter={(unixTime) => dayjs.unix(unixTime).format("hA")}
           />
           <YAxis
-            tickCount={10}
+            tickCount={12}
             width={40}
             tick={{ fontSize: "1.2rem", fontWeight: "lighter" }}
+            domain={([dataMin, dataMax]) => {
+              return [0, dataMax < 1800 ? 1800 : dataMax];
+            }}
           />
           <CartesianGrid strokeDasharray="" vertical={false} />
           <Legend

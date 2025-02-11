@@ -53,7 +53,7 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
             tickCount={12}
             width={40}
             tick={{ fontSize: "1.2rem", fontWeight: "lighter" }}
-            domain={([dataMin, dataMax]) => {
+            domain={([, dataMax]) => {
               return [0, dataMax < 1800 ? 1800 : dataMax];
             }}
           />

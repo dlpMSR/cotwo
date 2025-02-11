@@ -50,7 +50,7 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
             tickFormatter={(unixTime) => dayjs.unix(unixTime).format("hA")}
           />
           <YAxis
-            tickCount={12}
+            tickCount={10}
             width={40}
             tick={{ fontSize: "1.2rem", fontWeight: "lighter" }}
             domain={([, dataMax]) => {

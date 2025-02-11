@@ -53,6 +53,9 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
             tickCount={10}
             width={40}
             tick={{ fontSize: "1.2rem", fontWeight: "lighter" }}
+            domain={([, dataMax]) => {
+              return [0, dataMax < 1800 ? 1800 : dataMax];
+            }}
           />
           <CartesianGrid strokeDasharray="" vertical={false} />
           <Legend

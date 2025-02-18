@@ -25,6 +25,7 @@ export const EnvValueStreamProvider = ({
 
   useEffect(() => {
     if (socket === undefined || socket?.readyState !== WebSocket.OPEN) {
+      console.log(socket?.readyState);
       setSocket(connectWebSocket("/env_values"));
     }
 

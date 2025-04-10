@@ -9,7 +9,6 @@ import statistics
 import board
 import adafruit_scd4x
 import MySQLdb
-# import pymsteams
 from dotenv import load_dotenv
 from pytz import timezone
 from django.conf import settings
@@ -61,15 +60,6 @@ def _set_channel_layers():
     }
 )
 
-# def _set_incoming_webhook():
-#     load_dotenv()
-#     WEBHOOK_URL = os.getenv('WEBHOOK_URL')
-#     LOCATION = os.getenv('LOCATION')
-#     teams_obj = pymsteams.connectorcard(WEBHOOK_URL)
-#     teams_obj.location = LOCATION
-
-#     return teams_obj
-
 
 if __name__ == '__main__':
     i2c = board.I2C()
@@ -79,7 +69,6 @@ if __name__ == '__main__':
     _set_channel_layers()
     channel_layer = get_channel_layer()
 
-    # teams_obj = _set_incoming_webhook()
     co2_threshold_count = 0
     last_notified_at = datetime.datetime.now()
 
@@ -140,25 +129,7 @@ if __name__ == '__main__':
                             "co2_corrected": round(statistics.mean(co2_thirty_mins), 1),
                             "timestamp": measurement[3]
                         }
-                    }
-                )
-
-                # 通知先のチャンネルが消滅したため、Teamsへの通知機能は廃止されますた。
-                # αβοοη_φ(ﾟ∀ﾟ )
-
-                # 通知用にCO2の補正値が連続して閾値を上回った回数をカウントする
-                # co2_threshold_count = co2_threshold_count+1 if correction_value['co2'] > 1200 else 0
-                # 
-                # td = datetime.datetime.now() - last_notified_at
-                # if co2_threshold_count > 5 and td.total_seconds() > 10800:
-                #     body_text = \
-                #         f"**Raspi@{teams_obj.location}** </br>" +\
-                #         f"二酸化炭素濃度が高くなっています。現在{correction_value['co2']}ppm。換気されてはいかがですか ☕️ </br>" +\
-                #         "[http://192.168.100.127/chart](http://192.168.100.127/chart)"
-                #     teams_obj.text(body_text)
-                #     teams_obj.send()
-                #     last_notified_at = datetime.datetime.now()
-                #     print(f"発報:{body_text}")
+                    }))
 
         else:
             # センサ再起動

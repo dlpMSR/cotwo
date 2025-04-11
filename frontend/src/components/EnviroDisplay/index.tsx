@@ -1,6 +1,7 @@
 import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
 import { RefreshContext } from "@/contexts/RefreshContext";
 import {
+  CurrentEnvValue,
   EnvValue,
   EnvValueStreamMessage,
   latestMeasurementApiResponse,
@@ -10,6 +11,8 @@ import { Box, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import "./EnviroDisplay.scss";
 
+import dayjs from "dayjs";
+
 interface EnviroDisplayProps {
   width: number;
 }
@@ -18,10 +21,11 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
   const { get } = useApiClient();
   const initDate = useContext(RefreshContext);
   const socket = useContext(EnvValueStreamContext);
-  const [envValue, setEnvValue] = useState<EnvValue>({
+  const [envValue, setEnvValue] = useState<CurrentEnvValue>({
     co2: 0,
     temperature: 0,
     humidity: 0,
+    updatedAt: dayjs(),
   });
 
   useEffect(() => {
@@ -34,17 +38,18 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
         humidity: response.humidity,
         co2: response.co2,
       };
-      setEnvValue(data);
+      setEnvValue({ ...data, updatedAt: dayjs() });
     };
 
     const updateLiveData = (e: MessageEvent<string>) => {
       const message: EnvValueStreamMessage = JSON.parse(e.data).message;
+      const updatedAt = dayjs(message.timestamp + "Z");
       const data: EnvValue = {
         temperature: message.temperature,
         humidity: message.humidity,
         co2: message.co2_corrected, // co2ではなく補正値のco2_correctedを使う
       };
-      setEnvValue(data);
+      setEnvValue({ ...data, updatedAt: updatedAt });
     };
 
     fetchEnvValue();

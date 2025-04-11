@@ -12,8 +12,6 @@ import MySQLdb
 from dotenv import load_dotenv
 from pytz import timezone
 from django.conf import settings
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
 
 
 def _mysql_connection():
@@ -67,7 +65,6 @@ if __name__ == '__main__':
     print("Serial number:", [hex(i) for i in scd4x.serial_number])
 
     _set_channel_layers()
-    channel_layer = get_channel_layer()
 
     co2_threshold_count = 0
     last_notified_at = datetime.datetime.now()
@@ -118,11 +115,9 @@ if __name__ == '__main__':
 
                 conn = _set_redis_client()
                 conn.set('scd41:measurement', json.dumps(api_value), ex=90)
-
-                # Websocketで環境値を配信
-                async_to_sync(channel_layer.group_send)(
-                    "realtime_env_ws", {
-                        "type": "env_data", "message": {
+                conn.publish("realtime_env_ws", json.dumps({
+                        "type": "env_data",
+                        "message": {
                             "temperature": measurement[0],
                             "humidity": measurement[1],
                             "co2": int(measurement[2]),

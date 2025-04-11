@@ -5,6 +5,7 @@ import { CurrentTempHumidDisplay } from "@/components/currentDisplay/CurrentTemp
 import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
 import { RefreshContext } from "@/contexts/RefreshContext";
 import {
+  CurrentEnvValue,
   EnvValue,
   EnvValueStreamMessage,
   latestMeasurementApiResponse,
@@ -17,10 +18,6 @@ import { Box, Grid2 as Grid, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import "./chart.scss";
-
-type CurrentEnvValue = EnvValue & {
-  updatedAt: dayjs.Dayjs | null;
-};
 
 export function Chart() {
   const locationName = import.meta.env.VITE_LOCATION;

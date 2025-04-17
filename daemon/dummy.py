@@ -14,7 +14,6 @@ from dotenv import load_dotenv
 from pytz import timezone
 from django.conf import settings
 from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
 
 
 def _mysql_connection():
@@ -116,18 +115,15 @@ if __name__ == '__main__':
 
                 conn = _set_redis_client()
                 conn.set('scd41:measurement', json.dumps(api_value), ex=90)
-                
-                # Websocketで補正値を配信
-                async_to_sync(channel_layer.group_send)(
-                    "realtime_env_ws", {
-                        "type": "env_data", "message": {
+                conn.publish("realtime_env_ws", json.dumps({
+                        "type": "env_data",
+                        "message": {
                             "temperature": measurement[0],
                             "humidity": measurement[1],
                             "co2": int(measurement[2]),
                             "co2_corrected": round(statistics.mean(co2_thirty_mins), 1),
                             "timestamp": measurement[3]
                         }
-                    }
-                )
+                    }))
 
         time.sleep(60)

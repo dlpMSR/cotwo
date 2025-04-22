@@ -39,7 +39,7 @@ const TempHumidTooltip = ({
         <span
           style={{
             display: "block",
-            marginBottom: "4px",
+            marginBottom: "2px",
             color: "#404040",
           }}
         >

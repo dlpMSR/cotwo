@@ -55,6 +55,12 @@ const TempHumidTooltip = ({
   );
 };
 
+type MergedTempHumidDatum = {
+  timestamp: number;
+  temperature: number;
+  humidity: number | undefined;
+};
+
 type TempHumidChartProps = {
   temperatureTrend: trendDatumUnixtime[];
   humidityTrend: trendDatumUnixtime[];
@@ -64,6 +70,18 @@ export function TempHumidChart({
   temperatureTrend,
   humidityTrend,
 }: TempHumidChartProps) {
+  // Tooltipの表示を適切にするため、気温と湿度の2系列を統合する
+  const mergedTempHumidSeries: MergedTempHumidDatum[] = temperatureTrend.map(
+    (item) => {
+      const match = humidityTrend.find((i) => i.timestamp == item.timestamp);
+      return {
+        timestamp: item.timestamp,
+        temperature: item.value,
+        humidity: match?.value,
+      };
+    }
+  );
+
   let [tsMin, tsMax] = [0, 0];
   if (temperatureTrend.length > 0) {
     tsMin = temperatureTrend[temperatureTrend.length - 1].timestamp;
@@ -114,10 +132,10 @@ export function TempHumidChart({
           />
           <Tooltip content={<TempHumidTooltip />} />
           <Line
-            data={temperatureTrend}
+            data={mergedTempHumidSeries}
             name="気温[℃]"
             type="monotone"
-            dataKey="value"
+            dataKey="temperature"
             stroke="#ff8c00"
             strokeWidth={3}
             dot={false}
@@ -125,10 +143,10 @@ export function TempHumidChart({
             yAxisId="left"
           />
           <Line
-            data={humidityTrend}
+            data={mergedTempHumidSeries}
             name="湿度[%]"
             type="monotone"
-            dataKey="value"
+            dataKey="humidity"
             stroke="#4169e1"
             strokeWidth={3}
             dot={false}

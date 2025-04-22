@@ -8,12 +8,51 @@ import {
   Line,
   LineChart,
   ResponsiveContainer,
+  Tooltip,
+  TooltipProps,
   XAxis,
   YAxis,
 } from "recharts";
 
 const renderCustomLegendText = (value: string) => {
   return <span style={{ color: "#666666", fontSize: "1.2rem" }}>{value}</span>;
+};
+
+const TempHumidTooltip = ({
+  active,
+  payload,
+  label,
+}: TooltipProps<number, number>) => {
+  if (!(active && payload && payload.length)) return null;
+
+  const date = dayjs.unix(label);
+  return (
+    <div
+      style={{
+        backgroundColor: "rgba(255,255,255,0.96)",
+        border: "1px solid #cccccc",
+        borderRadius: "3px",
+        padding: "3px",
+        width: 60,
+      }}
+    >
+      <span
+        style={{
+          display: "block",
+          marginBottom: "2px",
+          color: "#404040",
+        }}
+      >
+        {date.format("HH:mm:ss")}
+      </span>
+      <span
+        style={{ display: "block", color: payload[0].color }}
+      >{`${payload[0].value} ℃`}</span>
+      <span
+        style={{ display: "block", color: payload[1].color }}
+      >{`${payload[1].value} %`}</span>
+    </div>
+  );
 };
 
 type TempHumidChartProps = {
@@ -73,6 +112,7 @@ export function TempHumidChart({
             iconType="plainline"
             formatter={renderCustomLegendText}
           />
+          <Tooltip content={<TempHumidTooltip />} />
           <Line
             data={temperatureTrend}
             name="気温[℃]"

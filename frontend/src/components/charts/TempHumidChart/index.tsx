@@ -23,38 +23,36 @@ const TempHumidTooltip = ({
   payload,
   label,
 }: TooltipProps<number, number>) => {
-  if (active && payload && payload.length) {
-    const date = dayjs.unix(label);
-    return (
-      <div
+  if (!(active && payload && payload.length)) return null;
+
+  const date = dayjs.unix(label);
+  return (
+    <div
+      style={{
+        backgroundColor: "rgba(255,255,255,0.96)",
+        border: "1px solid #cccccc",
+        borderRadius: "1px",
+        padding: "3px",
+        width: 60,
+      }}
+    >
+      <span
         style={{
-          backgroundColor: "rgba(255,255,255,0.96)",
-          border: "1px solid #cccccc",
-          borderRadius: "1px",
-          padding: "3px",
-          width: 80,
+          display: "block",
+          marginBottom: "2px",
+          color: "#404040",
         }}
       >
-        <span
-          style={{
-            display: "block",
-            marginBottom: "2px",
-            color: "#404040",
-          }}
-        >
-          {date.format("HH:mm:ss")}
-        </span>
-        <span
-          style={{ display: "block", color: payload[0].color }}
-        >{`${payload[0].value} ℃`}</span>
-        <span
-          style={{ display: "block", color: payload[1].color }}
-        >{`${payload[1].value} %`}</span>
-      </div>
-    );
-  }
-
-  return null;
+        {date.format("HH:mm:ss")}
+      </span>
+      <span
+        style={{ display: "block", color: payload[0].color }}
+      >{`${payload[0].value} ℃`}</span>
+      <span
+        style={{ display: "block", color: payload[1].color }}
+      >{`${payload[1].value} %`}</span>
+    </div>
+  );
 };
 
 type TempHumidChartProps = {

@@ -32,7 +32,7 @@ const Co2Tooltip = ({
         border: "1px solid #cccccc",
         borderRadius: "1px",
         padding: "3px",
-        width: 80,
+        width: 60,
       }}
     >
       <span

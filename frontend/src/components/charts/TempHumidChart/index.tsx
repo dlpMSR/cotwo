@@ -31,7 +31,7 @@ const TempHumidTooltip = ({
       style={{
         backgroundColor: "rgba(255,255,255,0.96)",
         border: "1px solid #cccccc",
-        borderRadius: "1px",
+        borderRadius: "3px",
         padding: "3px",
         width: 60,
       }}

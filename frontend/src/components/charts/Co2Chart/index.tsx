@@ -61,7 +61,7 @@ const renderCustomLegendText = (value: string) => {
   return <span style={{ color: "#666666", fontSize: "1.2rem" }}>{value}</span>;
 };
 
-type MergedCo2Datum = {
+type MargedCo2Datum = {
   timestamp: number;
   co2: number;
   ma: number | undefined;
@@ -76,8 +76,9 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
     co2Trend,
     30
   );
+
   // Tooltipの表示を適切にするため、co2Trendとco2MaTrendの2系列を統合する
-  const mergedCo2Series: MergedCo2Datum[] = co2Trend.map((item) => {
+  const margedCo2Series: MargedCo2Datum[] = co2Trend.map((item) => {
     const match = co2MaTrend.find((i) => i.timestamp == item.timestamp);
     return {
       timestamp: item.timestamp,
@@ -125,7 +126,7 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
           />
           <Tooltip content={<Co2Tooltip />} />
           <Line
-            data={mergedCo2Series}
+            data={margedCo2Series}
             name="二酸化炭素濃度[ppm]"
             type="monotone"
             dataKey="co2"
@@ -135,7 +136,7 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
             isAnimationActive={false}
           />
           <Line
-            data={mergedCo2Series}
+            data={margedCo2Series}
             name="30分間移動平均[ppm]"
             type="monotone"
             dataKey="ma"

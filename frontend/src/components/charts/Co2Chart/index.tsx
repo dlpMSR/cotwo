@@ -11,12 +11,60 @@ import {
   Line,
   LineChart,
   ResponsiveContainer,
+  Tooltip,
+  TooltipProps,
   XAxis,
   YAxis,
 } from "recharts";
 
+const Co2Tooltip = ({
+  active,
+  payload,
+  label,
+}: TooltipProps<number, number>) => {
+  if (!(active && payload && payload.length)) return null;
+
+  const date = dayjs.unix(label);
+  return (
+    <div
+      style={{
+        backgroundColor: "rgba(255,255,255,0.96)",
+        border: "1px solid #cccccc",
+        borderRadius: "1px",
+        padding: "3px",
+        width: 80,
+      }}
+    >
+      <span
+        style={{
+          display: "block",
+          marginBottom: "2px",
+          color: "#404040",
+        }}
+      >
+        {date.format("HH:mm:ss")}
+      </span>
+      <span
+        style={{ display: "block", color: payload[0].color }}
+      >{`${payload[0].value?.toFixed(1)} ppm`}</span>
+
+      {payload[1] !== undefined && (
+        <span
+          style={{ display: "block", color: payload[1].color }}
+        >{`${payload[1].value?.toFixed(1)} ppm`}</span>
+      )}
+    </div>
+  );
+};
+
 const renderCustomLegendText = (value: string) => {
   return <span style={{ color: "#666666", fontSize: "1.2rem" }}>{value}</span>;
+};
+
+type MargedCo2Datum = {
+  timestamp: number;
+  co2: number;
+  ma: number | undefined;
 };
 
 type Co2ChartProps = {
@@ -24,8 +72,20 @@ type Co2ChartProps = {
 };
 
 export function Co2Chart({ co2Trend }: Co2ChartProps) {
-  let co2MaTrend: trendDatumUnixtime[] = [];
-  co2MaTrend = calculateTrendMovingAverage(co2Trend, 30);
+  const co2MaTrend: trendDatumUnixtime[] = calculateTrendMovingAverage(
+    co2Trend,
+    30
+  );
+
+  // Tooltipの表示を適切にするため、co2Trendとco2MaTrendの2系列を統合する
+  const margedCo2Series: MargedCo2Datum[] = co2Trend.map((item) => {
+    const match = co2MaTrend.find((i) => i.timestamp == item.timestamp);
+    return {
+      timestamp: item.timestamp,
+      co2: item.value,
+      ma: match ? match.value : undefined,
+    };
+  });
 
   let [tsMin, tsMax] = [0, 0];
   if (co2Trend.length > 0) {
@@ -64,21 +124,22 @@ export function Co2Chart({ co2Trend }: Co2ChartProps) {
             iconType="plainline"
             formatter={renderCustomLegendText}
           />
+          <Tooltip content={<Co2Tooltip />} />
           <Line
-            data={co2Trend}
+            data={margedCo2Series}
             name="二酸化炭素濃度[ppm]"
             type="monotone"
-            dataKey="value"
+            dataKey="co2"
             stroke="#afeeee"
             strokeWidth={3}
             dot={false}
             isAnimationActive={false}
           />
           <Line
-            data={co2MaTrend}
+            data={margedCo2Series}
             name="30分間移動平均[ppm]"
             type="monotone"
-            dataKey="value"
+            dataKey="ma"
             stroke="#20b2aa"
             strokeWidth={3}
             dot={false}

@@ -25,7 +25,6 @@ const TempHumidTooltip = ({
 }: TooltipProps<number, number>) => {
   if (active && payload && payload.length) {
     const date = dayjs.unix(label);
-    console.log(payload);
     return (
       <div
         style={{

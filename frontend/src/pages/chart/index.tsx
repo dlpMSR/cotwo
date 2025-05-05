@@ -2,7 +2,10 @@ import { Co2Chart } from "@/components/charts/Co2Chart";
 import { TempHumidChart } from "@/components/charts/TempHumidChart";
 import { CurrentCo2Display } from "@/components/currentDisplay/CurrentCo2Display";
 import { CurrentTempHumidDisplay } from "@/components/currentDisplay/CurrentTempHumidDisplay";
-import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
+import {
+  EnvValueStreamContext,
+  SocketStateContext,
+} from "@/contexts/EnvValueStreamContext";
 import { RefreshContext } from "@/contexts/RefreshContext";
 import {
   CurrentEnvValue,
@@ -23,7 +26,8 @@ export function Chart() {
   const locationName = import.meta.env.VITE_LOCATION;
   const { get } = useApiClient();
   const initDate = useContext(RefreshContext);
-  const socket = useContext(EnvValueStreamContext);
+  const socketRef = useContext(EnvValueStreamContext);
+  const readyState = useContext(SocketStateContext);
   const [envValue, setEnvValue] = useState<CurrentEnvValue>({
     co2: 0,
     temperature: 0,
@@ -94,16 +98,14 @@ export function Chart() {
 
     fetchEnvValue();
     fetchTrendData();
-    if (socket !== undefined) {
-      socket.addEventListener("message", updateLiveData);
+    if (socketRef?.current) {
+      socketRef.current.addEventListener("message", updateLiveData);
     }
 
     return () => {
-      if (socket !== undefined) {
-        socket.removeEventListener("message", updateLiveData);
-      }
+      socketRef?.current?.removeEventListener("message", updateLiveData);
     };
-  }, [initDate]);
+  }, [readyState, initDate]);
 
   return (
     <Box className="chart-page" sx={{ width: "100%" }}>

@@ -84,6 +84,7 @@ export const EnvValueStreamProvider = ({
         socketRef.current.removeEventListener("close", handleClose);
         socketRef.current.removeEventListener("error", handleError);
         socketRef.current.close();
+        setReadyState(null);
       }
     };
   }, [initDate]);

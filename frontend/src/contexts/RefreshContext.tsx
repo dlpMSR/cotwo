@@ -17,7 +17,7 @@ export const RefreshContextProvider = ({
     const interval = setInterval(() => {
       estimateTime.current = estimateTime.current.add(1, "second");
       const diff: number = dayjs().diff(estimateTime.current); // unit: ms
-      if (diff > 60 * 1000) {
+      if (diff > 3000) {
         const now = dayjs();
         setInitDate(now);
         estimateTime.current = now;

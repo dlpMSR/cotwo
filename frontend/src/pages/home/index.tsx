@@ -58,7 +58,7 @@ export function Home() {
             width: "100%",
           }}
         >
-          {/*  */}
+          {/* WebSocket接続状態を示すアイコン */}
           <DataFreshnessIndicator fontSize={displayWidth * 0.004} />
 
           <Tooltip

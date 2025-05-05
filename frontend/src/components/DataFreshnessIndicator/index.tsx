@@ -1,4 +1,4 @@
-import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
+import { SocketStateContext } from "@/contexts/EnvValueStreamContext";
 import Brightness1 from "@mui/icons-material/Brightness1";
 import { IconButton } from "@mui/material";
 import { useContext } from "react";
@@ -10,10 +10,20 @@ type DataFreshnessIndicatorProps = {
 export function DataFreshnessIndicator({
   fontSize,
 }: DataFreshnessIndicatorProps) {
-  const socket = useContext(EnvValueStreamContext);
+  const readyState = useContext(SocketStateContext);
 
-  // lightgreen or pink
-  const color = socket?.readyState == WebSocket.OPEN ? "#90ee90" : "#ffc0cb";
+  let color = "#ffc0cb";
+  switch (readyState) {
+    case null:
+    case WebSocket.CONNECTING:
+      color = "#ffd700"; // gold
+      break;
+    case WebSocket.OPEN:
+      color = "#90ee90"; // lightgreen
+      break;
+    default:
+      color = "#ffc0cb"; // pink
+  }
 
   return (
     <IconButton disabled>

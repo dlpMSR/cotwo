@@ -50,12 +50,14 @@ export const EnvValueStreamProvider = ({
     console.log("Disconnected.");
     setReadyState(socketRef.current ? socketRef.current.readyState : null);
     if (socketRef.current) {
-      if (reconnectAttempts.current < MAX_RECONNECT_ATTEMPTS) {
+      if (reconnectAttempts.current <= MAX_RECONNECT_ATTEMPTS) {
         reconnectAttempts.current += 1;
         console.log(`Reconnecting... (attempt ${reconnectAttempts.current})`);
         setTimeout(() => {
           connect();
         }, RECONNECT_DELAY);
+      } else {
+        console.log("Maximum reconnection attempts reached.");
       }
     }
   }, []);

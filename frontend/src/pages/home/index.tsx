@@ -1,3 +1,4 @@
+import { DataFreshnessIndicator } from "@/components/DataFreshnessIndicator";
 import { DigitalClockDisplay } from "@/components/DigitalClockDisplay";
 import { EnviroDisplay } from "@/components/EnviroDisplay";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -57,6 +58,9 @@ export function Home() {
             width: "100%",
           }}
         >
+          {/* WebSocket接続状態を示すアイコン */}
+          <DataFreshnessIndicator fontSize={displayWidth * 0.004} />
+
           <Tooltip
             title={
               <span style={{ fontSize: "1.3rem" }}>小さいウィンドウで開く</span>
@@ -64,6 +68,7 @@ export function Home() {
             placement="bottom"
             arrow={true}
           >
+            {/* 小さいウィンドウで開くボタン */}
             <IconButton onClick={openInNewWindow}>
               <OpenInNewIcon sx={{ fontSize: `${displayWidth * 0.004}rem` }} />
             </IconButton>

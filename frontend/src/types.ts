@@ -1,7 +1,13 @@
+import dayjs from "dayjs";
+
 export type EnvValue = {
   co2: number;
   temperature: number;
   humidity: number;
+};
+
+export type CurrentEnvValue = EnvValue & {
+  updatedAt: dayjs.Dayjs | null;
 };
 
 export type trendDatum = {

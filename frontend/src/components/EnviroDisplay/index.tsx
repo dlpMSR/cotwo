@@ -1,4 +1,7 @@
-import { EnvValueStreamContext } from "@/contexts/EnvValueStreamContext";
+import {
+  EnvValueStreamContext,
+  SocketStateContext,
+} from "@/contexts/EnvValueStreamContext";
 import { RefreshContext } from "@/contexts/RefreshContext";
 import {
   EnvValue,
@@ -17,7 +20,8 @@ interface EnviroDisplayProps {
 export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
   const { get } = useApiClient();
   const initDate = useContext(RefreshContext);
-  const socket = useContext(EnvValueStreamContext);
+  const socketRef = useContext(EnvValueStreamContext);
+  const readyState = useContext(SocketStateContext);
   const [envValue, setEnvValue] = useState<EnvValue>({
     co2: 0,
     temperature: 0,
@@ -48,16 +52,14 @@ export const EnviroDisplay = ({ width }: EnviroDisplayProps) => {
     };
 
     fetchEnvValue();
-    if (socket !== undefined) {
-      socket.addEventListener("message", updateLiveData);
+    if (socketRef?.current) {
+      socketRef.current.addEventListener("message", updateLiveData);
     }
 
     return () => {
-      if (socket !== undefined) {
-        socket.removeEventListener("message", updateLiveData);
-      }
+      socketRef?.current?.removeEventListener("message", updateLiveData);
     };
-  }, [initDate]);
+  }, [readyState, initDate]);
 
   const fontSize: Record<string, string> = {
     co2: `${width * 0.012}rem`,

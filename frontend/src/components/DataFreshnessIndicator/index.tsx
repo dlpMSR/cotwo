@@ -23,6 +23,7 @@ export function DataFreshnessIndicator({
       break;
     default:
       color = "#ffc0cb"; // pink
+      break;
   }
 
   return (

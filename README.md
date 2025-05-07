@@ -1,12 +1,8 @@
 # cotwo
-室内環境パラメータを見られるようにするWebアプリケーション  
-since Mar. 2023
+オフィスの空気を確認する
 
-<kbd><img width="320" alt="Screenshot 2025-03-11 at 22 05 15" src="https://github.com/user-attachments/assets/a3556ff0-2838-4d58-9577-83d703946528" /></kbd>
+<kbd><img src="https://github.com/user-attachments/assets/1afd1573-2631-43dd-a476-5129ac9e0105" width="400"></kbd>
 
-<kbd><img width="540" alt="Screenshot 2025-03-11 at 22 14 10" src="https://github.com/user-attachments/assets/2a85876e-ccdb-48c1-ac85-cdce94aba3a1" /></kbd>
-
-研究室やオフィスの空気の監視に使って、どうぞ
 
 ## 環境構築
 ### システム構成

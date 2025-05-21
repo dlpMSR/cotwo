@@ -6,7 +6,8 @@
 
 ## 環境構築
 ### システム構成
-<kbd><img src="https://github.com/dlpMSR/cotwo/assets/11821107/cde3417e-a693-4705-a070-d0aa8bce5d86"></kbd>
+
+<kbd><img width=750 src="https://github.com/user-attachments/assets/3dd77297-d10f-4243-8f92-ee7f3697556e"></kbd>
 
 
 ### 開発者向け環境構築

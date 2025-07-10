@@ -34,12 +34,10 @@ services:
     build: ./docker/redis
     ports:
       - '6379:6379'
-      
   backend:
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
-    command: supervisord
     volumes:
       - ./backend:/code
     expose:

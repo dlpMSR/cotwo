@@ -9,7 +9,12 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi (>=0.115.14,<0.116.0)",
-    "uvicorn (>=0.35.0,<0.36.0)"
+    "uvicorn (>=0.35.0,<0.36.0)",
+    "sqlalchemy (>=2.0.41,<3.0.0)",
+    "alembic (>=1.16.2,<2.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)",
+    "mysqlclient (>=2.2.7,<3.0.0)",
+    "mysql-connector-python (>=9.3.0,<10.0.0)",
 ]
 
 [tool.poetry]

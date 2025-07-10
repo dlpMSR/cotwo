@@ -1,5 +1,7 @@
 volumes:
+  python-venv:
   viteapp-node-modules:
+
 
 services:
   web:
@@ -40,6 +42,7 @@ services:
       dockerfile: ./docker/backend/Dockerfile
     volumes:
       - ./backend:/code
+      - python-venv:/code/.venv
     expose:
       - '8001'
       - '8002'

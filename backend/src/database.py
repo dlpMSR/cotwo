@@ -19,4 +19,4 @@ engine_url = (
 )
 engine = create_engine(url=engine_url)
 
-session = sessionmaker(engine)
+Session = sessionmaker(engine)

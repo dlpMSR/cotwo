@@ -10,25 +10,25 @@ def env_values():
     import random
     from datetime import datetime, timedelta
 
+    from pytz import timezone
+
     from src.database import Session
     from src.models.env_value import EnvValue
 
     # INSERTするデータを作成
-    now = datetime.now()
+    twelve_hours_ago = datetime.now(timezone("UTC")) - timedelta(hours=12)
     insert_records = []
     for i in range(720):
         v = EnvValue(
             temperature=round(random.uniform(0, 50), 1),
             humidity=round(random.uniform(0, 100), 1),
             co2="%d" % int(random.uniform(400, 1500)),
-            created_at=now - timedelta(minutes=i + 1),
+            created_at=twelve_hours_ago + timedelta(minutes=i),
         )
         insert_records.append(v)
 
     with Session() as session:
-        # 先に過去12時間の範囲のデータを全て削除
-        twelve_hours_ago = datetime.now() - timedelta(hours=12)
-        query = session.query(EnvValue).filter(EnvValue.created_at > twelve_hours_ago)
+        query = session.query(EnvValue)
         query.delete()
 
         # データ挿入

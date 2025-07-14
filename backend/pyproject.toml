@@ -17,6 +17,7 @@ dependencies = [
     "mysql-connector-python (>=9.3.0,<10.0.0)",
     "typer (>=0.16.0,<0.17.0)",
     "pytz (>=2025.2,<2026.0)",
+    "redis (>=6.2.0,<7.0.0)",
 ]
 
 [tool.poetry]

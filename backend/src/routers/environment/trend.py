@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 from fastapi import APIRouter
 from pydantic import BaseModel
+from sqlalchemy import desc
 
 from src.database import Session
 from src.models.env_value import EnvValue
@@ -18,8 +19,10 @@ class TrendDatum(BaseModel):
 async def trend_co2():
     with Session() as session:
         twelve_hours_ago = datetime.now() - timedelta(hours=12)
-        query = session.query(EnvValue.created_at, EnvValue.co2).filter(
-            EnvValue.created_at > twelve_hours_ago
+        query = (
+            session.query(EnvValue.created_at, EnvValue.co2)
+            .filter(EnvValue.created_at > twelve_hours_ago)
+            .order_by(desc(EnvValue.created_at))
         )
 
         result = query.all()
@@ -31,8 +34,10 @@ async def trend_co2():
 async def trend_temperature():
     with Session() as session:
         twelve_hours_ago = datetime.now() - timedelta(hours=12)
-        query = session.query(EnvValue.created_at, EnvValue.temperature).filter(
-            EnvValue.created_at > twelve_hours_ago
+        query = (
+            session.query(EnvValue.created_at, EnvValue.temperature)
+            .filter(EnvValue.created_at > twelve_hours_ago)
+            .order_by(desc(EnvValue.created_at))
         )
 
         result = query.all()
@@ -44,8 +49,10 @@ async def trend_temperature():
 async def trend_humidity():
     with Session() as session:
         twelve_hours_ago = datetime.now() - timedelta(hours=12)
-        query = session.query(EnvValue.created_at, EnvValue.humidity).filter(
-            EnvValue.created_at > twelve_hours_ago
+        query = (
+            session.query(EnvValue.created_at, EnvValue.humidity)
+            .filter(EnvValue.created_at > twelve_hours_ago)
+            .order_by(desc(EnvValue.created_at))
         )
 
         result = query.all()

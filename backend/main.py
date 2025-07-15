@@ -9,7 +9,6 @@ from src.routers.websocket import setup_websocket_routes, ws_router
 from src.websocket import ConnectionManager
 
 app = FastAPI()
-cli = typer.Typer()
 manager = ConnectionManager()
 
 init_api_router(app)
@@ -19,12 +18,8 @@ app.include_router(ws_router)
 loop = asyncio.get_event_loop()
 loop.create_task(redis_listener(manager))
 
-
-@app.get("/")
-async def root():
-    return {"message": "OK"}
-
-
 if __name__ == "__main__":
+    cli = typer.Typer()
     init_cli(cli)
+
     cli()

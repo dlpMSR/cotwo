@@ -8,6 +8,10 @@ def init_api_router(app: FastAPI):
         prefix="/api/v1",
     )
 
+    @router.get("/")
+    async def default():
+        return {"message": "OK"}
+
     measurement.register_router(router)
     trend.register_router(router)
 

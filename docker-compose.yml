@@ -45,7 +45,8 @@ services:
       - python-venv:/code/.venv
     expose:
       - '8001'
-      - '8002'
+    ports:
+      - '8001:8001'
 
   daemon:
     build:

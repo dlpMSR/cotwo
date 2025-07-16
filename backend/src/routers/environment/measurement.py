@@ -1,17 +1,11 @@
 import json
 
 from fastapi import APIRouter
-from pydantic import BaseModel
 
 from src.redis import redis_client
+from src.schemas.responses.env_value_response_shema import LatestEnvValue
 
 router = APIRouter(prefix="/environment", tags=["measurement"])
-
-
-class LatestEnvValue(BaseModel):
-    temperature: float
-    humidity: float
-    co2: float
 
 
 @router.get("/measurement")

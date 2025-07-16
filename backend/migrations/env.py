@@ -6,8 +6,7 @@ from pathlib import Path
 
 from alembic import context
 from dotenv import load_dotenv
-from src.database import engine
-from src.models import Base
+from src.models import Base, engine
 
 # migrationファイルの自動生成のため、src.models以下のmodelファイルを全て読み込む
 models_dir = Path(__file__).resolve().parent.parent / "src/models"

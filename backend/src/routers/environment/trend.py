@@ -1,63 +1,58 @@
-from datetime import datetime, timedelta
+from fastapi import APIRouter, Depends
 
-from fastapi import APIRouter
-from pydantic import BaseModel
-from sqlalchemy import desc
-
-from src.models import Session
-from src.models.env_value import EnvValue
+from src.repositories.env_value_repository import EnvValueRepository
+from src.repositories.mariadb.env_value_repository_impl import EnvValueRepositoryImpl
+from src.schemas.responses.env_value_response_shema import TrendDatum
+from src.usecases.env_value_usecase import EnvValueUsecase
 
 router = APIRouter(prefix="/environment/trend", tags=["trend"])
 
 
-class TrendDatum(BaseModel):
-    timestamp: datetime
-    value: int | float
+# DI関数
+def get_env_value_repository():
+    return EnvValueRepositoryImpl()
 
 
-@router.get("/co2", response_model=list[TrendDatum])
-async def trend_co2():
-    with Session() as session:
-        twelve_hours_ago = datetime.now() - timedelta(hours=12)
-        query = (
-            session.query(EnvValue.created_at, EnvValue.co2)
-            .filter(EnvValue.created_at > twelve_hours_ago)
-            .order_by(desc(EnvValue.created_at))
-        )
-
-        result = query.all()
-
-    return [TrendDatum(timestamp=timestamp, value=value) for timestamp, value in result]
+def get_env_value_usecase(
+    env_value_repository: EnvValueRepository = Depends(get_env_value_repository),
+):
+    return EnvValueUsecase(env_value_repository=env_value_repository)
 
 
 @router.get("/temperature", response_model=list[TrendDatum])
-async def trend_temperature():
-    with Session() as session:
-        twelve_hours_ago = datetime.now() - timedelta(hours=12)
-        query = (
-            session.query(EnvValue.created_at, EnvValue.temperature)
-            .filter(EnvValue.created_at > twelve_hours_ago)
-            .order_by(desc(EnvValue.created_at))
+async def trend_temperature(usecase=Depends(get_env_value_usecase)):
+    result = usecase.get_last_12_hours_records()
+    return [
+        TrendDatum(
+            timestamp=record.timestamp,
+            value=record.temperature,
         )
-
-        result = query.all()
-
-    return [TrendDatum(timestamp=timestamp, value=value) for timestamp, value in result]
+        for record in result
+    ]
 
 
 @router.get("/humidity", response_model=list[TrendDatum])
-async def trend_humidity():
-    with Session() as session:
-        twelve_hours_ago = datetime.now() - timedelta(hours=12)
-        query = (
-            session.query(EnvValue.created_at, EnvValue.humidity)
-            .filter(EnvValue.created_at > twelve_hours_ago)
-            .order_by(desc(EnvValue.created_at))
+async def trend_humidity(usecase=Depends(get_env_value_usecase)):
+    result = usecase.get_last_12_hours_records()
+    return [
+        TrendDatum(
+            timestamp=record.timestamp,
+            value=record.humidity,
         )
+        for record in result
+    ]
 
-        result = query.all()
 
-    return [TrendDatum(timestamp=timestamp, value=value) for timestamp, value in result]
+@router.get("/co2", response_model=list[TrendDatum])
+async def trend_co2(usecase=Depends(get_env_value_usecase)):
+    result = usecase.get_last_12_hours_records()
+    return [
+        TrendDatum(
+            timestamp=record.timestamp,
+            value=record.co2,
+        )
+        for record in result
+    ]
 
 
 def register_router(api_router: APIRouter):

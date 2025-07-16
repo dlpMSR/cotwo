@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from sqlalchemy import desc
 
-from src.database import Session
+from src.models import Session
 from src.models.env_value import EnvValue
 
 router = APIRouter(prefix="/environment/trend", tags=["trend"])

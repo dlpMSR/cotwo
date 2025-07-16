@@ -8,3 +8,7 @@ class EnvValueUsecase:
 
     def get_last_12_hours_records(self) -> list[EnvValue]:
         return self.env_value_repository.get_last_n_hours_data(n=12)
+
+    def insert_test_records(self, records: list[EnvValue]):
+        self.env_value_repository.delete_all()
+        self.env_value_repository.save_all(records)

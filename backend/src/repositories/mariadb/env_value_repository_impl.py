@@ -26,3 +26,32 @@ class EnvValueRepositoryImpl(EnvValueRepository):
             result = query.all()
 
         return [EnvValueEntity.from_model(item) for item in result]
+
+    def save_all(self, data: list[EnvValueEntity]):
+        sorted_data = sorted(data, key=lambda d: d.timestamp)
+        insert_records = [
+            EnvValueModel(
+                temperature=datum.temperature,
+                humidity=datum.humidity,
+                co2=datum.co2,
+                created_at=datum.timestamp,
+            )
+            for datum in sorted_data
+        ]
+
+        with Session() as session:
+            try:
+                session.add_all(insert_records)
+            except:
+                session.rollback()
+                raise
+            session.commit()
+
+    def delete_all(self):
+        with Session() as session:
+            try:
+                session.query(EnvValueModel).delete()
+            except:
+                session.rollback()
+                raise
+            session.commit()

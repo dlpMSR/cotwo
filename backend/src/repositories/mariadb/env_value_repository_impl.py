@@ -9,6 +9,9 @@ from src.repositories.env_value_repository import EnvValueRepository
 
 
 class EnvValueRepositoryImpl(EnvValueRepository):
+    def get_latest(self):
+        pass
+
     def get_last_n_hours_data(self, n: int):
         if not isinstance(n, int):
             raise TypeError("Input n must be an integer.")

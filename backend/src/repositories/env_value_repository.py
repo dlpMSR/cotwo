@@ -5,6 +5,10 @@ from src.entities.env_value import EnvValue
 
 class EnvValueRepository(ABC):
     @abstractmethod
+    def get_latest(self) -> EnvValue:
+        pass
+
+    @abstractmethod
     def get_last_n_hours_data(self, n: int) -> list[EnvValue]:
         pass
 

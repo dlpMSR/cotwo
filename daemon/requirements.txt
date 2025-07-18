@@ -1,4 +1,5 @@
 adafruit-circuitpython-scd4x
+RPi.GPIO
 mysqlclient
 pymsteams
 python-dotenv

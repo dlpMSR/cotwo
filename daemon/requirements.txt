@@ -1,8 +1,6 @@
 adafruit-circuitpython-scd4x
-channels
-channels_redis
-django
 mysqlclient
 pymsteams
 python-dotenv
 pytz
+redis

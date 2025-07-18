@@ -14,33 +14,25 @@ import redis
 from dotenv import load_dotenv
 from pytz import timezone
 
+load_dotenv()
+
 
 def _mysql_connection():
-    load_dotenv()
     DB_HOST = os.getenv("DB_HOST")
     DB_PORT = int(os.getenv("DB_PORT"))
     DB_NAME = os.getenv("DB_NAME")
     DB_USER = os.getenv("DB_USER")
     DB_PASSWORD = os.getenv("DB_PASSWORD")
 
-    connection = MySQLdb.connect(
+    return MySQLdb.connect(
         host=DB_HOST, port=DB_PORT, user=DB_USER, passwd=DB_PASSWORD, db=DB_NAME
     )
 
-    return connection
-
 
 def _set_redis_client():
-    load_dotenv()
     REDIS_HOST = os.getenv("REDIS_HOST")
     REDIS_PORT = int(os.getenv("REDIS_PORT"))
-
-    redis_pool = redis.ConnectionPool(
-        host=REDIS_HOST, port=REDIS_PORT, db=0, max_connections=4
-    )
-    conn = redis.StrictRedis(connection_pool=redis_pool)
-
-    return conn
+    return redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
 
 
 if __name__ == "__main__":
@@ -108,18 +100,5 @@ if __name__ == "__main__":
                 conn = _set_redis_client()
                 conn.set("scd41:measurement", json.dumps(api_value), ex=90)
                 conn.publish("cotwo:env_value_broadcast", json.dumps(ws_value))
-
-                # Websocketで補正値を配信
-                # async_to_sync(channel_layer.group_send)(
-                #     "realtime_env_ws", {
-                #         "type": "env_data", "message": {
-                #             "temperature": measurement[0],
-                #             "humidity": measurement[1],
-                #             "co2": int(measurement[2]),
-                #             "co2_corrected": round(statistics.mean(co2_thirty_mins), 1),
-                #             "timestamp": measurement[3]
-                #         }
-                #     }
-                # )
 
         time.sleep(60)

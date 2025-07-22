@@ -17,7 +17,7 @@ class EnvValueRepositoryImpl(EnvValueRepository):
         return EnvValue(
             temperature=result_dict["temperature"],
             humidity=result_dict["humidity"],
-            co2=result_dict["humidity"],
+            co2=result_dict["co2"],
             timestamp=result_dict["timestamp"],
         )
 

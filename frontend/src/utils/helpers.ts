@@ -1,23 +1,26 @@
-import dayjs from "dayjs";
 import { trendDatum, trendDatumUnixtime } from "@/types";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 export const timestampToUnixtime = (item: trendDatum): trendDatumUnixtime => {
   return {
-    timestamp: dayjs(item.timestamp).unix(),
+    timestamp: dayjs.utc(item.timestamp).unix(),
     value: item.value,
   };
 };
 
-export const calculateTimeTicks = (min: number, max: number):number[] => {
+export const calculateTimeTicks = (min: number, max: number): number[] => {
   const step = 3600;
-  const start = min - (min%step) + step;
+  const start = min - (min % step) + step;
   let ret = [];
   for (let t = start; t < max; t += step) {
     ret.push(t);
   }
 
   return ret;
-}
+};
 
 export const rollTimeSeries = (
   target: trendDatumUnixtime[],

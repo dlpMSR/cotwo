@@ -41,8 +41,9 @@ class Scd4xSensorRepository(SensorRepository):
 
         self.i2c = board.I2C()
         self.scd4x = adafruit_scd4x.SCD4X(self.i2c)
-        self.scd4x.start_low_periodic_measurement()
         print("Serial number:", [hex(i) for i in self.scd4x.serial_number])
+
+        self.scd4x.start_low_periodic_measurement()
 
     def is_sensor_ready(self) -> bool:
         return self.scd4x.data_ready

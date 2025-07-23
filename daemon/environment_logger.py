@@ -89,8 +89,12 @@ def _set_redis_client():
 
 
 if __name__ == "__main__":
-    sensor_repo: SensorRepository = MockSensorRepository()
-    # sensor_repo: SensorRepository = Scd4xSensorRepository()
+    ENV = os.getenv("ENV")
+    match ENV:
+        case "prod":
+            sensor_repo: SensorRepository = Scd4xSensorRepository()
+        case _:
+            sensor_repo: SensorRepository = MockSensorRepository()
 
     while True:
         if sensor_repo.is_sensor_ready():

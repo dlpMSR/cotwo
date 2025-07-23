@@ -17,7 +17,7 @@ class EnvValue:
         if isinstance(timestamp, datetime):
             self.timestamp = timestamp
         elif isinstance(timestamp, str):
-            self.timestamp = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+            self.timestamp = datetime.fromisoformat(timestamp)
         else:
             raise TypeError("Invalid type for 'timestamp': expected datetime or str.")
 

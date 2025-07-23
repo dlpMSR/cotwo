@@ -17,7 +17,7 @@ class EnvValueRepositoryImpl(EnvValueRepository):
         return EnvValue(
             temperature=result_dict["temperature"],
             humidity=result_dict["humidity"],
-            co2=result_dict["co2"],
+            co2=result_dict["co2_corrected"],  # APIで返すCO2濃度は補正値を使う
             timestamp=result_dict["timestamp"],
         )
 

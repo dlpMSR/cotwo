@@ -132,28 +132,17 @@ if __name__ == "__main__":
             print(len(co2_thirty_mins))
             if len(co2_thirty_mins) > 25:
                 # 補正値をキャッシュに保存
-                # TODO: Redisに保存・配信する環境値の形式を見直す
-                api_value = {
+                output = {
                     "temperature": measurement.temperature,
                     "humidity": measurement.humidity,
-                    "co2": round(statistics.mean(co2_thirty_mins), 1),
-                    "timestamp": measurement.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+                    "co2": measurement.co2,
+                    "co2_corrected": round(statistics.mean(co2_thirty_mins), 1),
+                    "timestamp": measurement.timestamp.strftime("%Y-%m-%dT%H:%M:%SZ"),
                 }
-
-                ws_value = {
-                    "message": {
-                        "temperature": measurement.temperature,
-                        "humidity": measurement.humidity,
-                        "co2": int(measurement.co2),
-                        "co2_corrected": round(statistics.mean(co2_thirty_mins), 1),
-                        "timestamp": measurement.timestamp.strftime(
-                            "%Y-%m-%d %H:%M:%S"
-                        ),
-                    },
-                }
-
                 conn = _set_redis_client()
-                conn.set("cotwo:env_value_measurement", json.dumps(api_value), ex=90)
-                conn.publish("cotwo:env_value_broadcast", json.dumps(ws_value))
+                conn.set("cotwo:env_value_measurement", json.dumps(output), ex=90)
+                conn.publish(
+                    "cotwo:env_value_broadcast", json.dumps({"message": output})
+                )
 
         time.sleep(60)

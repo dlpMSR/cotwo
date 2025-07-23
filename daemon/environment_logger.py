@@ -153,7 +153,7 @@ if __name__ == "__main__":
                 }
 
                 conn = _set_redis_client()
-                conn.set("scd41:measurement", json.dumps(api_value), ex=90)
+                conn.set("cotwo:env_value_measurement", json.dumps(api_value), ex=90)
                 conn.publish("cotwo:env_value_broadcast", json.dumps(ws_value))
 
         time.sleep(60)

@@ -1,5 +1,7 @@
 volumes:
+  python-venv:
   viteapp-node-modules:
+
 
 services:
   web:
@@ -34,17 +36,17 @@ services:
     build: ./docker/redis
     ports:
       - '6379:6379'
-      
   backend:
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
-    command: supervisord
     volumes:
       - ./backend:/code
+      - python-venv:/code/.venv
     expose:
       - '8001'
-      - '8002'
+    ports:
+      - '8001:8001'
 
   daemon:
     build:
@@ -52,7 +54,7 @@ services:
       dockerfile: ./docker/daemon/Dockerfile
     volumes:
       - ./daemon:/code
-    command: python dummy.py
+    command: python environment_logger.py
     depends_on:
       db:
         condition: service_healthy

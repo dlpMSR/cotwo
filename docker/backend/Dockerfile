@@ -1,12 +1,16 @@
-FROM python:3.9.16
+FROM python:3.11.13
 
-RUN apt-get update && apt-get install -y less supervisor
-RUN mkdir -p /var/log/supervisor
-ADD ./docker/backend/django.conf /etc/supervisor/conf.d/django.conf
+ENV PYTHONUNBUFFERED=1
 
-ENV PYTHONUNBUFFERED 1
-RUN mkdir /code
 WORKDIR /code
-RUN pip install --upgrade pip
-ADD ./backend/requirements.txt /code/
-RUN pip install -r requirements.txt
+
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH="/root/.local/bin:${PATH}"
+
+COPY ./backend/pyproject.toml ./
+COPY ./backend/poetry.lock ./
+RUN poetry config virtualenvs.in-project true
+RUN poetry self update
+RUN poetry install --no-root
+
+CMD ["poetry", "run", "uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8001"]

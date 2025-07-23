@@ -141,7 +141,6 @@ if __name__ == "__main__":
                 }
 
                 ws_value = {
-                    "type": "env_data",
                     "message": {
                         "temperature": measurement.temperature,
                         "humidity": measurement.humidity,

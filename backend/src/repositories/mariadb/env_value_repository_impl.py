@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import desc
 
@@ -19,7 +19,7 @@ class EnvValueRepositoryImpl(EnvValueRepository):
         if n < 0:
             raise ValueError("Input n must be greater than zero.")
 
-        n_hours_ago = datetime.now() - timedelta(hours=n)
+        n_hours_ago = datetime.now(timezone.utc) - timedelta(hours=n)
         with Session() as session:
             query = (
                 session.query(EnvValueModel)

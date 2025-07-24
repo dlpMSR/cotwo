@@ -19,8 +19,11 @@ import { rollTimeSeries, timestampToUnixtime } from "@/utils/helpers";
 import { useApiClient } from "@/utils/useApiClient";
 import { Box, Grid2 as Grid, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { useContext, useEffect, useState } from "react";
 import "./chart.scss";
+
+dayjs.extend(utc);
 
 export function Chart() {
   const locationName = import.meta.env.VITE_LOCATION;
@@ -69,7 +72,7 @@ export function Chart() {
 
     const updateLiveData = (e: MessageEvent<string>) => {
       const message: EnvValueStreamMessage = JSON.parse(e.data).message;
-      const updatedAt = dayjs(message.timestamp + "Z");
+      const updatedAt = dayjs.utc(message.timestamp);
       setCo2Trend((prev: trendDatumUnixtime[]) => {
         return rollTimeSeries(prev, {
           timestamp: updatedAt.unix(),

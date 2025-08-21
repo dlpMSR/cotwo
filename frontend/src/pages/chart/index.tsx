@@ -95,7 +95,7 @@ export function Chart() {
         temperature: message.temperature,
         humidity: message.humidity,
         co2: message.co2_corrected, // 数値での掲示には補正値を使う
-        updatedAt: updatedAt,
+        updatedAt: updatedAt.local(),
       });
     };
 

@@ -17,7 +17,7 @@ DB_PORT = os.environ.get("DB_PORT")
 engine_url = (
     f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
-engine = create_engine(url=engine_url)
+engine = create_engine(url=engine_url, pool_recycle=3600)
 
 Session = sessionmaker(engine)
 

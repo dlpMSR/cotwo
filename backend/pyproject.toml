@@ -27,6 +27,7 @@ packages = [{include = "cotwo_backend", from = "src"}]
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.12.2"
+pytest = "^8.4.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

@@ -29,8 +29,8 @@ services:
       # test: ["CMD", "mysqladmin", "ping", "-p$${MYSQL_ROOT_PASSWORD}"]
       # mysqladminコマンドが存在しないため、mariadbにログインしてstatusで代替する
       test: ["CMD", "echo", "'status'", "|", "mariadb", "-u$${MYSQL_USER}", "--password={MYSQL_PASSWORD}"]
-      interval: 1s
-      timeout: 5s
+      interval: 2s
+      timeout: 10s
   
   redis:
     build: ./docker/redis
